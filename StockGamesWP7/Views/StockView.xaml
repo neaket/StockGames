@@ -33,7 +33,7 @@
 				<TextBlock Text="Previous Market Price" Foreground="{StaticResource PhoneSubtleBrush}" />
 				<TextBlock Text="{Binding Path=Stock.PreviousPrice, Mode=OneWay, StringFormat=\{0:c\}}"></TextBlock>
 				<TextBlock Text="Current Market Price" Foreground="{StaticResource PhoneSubtleBrush}" />
-				<TextBlock Text="{Binding Path=Stock.PreviousPrice, Mode=OneWay}"></TextBlock>
+                <TextBlock Text="{Binding Path=Stock.PreviousPrice, Mode=OneWay, StringFormat=\{0:c\}}"></TextBlock>
 			</StackPanel>
         </Grid>    
     </Grid>

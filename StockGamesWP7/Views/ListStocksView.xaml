@@ -53,10 +53,10 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Path=PreviousPrice, Mode=OneWay}" FontSize="24" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding Path=PreviousPrice, Mode=OneWay, StringFormat=\{0:c\}}" FontSize="24" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="0"/>
                                 </StackPanel>
-                                
-                                <TextBlock Text="{Binding Path=CurrentPrice, Mode=OneWay}" FontSize="24" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="1"/>
+
+                                <TextBlock Text="{Binding Path=CurrentPrice, Mode=OneWay, StringFormat=\{0:c\}}" FontSize="24" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="1"/>
                             </Grid>
                         </Grid>
                         
