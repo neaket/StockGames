@@ -11,19 +11,90 @@ using System.Windows.Shapes;
 using System.Collections;
 using StockGames.Models;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace StockGames.ViewModels
 {
     public class ListStocksViewModel
     {
-        IList<StockEntity> Stocks { get; set; }
+        public ObservableCollection<StockEntity> Stocks { get; set; }
 
         public ListStocksViewModel()
         {
             // TEMP
             // TODO integrate code
-            Stocks = new List<StockEntity>();
+            Stocks = new ObservableCollection<StockEntity>();
 
+            Stocks.Add(new StockEntity()
+            {
+                CompanyName = "ABC Company",
+                StockIndex = "ABC",
+                CurrentPrice = 56M,
+                PreviousPrice = 58M
+            });
+            Stocks.Add(new StockEntity()
+            {
+                CompanyName = "ABC Company",
+                StockIndex = "ABC",
+                CurrentPrice = 56M,
+                PreviousPrice = 58M
+            });
+            Stocks.Add(new StockEntity()
+            {
+                CompanyName = "ABC Company",
+                StockIndex = "ABC",
+                CurrentPrice = 56M,
+                PreviousPrice = 58M
+            });
+            Stocks.Add(new StockEntity()
+            {
+                CompanyName = "ABC Company",
+                StockIndex = "ABC",
+                CurrentPrice = 56M,
+                PreviousPrice = 58M
+            });
+            Stocks.Add(new StockEntity()
+            {
+                CompanyName = "ABC Company",
+                StockIndex = "ABC",
+                CurrentPrice = 56M,
+                PreviousPrice = 58M
+            });
+            Stocks.Add(new StockEntity()
+            {
+                CompanyName = "ABC Company",
+                StockIndex = "ABC",
+                CurrentPrice = 56M,
+                PreviousPrice = 58M
+            });
+            Stocks.Add(new StockEntity()
+            {
+                CompanyName = "ABC Company",
+                StockIndex = "ABC",
+                CurrentPrice = 56M,
+                PreviousPrice = 58M
+            });
+            Stocks.Add(new StockEntity()
+            {
+                CompanyName = "ABC Company",
+                StockIndex = "ABC",
+                CurrentPrice = 56M,
+                PreviousPrice = 58M
+            });
+            Stocks.Add(new StockEntity()
+            {
+                CompanyName = "ABC Company",
+                StockIndex = "ABC",
+                CurrentPrice = 56M,
+                PreviousPrice = 58M
+            });
+            Stocks.Add(new StockEntity()
+            {
+                CompanyName = "ABC Company",
+                StockIndex = "ABC",
+                CurrentPrice = 56M,
+                PreviousPrice = 58M
+            });
             Stocks.Add(new StockEntity()
             {
                 CompanyName = "ABC Company",

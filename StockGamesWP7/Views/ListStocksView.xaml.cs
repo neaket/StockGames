@@ -11,18 +11,33 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using StockGames.ViewModels;
+using System.Windows.Navigation;
 
 namespace StockGames.Views
 {
     public partial class ListStocksView : PhoneApplicationPage
     {
+        private ListStocksViewModel viewModel;
         public ListStocksView()
         {
             InitializeComponent();
 
+            viewModel = new ListStocksViewModel();
             // temp
             // TODO 
-            DataContext = new StockViewModel();
+          //  LayoutRoot.DataContext = new StockViewModel();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            DataContext = viewModel;
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/StockView.xaml", UriKind.Relative));
+            
         }
     }
 }

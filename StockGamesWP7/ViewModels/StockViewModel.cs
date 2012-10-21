@@ -9,11 +9,13 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
+using StockGames.Models;
 
 namespace StockGames.ViewModels
 {
     public class StockViewModel
     {
+        public StockEntity Stock { get; set; }
 
     //    Stock Stock;
 

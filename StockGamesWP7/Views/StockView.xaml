@@ -11,7 +11,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True" d:DataContext="{d:DesignData /SampleData/StockViewModelSampleData.xaml}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -23,12 +23,18 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="View Stock" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="StockIndex" Text="{Binding Path=StockIndex, Mode=OneTime}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="StockIndex" Text="{Binding Path=Stock.StockIndex, Mode=OneTime}" Margin="9,-7,0,0" Foreground="{StaticResource PhoneAccentBrush}" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBlock Text="{Binding Path=CompanyName, Mode=OneTime}"></TextBlock> 
+        	<StackPanel>
+            	<TextBlock Text="{Binding Path=Stock.CompanyName, Mode=OneTime}"></TextBlock> 
+				<TextBlock Text="Previous Market Price" Foreground="{StaticResource PhoneSubtleBrush}" />
+				<TextBlock Text="{Binding Path=Stock.PreviousPrice, Mode=OneWay, StringFormat=\{0:c\}}"></TextBlock>
+				<TextBlock Text="Current Market Price" Foreground="{StaticResource PhoneSubtleBrush}" />
+				<TextBlock Text="{Binding Path=Stock.PreviousPrice, Mode=OneWay}"></TextBlock>
+			</StackPanel>
         </Grid>    
     </Grid>
  
