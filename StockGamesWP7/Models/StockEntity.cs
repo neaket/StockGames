@@ -17,22 +17,22 @@ namespace StockGames.Models
         public string StockIndex
         {
             get;
-            private set;
+             set;
         }
         public string CompanyName
         {
             get;
-            private set;
+            set;
         }
         public decimal CurrentPrice
         {
             get;
-            private set;
+            set;
         }
         public decimal PreviousPrice
         {
             get;
-            private set;
+            set;
         }
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged

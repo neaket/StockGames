@@ -8,11 +8,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Collections.Generic;
 
 namespace StockGames.ViewModels
 {
     public class StockViewModel
     {
+
     //    Stock Stock;
 
     //    public StockViewModel()
