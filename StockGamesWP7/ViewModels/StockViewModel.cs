@@ -17,6 +17,16 @@ namespace StockGames.ViewModels
     {
         public StockEntity Stock { get; set; }
 
+        public StockViewModel(string stockIndex)
+        {
+            // TEMP
+            Stock = new StockEntity();
+            Stock.StockIndex = stockIndex;
+            Stock.CompanyName = "Unknown Company Name";
+            Stock.CurrentPrice = 0M;
+            Stock.PreviousPrice = 0M;
+        }
+
     //    Stock Stock;
 
     //    public StockViewModel()

@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using StockGames.ViewModels;
 using System.Windows.Navigation;
+using StockGames.Models;
 
 namespace StockGames.Views
 {
@@ -32,11 +33,18 @@ namespace StockGames.Views
         {
             base.OnNavigatedTo(e);
             DataContext = viewModel;
+            StockListBox.SelectedItem = null; // clear the current selection
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Views/StockView.xaml", UriKind.Relative));
+            if (e.AddedItems.Count > 0)
+            {
+                StockEntity selected = e.AddedItems[0] as StockEntity;
+                
+                NavigationService.Navigate(new Uri("/Views/StockView.xaml?StockIndex=" + selected.StockIndex, UriKind.Relative));                
+            }
+            
             
         }
     }

@@ -31,7 +31,7 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >
-            <ListBox ItemsSource="{Binding Path=Stocks, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged">
+            <ListBox x:Name="StockListBox" ItemsSource="{Binding Path=Stocks, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged" SelectionMode="Single">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -45,18 +45,20 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{Binding Path=StockIndex, Mode=OneTime}" FontSize="36" Style="{StaticResource PhoneTextAccentStyle}" Grid.Column="0" />
-                                <TextBlock Text="{Binding Path=CompanyName, Mode=OneTime}" FontSize="30" VerticalAlignment="Bottom" Grid.Column="1" />
+                                <TextBlock Text="{Binding Path=CompanyName, Mode=OneTime}" FontSize="32" Margin="10,0,0,0"  VerticalAlignment="Bottom" Grid.Column="1" />
                             </Grid>
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="140" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Path=PreviousPrice, Mode=OneWay, StringFormat=\{0:c\}}" FontSize="24" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding Path=CurrentPrice, Mode=OneWay, StringFormat=\{0:c\}}" FontSize="24" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="0"/>
                                 </StackPanel>
-
-                                <TextBlock Text="{Binding Path=CurrentPrice, Mode=OneWay, StringFormat=\{0:c\}}" FontSize="24" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="1"/>
+                                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                    <TextBlock Text="{Binding Path=DailyChange, Mode=OneWay, StringFormat=\{0:+$#\,##0.00;-$#\,##0.00;$0.00\}}" FontSize="24" Style="{StaticResource PhoneTextNormalStyle}" Width="80" />
+                                    <TextBlock Text="{Binding Path=ProfitAndLoss, Mode=OneWay, StringFormat=\{0:+%#\,##0.00;-%#\,##0.00;%0.00\}}" FontSize="24" Style="{StaticResource PhoneTextNormalStyle}" />
+                                </StackPanel>
                             </Grid>
                         </Grid>
                         
