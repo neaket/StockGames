@@ -17,28 +17,43 @@ namespace StockGames.Models
         public string StockIndex
         {
             get;
-            private set;
+            set;
         }
         public string CompanyName
         {
             get;
-            private set;
+            set;
         }
         public decimal CurrentPrice
         {
             get;
-            private set;
+            set;
         }
         public decimal PreviousPrice
         {
             get;
-            private set;
+            set;
         }
 
-        event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+        public decimal DailyChange
         {
-            add { throw new NotImplementedException(); }
-            remove { throw new NotImplementedException(); }
+            get
+            {
+                return CurrentPrice - PreviousPrice;
+            }
         }
+
+        public decimal ProfitAndLoss
+        {
+            get
+            {
+                if (PreviousPrice <= 0)
+                {
+                    return 0;
+                }
+                return DailyChange / PreviousPrice; 
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
