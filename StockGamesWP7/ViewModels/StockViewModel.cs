@@ -23,8 +23,8 @@ namespace StockGames.ViewModels
             Stock = new StockEntity();
             Stock.StockIndex = stockIndex;
             Stock.CompanyName = "Unknown Company Name";
-            Stock.CurrentPrice = 0M;
-            Stock.PreviousPrice = 0M;
+            Stock.CurrentPrice = 0.01M;
+            Stock.PreviousPrice = 0.01M;
         }
 
     //    Stock Stock;

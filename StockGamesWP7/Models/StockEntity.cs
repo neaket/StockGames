@@ -47,7 +47,11 @@ namespace StockGames.Models
         {
             get
             {
-                return DailyChange / PreviousPrice;
+                if (PreviousPrice <= 0)
+                {
+                    return 0;
+                }
+                return DailyChange / PreviousPrice; 
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;
