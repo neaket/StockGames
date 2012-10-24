@@ -11,27 +11,40 @@ using System.Windows.Shapes;
 
 namespace StockGames.CommunicationProtocol
 {
+    /*
+     * 
+    * */
     public class MessageQueue
     {
+        private Message[] mQueue;
+        private int mQueueSize;
+        private MessageCoder mCoder;
 
-        public MessageQueue()
-        {
-        }
+        private int mHead;
+        private int mTail;
 
-        public void sendServerRequest()
+        public MessageQueue(int size, MessageCoder coder)
         {
-        }
+            mCoder = coder;
 
-        public void getServerRequest()
-        {
+            mQueueSize = size;
+            mQueue = new Message[mQueueSize];
+
+            mHead = mTail = 0;
         }
 
         public void pop()
         {
+
         }
 
-        public void push()
+        public void push(Message m)
         {
+            if (mTail + 1 < mQueueSize - 1)
+            {
+                mQueue[mTail + 1] = m;
+                mTail += 1;
+            }
         }
     }
 }

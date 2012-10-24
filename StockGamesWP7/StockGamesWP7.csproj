@@ -60,6 +60,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommunicationProtocol\ClientMessage.cs" />
+    <Compile Include="CommunicationProtocol\Message.cs" />
+    <Compile Include="CommunicationProtocol\MessageCoder.cs" />
+    <Compile Include="CommunicationProtocol\MessageQueue.cs" />
+    <Compile Include="CommunicationProtocol\ServerMessage.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

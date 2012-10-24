@@ -11,12 +11,8 @@ using System.Windows.Shapes;
 
 namespace StockGames.CommunicationProtocol
 {
-    public abstract class Message
+    public class MessageHandler
     {
 
-        public Message()
-        {
-
-        }
     }
 }

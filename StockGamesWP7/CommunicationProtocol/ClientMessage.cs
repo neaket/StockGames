@@ -13,6 +13,28 @@ namespace StockGames.CommunicationProtocol
 {
     public class ClientMessage : Message
     {
+        private int stockReference;
+        private int stockValue;
 
+        public ClientMessage(int n, int m)
+        {
+            stockReference = n;
+            stockValue = m;
+        }
+
+        public int getStockReference()
+        {
+            return stockReference;
+        }
+
+        public int getStockValue()
+        {
+            return stockValue;
+        }
+
+        private String StockName()
+        {
+            return "";
+        }
     }
 }
