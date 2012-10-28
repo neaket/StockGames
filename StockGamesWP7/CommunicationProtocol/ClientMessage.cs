@@ -15,21 +15,28 @@ namespace StockGames.CommunicationProtocol
     {
         private int stockReference;
         private int stockValue;
+        private int eventReference;
 
-        public ClientMessage(int n, int m)
+        public ClientMessage(int n, int m, int o)
         {
             stockReference = n;
             stockValue = m;
+            eventReference = o;
         }
 
-        public int getStockReference()
+        public int GetStockReference()
         {
             return stockReference;
         }
 
-        public int getStockValue()
+        public int GetStockValue()
         {
             return stockValue;
+        }
+
+        public int GetEventReference()
+        {
+            return eventReference;
         }
 
         private String StockName()

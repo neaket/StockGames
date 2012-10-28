@@ -63,6 +63,8 @@
     <Compile Include="CommunicationProtocol\ClientMessage.cs" />
     <Compile Include="CommunicationProtocol\Message.cs" />
     <Compile Include="CommunicationProtocol\MessageCoder.cs" />
+    <Compile Include="CommunicationProtocol\MessageEvent.cs" />
+    <Compile Include="CommunicationProtocol\MessageHandler.cs" />
     <Compile Include="CommunicationProtocol\MessageQueue.cs" />
     <Compile Include="CommunicationProtocol\ServerMessage.cs" />
     <Compile Include="MainPage.xaml.cs">

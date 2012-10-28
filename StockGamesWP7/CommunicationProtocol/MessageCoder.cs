@@ -12,17 +12,45 @@ using System.Xml;
 
 namespace StockGames.CommunicationProtocol
 {
-    public class MessageCoder
+    public sealed class MessageCoder
     {
+        private static MessageCoder instance;
+        private static string URIAddress;
+
+        private MessageHandler handler;
+
         public MessageCoder()
         {
+
         }
 
-        public void decodeMessage()
+        public static MessageCoder Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new MessageCoder();
+                }
+                return instance;
+            }
+        }
+
+        public void AddMessageHandler(MessageHandler h)
+        {
+            handler = h;
+        }
+       
+        public void DecodeMessage(Message m)
         {
         }
 
-        public void encodeMessage()
+        public void EncodeMessage(Message m)
+        {
+
+        }
+
+        private void toXML(Message m)
         {
         }
     }

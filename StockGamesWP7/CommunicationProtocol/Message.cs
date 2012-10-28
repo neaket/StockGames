@@ -13,10 +13,5 @@ namespace StockGames.CommunicationProtocol
 {
     public abstract class Message
     {
-
-        public Message()
-        {
-
-        }
     }
 }

@@ -14,36 +14,83 @@ namespace StockGames.CommunicationProtocol
     /*
      * 
     * */
-    public class MessageQueue
+    public sealed class MessageQueue
     {
+        private static int QUEUESIZE = 256;
+        private static MessageQueue instance;
+
         private Message[] mQueue;
-        private int mQueueSize;
+
         private MessageCoder mCoder;
 
         private int mHead;
         private int mTail;
 
-        public MessageQueue(int size, MessageCoder coder)
+        private MessageQueue()
         {
-            mCoder = coder;
-
-            mQueueSize = size;
-            mQueue = new Message[mQueueSize];
-
+            mQueue = new Message[QUEUESIZE];
             mHead = mTail = 0;
         }
 
-        public void pop()
+        public static MessageQueue Instance
         {
-
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new MessageQueue();
+                }
+                return instance;
+            }
         }
 
-        public void push(Message m)
+        public void AddMessageCoder(MessageCoder c)
         {
-            if (mTail + 1 < mQueueSize - 1)
+            mCoder = c;
+        }
+
+        public int QueueFilled()
+        {
+            return mTail;
+        }
+
+        public void Pop()
+        {
+            Message m = mQueue[mHead];
+
+            QueueHelper();
+            mTail -= 1;
+
+            if (m is ClientMessage)
+            {
+                mCoder.EncodeMessage(m);
+            }
+            else if (m is ServerMessage)
+            {
+                mCoder.DecodeMessage(m);
+            }
+        }
+
+        public void Push(Message m)
+        {
+            if (mTail + 1 < QUEUESIZE - 1)
             {
                 mQueue[mTail + 1] = m;
                 mTail += 1;
+            }
+            else
+            {
+                //have a message sent to the screen stating server is busy
+            }
+        }
+
+        private void QueueHelper()
+        {
+            Message[] tempQueue = new Message[QUEUESIZE];
+            for (int i = 0; i < QUEUESIZE; i++)
+            {
+                if (i == QUEUESIZE - 1) mQueue = tempQueue;  //full queue
+                else tempQueue[i] = mQueue[i + 1];
             }
         }
     }
