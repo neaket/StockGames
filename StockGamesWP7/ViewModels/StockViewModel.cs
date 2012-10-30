@@ -19,30 +19,7 @@ namespace StockGames.ViewModels
 
         public StockViewModel(string stockIndex)
         {
-            // TEMP
-            Stock = new StockEntity();
-            Stock.StockIndex = stockIndex;
-            Stock.CompanyName = "Unknown Company Name";
-            Stock.CurrentPrice = 0.01M;
-            Stock.PreviousPrice = 0.01M;
+            Stock = StocksManager.Instance.FindStock(stockIndex);
         }
-
-    //    Stock Stock;
-
-    //    public StockViewModel()
-    //    {
-    //        // Temp Code
-    //        Stock = new Stock() {
-    //           CurrentMarketPrice = 35.33M,
-    //           Symbol = "ABC",
-    //           Company = "ABC Company",
-    //           High = 36M,
-    //           Low = 35M,
-    //           MarketCap = 350000M,
-    //           Open = 35.5M,
-    //           ProfitAndLoss = -1.01M      
-               
-    //        };
-    //    }
     }
 }

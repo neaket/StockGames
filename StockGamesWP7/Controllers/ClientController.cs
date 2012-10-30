@@ -20,11 +20,24 @@ namespace StockGames.Controllers
         private CommandInvoker _CmdInvoker;
         private MessageHandler _MsgHandler;
 
-        public ClientController()
+        private static ClientController _Instance;
+        public static ClientController Instance
         {
-            _StockDataManager = new StocksManager();
-            _MsgHandler = new MessageHandler();
-            _CmdInvoker = new CommandInvoker(_StockDataManager, _MsgHandler);
+            get
+            {
+                if (_Instance == null)
+                {
+                    _Instance = new ClientController();
+                }
+                return _Instance;
+            }
+        }
+
+        private ClientController()
+        {
+            _StockDataManager = StocksManager.Instance;
+            _MsgHandler = new MessageHandler(); // TODO
+            _CmdInvoker = CommandInvoker.Instance;
         }
     }
 }

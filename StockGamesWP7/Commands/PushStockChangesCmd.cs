@@ -54,7 +54,7 @@ namespace StockGames.Commands
             {
                 targetStock = _StockMnger.FindStock(stock.StockIndex);
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 //stock not found, do not execture further
                 return;

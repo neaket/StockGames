@@ -23,7 +23,21 @@ namespace StockGames.Controllers
         public static string REQUEST_UPDATE_STOCK = "REQUEST_UPDATE";
         public static string CHANGE_STOCK_DATA = "CHANGE_STOCK_DATA";
 
-        public CommandInvoker(StocksManager stockMnger, MessageHandler msgHandler)
+        private static CommandInvoker _Instance = null;
+        public static CommandInvoker Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                {
+                    // TODO add MessageHandler
+                    _Instance = new CommandInvoker(StocksManager.Instance, new MessageHandler());
+                }
+                return _Instance;
+            }
+        }
+
+        private CommandInvoker(StocksManager stockMnger, MessageHandler msgHandler)
         {
             _commands = new List<IStockCommand>();
 
