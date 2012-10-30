@@ -63,11 +63,19 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Commands\IStockCommand.cs" />
+    <Compile Include="Commands\PushStockChangesCmd.cs" />
+    <Compile Include="Commands\RequestStockUpdateCmd.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\CommandInvoker.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\StockEntity.cs" />
+    <Compile Include="Models\StocksManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stubs\MessageEvent.cs" />
+    <Compile Include="Stubs\MessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
