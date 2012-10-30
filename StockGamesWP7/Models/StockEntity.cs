@@ -10,7 +10,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.ComponentModel;
 
-
 namespace StockGames.Models
 {
     public class StockEntity :INotifyPropertyChanged
@@ -74,8 +73,25 @@ namespace StockGames.Models
                 NotifyPropertyChanged(PREVIOUS_PRICE);
             }
         }
+ 		public decimal DailyChange
+        {
+            get
+            {
+                return CurrentPrice - PreviousPrice;
+            }
+        }
 
-        //Class Methods
+        public decimal ProfitAndLoss
+        {
+            get
+            {
+                if (PreviousPrice <= 0)
+                {
+                    return 0;
+                }
+                return DailyChange / PreviousPrice; 
+            }
+        }
 
         /// <summary>
         /// Constructor for Class, creates a stock with a name and index

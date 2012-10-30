@@ -1,0 +1,17 @@
+﻿<ViewModels:ListStocksViewModel xmlns:ViewModels="clr-namespace:StockGames.ViewModels" 
+    xmlns:Models="clr-namespace:StockGames.Models" >
+            <ViewModels:ListStocksViewModel.Stocks>
+                <Models:StockEntity CompanyName="A. Datum Corporation" StockIndex="ANTE" CurrentPrice="100.31" PreviousPrice="99.21"  />
+                <Models:StockEntity CompanyName="Adventure Works" StockIndex="ARCU" CurrentPrice="29.95" PreviousPrice="29.99" />
+                <Models:StockEntity CompanyName="Adventure Works" StockIndex="HAC" CurrentPrice="249.67" PreviousPrice="249.99"  />
+                <Models:StockEntity CompanyName="Alpine Ski House" StockIndex="LEO" CurrentPrice="556.80" PreviousPrice="1000" />
+                <Models:StockEntity CompanyName="Baldwin Museum of Science" StockIndex="DIAM" CurrentPrice="2.99" PreviousPrice="2.99" />
+				<Models:StockEntity CompanyName="Blue Yonder Airlines" StockIndex="MUS" CurrentPrice="300" PreviousPrice="300" />
+                <Models:StockEntity CompanyName="City Power &amp; Light" StockIndex="EGET" CurrentPrice="10999" PreviousPrice="10999" />
+                <Models:StockEntity CompanyName="Coho Vineyard" StockIndex="ELIT" CurrentPrice="49.99" PreviousPrice="49.99"  />
+                <Models:StockEntity CompanyName="Coho Winery" StockIndex="ENIM" CurrentPrice="25.34" PreviousPrice="25.34" />
+                <Models:StockEntity CompanyName="Coho Vineyard &amp; Winery" StockIndex="NEC" CurrentPrice="100" PreviousPrice="100" />
+				<Models:StockEntity CompanyName="Contoso Ltd" StockIndex="NON" CurrentPrice="29.99" PreviousPrice="29.99" />
+                <Models:StockEntity CompanyName="Contoso Pharmaceuticals" StockIndex="ERAT" CurrentPrice="249.99" PreviousPrice="249.99" />
+            </ViewModels:ListStocksViewModel.Stocks>
+        </ViewModels:ListStocksViewModel>
