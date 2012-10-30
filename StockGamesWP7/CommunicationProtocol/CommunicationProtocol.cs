@@ -15,21 +15,21 @@ namespace StockGames.CommunicationProtocol
     {
         private static CommunicationProtocol instance;
 
-        private MessageQueue mQueue;
-        private MessageHandler mHandler;
-        private MessageCoder mCoder;
+        private MessageQueue messageQueue;
+        private MessageHandler messageHandler;
+        private MessageCoder messageCoder;
 
         private Object clientReference;
 
         private CommunicationProtocol()
         {
-            mQueue = MessageQueue.Instance;
-            mHandler = MessageHandler.Instance;
-            mCoder = MessageCoder.Instance;
+            messageQueue = MessageQueue.Instance;
+            messageHandler = MessageHandler.Instance;
+            messageCoder = MessageCoder.Instance;
 
-            mQueue.AddMessageCoder(mCoder);
-            mHandler.AddMessageQueue(mQueue);
-            mCoder.AddMessageHandler(mHandler);
+            messageQueue.AddMessageCoder(messageCoder);
+            messageHandler.AddMessageQueue(messageQueue);
+            messageCoder.AddMessageHandler(messageHandler);
         }
 
         public static CommunicationProtocol Init
@@ -44,13 +44,13 @@ namespace StockGames.CommunicationProtocol
             }
         }
 
-        public void AddEvent(MessageEvent e)
+        public void AddEvent(MessageEvent evnt)
         {
-            mHandler.AddEvent(e);
+            messageHandler.AddEvent(evnt);
 
-            if (!mHandler.IsRunning())
+            if (!messageHandler.IsRunning())
             {
-                mHandler.RunHandler();
+                messageHandler.RunHandler();
             }
         }
 
@@ -61,12 +61,12 @@ namespace StockGames.CommunicationProtocol
 
         public MessageHandler GetMessageHandler()
         {
-            return mHandler;
+            return messageHandler;
         }
 
         public MessageQueue GetMessageQueue()
         {
-            return mQueue;
+            return messageQueue;
         }
     }
 }

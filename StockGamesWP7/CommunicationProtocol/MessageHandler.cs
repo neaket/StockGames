@@ -21,15 +21,15 @@ namespace StockGames.CommunicationProtocol
         private static int EVENTBUFFERSIZE = 250;
         private static string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp";
 
-        private MessageEvent[] mEvents;
+        private MessageEvent[] messageEvents;
         private int eHead;
         private int eTail;
 
-        private MessageQueue mQueue;
+        private MessageQueue messageQueue;
 
         private MessageHandler()
         {
-            mEvents = new MessageEvent[EVENTBUFFERSIZE];
+            messageEvents = new MessageEvent[EVENTBUFFERSIZE];
             eHead = eTail = 0;
         }
 
@@ -50,14 +50,14 @@ namespace StockGames.CommunicationProtocol
             ISRUNNING = true;
             while (ISRUNNING)
             {
-                if (mQueue.QueueFilled() != 0) mQueue.Pop();
+                if (messageQueue.QueueFilled() != 0) messageQueue.Pop();
                 else ISRUNNING = false;
             }
         }
 
-        public void AddMessageQueue(MessageQueue q)
+        public void AddMessageQueue(MessageQueue queue)
         {
-            mQueue = q;
+            messageQueue = queue;
         }
 
         public bool IsRunning()
@@ -67,7 +67,7 @@ namespace StockGames.CommunicationProtocol
 
         public MessageEvent GetMessageEvent(int n)
         {
-            return mEvents[n];
+            return messageEvents[n];
         }
 
         public bool RequestServer()
@@ -87,14 +87,14 @@ namespace StockGames.CommunicationProtocol
                         new Uri(serverURI + "/" + xmlFile.GetFileNames("message.xml")));
 
                     ServerMessage sm = new ServerMessage(ServerMessage, 3);
-                    mQueue.Push(sm);
+                    messageQueue.Push(sm);
                     return true;
                 }
                 return false;
             }
         }
 
-        public void AddEvent(MessageEvent e)
+        public void AddEvent(MessageEvent evnt)
         {
             if (eTail == EVENTBUFFERSIZE - 1)
             {
@@ -102,13 +102,13 @@ namespace StockGames.CommunicationProtocol
             }
             else if (eTail < EVENTBUFFERSIZE - 1)
             {
-                e.SetEventNumber(eTail);
-                mEvents[eTail] = e;
+                evnt.SetEventNumber(eTail);
+                messageEvents[eTail] = evnt;
                 eTail += 1;
 
-                ClientMessage m = new ClientMessage(e.GetStockReference(),
-                    e.GetStockValue(), e.GetEventNumber());
-                mQueue.Push(m);
+                ClientMessage m = new ClientMessage(evnt.GetStockReference(),
+                    evnt.GetStockValue(), evnt.GetEventNumber());
+                messageQueue.Push(m);
             }
         }
     }

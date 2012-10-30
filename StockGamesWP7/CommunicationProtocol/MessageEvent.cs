@@ -21,10 +21,10 @@ namespace StockGames.CommunicationProtocol
 
         private int eventNumber;
         
-        public MessageEvent(int x, int y) 
+        public MessageEvent(int reference, int value) 
         {
-            stockReference = x;
-            stockValue = y;
+            stockReference = reference;
+            stockValue = value;
         }
 
         public int GetStockReference()
@@ -57,9 +57,9 @@ namespace StockGames.CommunicationProtocol
             isAnswered = true;
         }
 
-        public void SetEventNumber(int n)
+        public void SetEventNumber(int eventNum)
         {
-            eventNumber = n;
+            eventNumber = eventNum;
         }
 
         public int GetEventNumber()

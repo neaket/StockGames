@@ -16,10 +16,10 @@ namespace StockGames.CommunicationProtocol
         private string messageString;
         private int eventNumber;
 
-        public ServerMessage(string m, int num)
+        public ServerMessage(string message, int eventReference)
         {
-            messageString = m;
-            eventNumber = num;
+            messageString = message;
+            eventNumber = eventReference;
         }
 
     }

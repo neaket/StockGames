@@ -19,17 +19,17 @@ namespace StockGames.CommunicationProtocol
         private static int QUEUESIZE = 256;
         private static MessageQueue instance;
 
-        private Message[] mQueue;
+        private Message[] messageQueue;
 
-        private MessageCoder mCoder;
+        private MessageCoder messageCoder;
 
-        private int mHead;
-        private int mTail;
+        private int queueHead;
+        private int queueTail;
 
         private MessageQueue()
         {
-            mQueue = new Message[QUEUESIZE];
-            mHead = mTail = 0;
+            messageQueue = new Message[QUEUESIZE];
+            queueHead = queueTail = 0;
         }
 
         public static MessageQueue Instance
@@ -44,39 +44,39 @@ namespace StockGames.CommunicationProtocol
             }
         }
 
-        public void AddMessageCoder(MessageCoder c)
+        public void AddMessageCoder(MessageCoder coder)
         {
-            mCoder = c;
+            messageCoder = coder;
         }
 
         public int QueueFilled()
         {
-            return mTail;
+            return queueTail;
         }
 
         public void Pop()
         {
-            Message m = mQueue[mHead];
+            Message message = messageQueue[queueHead];
 
             QueueHelper();
-            mTail -= 1;
+            queueTail -= 1;
 
-            if (m is ClientMessage)
+            if (message is ClientMessage)
             {
-                mCoder.EncodeMessage(m);
+                messageCoder.EncodeMessage(message);
             }
-            else if (m is ServerMessage)
+            else if (message is ServerMessage)
             {
-                mCoder.DecodeMessage(m);
+                messageCoder.DecodeMessage(message);
             }
         }
 
-        public void Push(Message m)
+        public void Push(Message message)
         {
-            if (mTail + 1 < QUEUESIZE - 1)
+            if (queueTail + 1 < QUEUESIZE - 1)
             {
-                mQueue[mTail + 1] = m;
-                mTail += 1;
+                messageQueue[queueTail + 1] = message;
+                queueTail += 1;
             }
             else
             {
@@ -89,8 +89,8 @@ namespace StockGames.CommunicationProtocol
             Message[] tempQueue = new Message[QUEUESIZE];
             for (int i = 0; i < QUEUESIZE; i++)
             {
-                if (i == QUEUESIZE - 1) mQueue = tempQueue;  //full queue
-                else tempQueue[i] = mQueue[i + 1];
+                if (i == QUEUESIZE - 1) messageQueue = tempQueue;  //full queue
+                else tempQueue[i] = messageQueue[i + 1];
             }
         }
     }

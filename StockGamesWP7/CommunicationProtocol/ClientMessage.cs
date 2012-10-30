@@ -17,11 +17,11 @@ namespace StockGames.CommunicationProtocol
         private int stockValue;
         private int eventReference;
 
-        public ClientMessage(int n, int m, int o)
+        public ClientMessage(int reference, int value, int eventReference)
         {
-            stockReference = n;
-            stockValue = m;
-            eventReference = o;
+            stockReference = reference;
+            stockValue = value;
+            eventReference = eventReference;
         }
 
         public int GetStockReference()

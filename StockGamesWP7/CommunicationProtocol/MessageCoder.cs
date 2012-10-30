@@ -16,9 +16,16 @@ namespace StockGames.CommunicationProtocol
     public sealed class MessageCoder
     {
         private static MessageCoder instance;
-        private static string URIAddress;
 
-        private MessageHandler handler;
+        private MessageHandler messageHandler;
+
+        public MessageCoder()
+        {
+
+        }
+
+        public static MessageCoder Instance
+        private MessageHandler messageHandler;
 
         public MessageCoder()
         {
@@ -37,16 +44,16 @@ namespace StockGames.CommunicationProtocol
             }
         }
 
-        public void AddMessageHandler(MessageHandler h)
+        public void AddMessageHandler(MessageHandler handler)
         {
-            handler = h;
+            handler = handler;
         }
        
-        public void DecodeMessage(Message m)
+        public void DecodeMessage(Message message)
         {
         }
 
-        public void EncodeMessage(Message m)
+        public void EncodeMessage(Message message)
         {
 #if WINDOWS_PHONE
                 IsolatedStorageFile xmlFile = IsolatedStorageFile.GetUserStoreForApplication();
@@ -62,16 +69,16 @@ namespace StockGames.CommunicationProtocol
                     //TODO change data to the xml file
                 }
             }
-            if (handler.RequestServer())
+            if (messageHandler.RequestServer())
             {
-                ClientMessage n = (ClientMessage)m;
+                ClientMessage n = (ClientMessage)message;
                 int eventNum = n.GetEventReference();
 
-                handler.GetMessageEvent(eventNum).WasSent();
+                messageHandler.GetMessageEvent(eventNum).WasSent();
 
-                if (! handler.IsRunning())
+                if (! messageHandler.IsRunning())
                 {
-                    handler.RunHandler();
+                    messageHandler.RunHandler();
                 }
             }
         }
