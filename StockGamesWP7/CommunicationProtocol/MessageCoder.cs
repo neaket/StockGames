@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Ink;
 using System.Windows.Input;
+using System.IO.IsolatedStorage;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -47,11 +48,32 @@ namespace StockGames.CommunicationProtocol
 
         public void EncodeMessage(Message m)
         {
+#if WINDOWS_PHONE
+                IsolatedStorageFile xmlFile = IsolatedStorageFile.GetUserStoreForApplication();
+#else
+                IsolatedStorageFile xmlFile = IsolatedStorageFile.GetUserStoreForDomain();
+#endif
 
-        }
+            IsolatedStorageFileStream fs = null;
+            using (fs = xmlFile.CreateFile("message.xml"))
+            {
+                if (fs != null)
+                {
+                    //TODO change data to the xml file
+                }
+            }
+            if (handler.RequestServer())
+            {
+                ClientMessage n = (ClientMessage)m;
+                int eventNum = n.GetEventReference();
 
-        private void toXML(Message m)
-        {
+                handler.GetMessageEvent(eventNum).WasSent();
+
+                if (! handler.IsRunning())
+                {
+                    handler.RunHandler();
+                }
+            }
         }
     }
 }

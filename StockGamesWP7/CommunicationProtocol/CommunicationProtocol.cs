@@ -19,6 +19,8 @@ namespace StockGames.CommunicationProtocol
         private MessageHandler mHandler;
         private MessageCoder mCoder;
 
+        private Object clientReference;
+
         private CommunicationProtocol()
         {
             mQueue = MessageQueue.Instance;
@@ -40,6 +42,21 @@ namespace StockGames.CommunicationProtocol
                 }
                 return instance;
             }
+        }
+
+        public void AddEvent(MessageEvent e)
+        {
+            mHandler.AddEvent(e);
+
+            if (!mHandler.IsRunning())
+            {
+                mHandler.RunHandler();
+            }
+        }
+
+        public void AddClientReference(Object reference)
+        {
+            clientReference = reference;
         }
 
         public MessageHandler GetMessageHandler()

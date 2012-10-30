@@ -13,6 +13,14 @@ namespace StockGames.CommunicationProtocol
 {
     public class ServerMessage : Message
     {
+        private string messageString;
+        private int eventNumber;
+
+        public ServerMessage(string m, int num)
+        {
+            messageString = m;
+            eventNumber = num;
+        }
 
     }
 }

@@ -5,16 +5,21 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Ink;
 using System.Windows.Input;
+using System.IO.IsolatedStorage;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace StockGames.CommunicationProtocol
 {
     public sealed class MessageHandler
     {
-        private static int EVENTBUFFERSIZE = 250;
         private static MessageHandler instance;
+
+        private static bool ISRUNNING = false;
+        private static int EVENTBUFFERSIZE = 250;
+        private static string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp";
 
         private MessageEvent[] mEvents;
         private int eHead;
@@ -42,9 +47,11 @@ namespace StockGames.CommunicationProtocol
 
         public void RunHandler()
         {
-            while (true)
+            ISRUNNING = true;
+            while (ISRUNNING)
             {
-                if (mQueue.QueueFilled() != 0) mQueue.Pop();    
+                if (mQueue.QueueFilled() != 0) mQueue.Pop();
+                else ISRUNNING = false;
             }
         }
 
@@ -53,14 +60,38 @@ namespace StockGames.CommunicationProtocol
             mQueue = q;
         }
 
-        public void FetchServerResponse()
+        public bool IsRunning()
         {
+            return ISRUNNING;
+        }
 
+        public MessageEvent GetMessageEvent(int n)
+        {
+            return mEvents[n];
         }
 
         public bool RequestServer()
         {
-            return true;
+
+#if WINDOWS_PHONE
+            using (IsolatedStorageFile xmlFile = IsolatedStorageFile.GetUserStoreForApplication())
+#else
+            using(IsolatedStorageFile xmlFile = IsolatedStorageFile.GetUserStoreForDomain())
+#endif
+            {
+                if (xmlFile.FileExists("message.xml"))
+                {
+                    string ServerMessage = "";
+
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(
+                        new Uri(serverURI + "/" + xmlFile.GetFileNames("message.xml")));
+
+                    ServerMessage sm = new ServerMessage(ServerMessage, 3);
+                    mQueue.Push(sm);
+                    return true;
+                }
+                return false;
+            }
         }
 
         public void AddEvent(MessageEvent e)
@@ -80,15 +111,5 @@ namespace StockGames.CommunicationProtocol
                 mQueue.Push(m);
             }
         }
-
-        /*private void QueueHelper()
-        {
-            MessageEvent[] tempQueue = new MessageEvent[EVENTBUFFERSIZE];
-            for (int i = 0; i < EVENTBUFFERSIZE; i++)
-            {
-                if (i == EVENTBUFFERSIZE - 1) mEvents = tempQueue;
-                else tempQueue[i] = mEvents[i + 1];
-            }
-        }**/
     }
 }
