@@ -19,16 +19,18 @@ namespace StockGames.Commands
         private string _cmdname = CommandInvoker.CHANGE_STOCK_DATA;
         private StocksManager _StockMnger;
 
-        //Public variables and manipulators.
         public PushStockChangesCmd(StocksManager stockMnger)
         {
             _StockMnger = stockMnger;
         }
 
         //IStockCommand Interface Implementation
-        public string GetCmdName()
+        public string CommandName
         {
-            return _cmdname;
+            get
+            {
+                return _cmdname;
+            }
         }
 
         //ICommand Interface implemetation
@@ -47,12 +49,19 @@ namespace StockGames.Commands
         //Override of the inherited Execute() method
         public void Execute(StockEntity stock)
         {
-            StockEntity target_stock = _StockMnger.FindStock(stock.StockIndex);
-            if (target_stock != null)
+            StockEntity targetStock;
+            try
             {
-                target_stock.PreviousPrice = target_stock.CurrentPrice;
-                target_stock.CurrentPrice = stock.CurrentPrice;
+                targetStock = _StockMnger.FindStock(stock.StockIndex);
             }
+            catch (ArgumentException e)
+            {
+                //stock not found, do not execture further
+                return;
+            }
+
+            targetStock.PreviousPrice = targetStock.CurrentPrice;
+            targetStock.CurrentPrice = stock.CurrentPrice;
         }
     }
 }

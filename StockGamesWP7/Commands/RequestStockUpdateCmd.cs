@@ -51,9 +51,12 @@ namespace StockGames.Commands
 
         //IStockCommand interface implementation
 
-        public string GetCmdName()
+        public string CommandName
         {
-            return _cmdName;
+            get
+            {
+                return _cmdName;
+            }
         }
     }
 }

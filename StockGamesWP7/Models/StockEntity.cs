@@ -21,6 +21,10 @@ namespace StockGames.Models
         private decimal _CurrentPrice;
         private decimal _PreviousPrice = 0;
 
+        //List of string constants used for notifying subscribers
+        public static string CURRENT_PRICE = "current price";
+        public static string PREVIOUS_PRICE = "previous price";
+
         //Public variables and Manipulators
         public string StockIndex
         {
@@ -54,7 +58,7 @@ namespace StockGames.Models
             set
             {
                 _CurrentPrice = value;
-                NotifyPropertyChanged("CurrentPrice");
+                NotifyPropertyChanged(CURRENT_PRICE);
             }
             
         }
@@ -67,6 +71,7 @@ namespace StockGames.Models
             set
             {
                 _PreviousPrice = value;
+                NotifyPropertyChanged(PREVIOUS_PRICE);
             }
         }
 

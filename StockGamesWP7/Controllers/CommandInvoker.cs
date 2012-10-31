@@ -45,7 +45,7 @@ namespace StockGames.Controllers
         {
             foreach (IStockCommand cmd in _commands)
             {
-                if ( cmd.GetCmdName().Equals(cmdName) )
+                if ( cmd.CommandName.Equals(cmdName) )
                 {
                     cmd.Execute(o);
                     return;

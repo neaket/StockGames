@@ -14,6 +14,9 @@ namespace StockGames.Commands
         /// <returns>
         /// the string command name
         /// </returns>
-        string GetCmdName();
+        string CommandName
+        {
+            get;
+        }
     }
 }
