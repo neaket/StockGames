@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ConfigFramework>
+   <Doc> This model Simulates Life using Cell-Devs. It uses only one machine to do the simulation. </Doc>
+      <Files>
+	 <File ftype="ma">life.ma</File>
+      </Files>
+   <Options>
+      <TimeOp>00:00:02:000</TimeOp>
+      <OnlyYMsgOP>true</OnlyYMsgOP>
+      <ParsingOp>false</ParsingOp>      
+   </Options>     
+   <DCDpp>
+      <Servers>
+         <Server IP="localhost" PORT="8080">
+	    <Zone>life(0,0)..(19,19)</Zone>
+	 </Server>
+      </Servers>
+   </DCDpp>
+</ConfigFramework>

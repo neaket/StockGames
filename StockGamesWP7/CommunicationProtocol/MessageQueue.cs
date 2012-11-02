@@ -56,17 +56,22 @@ namespace StockGames.CommunicationProtocol
 
         public void Pop()
         {
-            Message message = messageQueue[queueHead];
-
-            QueueHelper();
-            queueTail -= 1;
-
-            if (message is ClientMessage)
+            if (messageQueue[queueHead] is ClientMessage)
             {
+                ClientMessage message = (ClientMessage)messageQueue[queueHead];
+
+                QueueHelper();
+                queueTail -= 1;
+
                 messageCoder.EncodeMessage(message);
             }
-            else if (message is ServerMessage)
+            else if (messageQueue[queueHead] is ServerMessage)
             {
+                ServerMessage message = (ServerMessage)messageQueue[queueHead];
+
+                QueueHelper();
+                queueTail -= 1;
+
                 messageCoder.DecodeMessage(message);
             }
         }

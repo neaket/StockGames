@@ -20,6 +20,7 @@ namespace StockGames.CommunicationProtocol
         private static bool ISRUNNING = false;
         private static int EVENTBUFFERSIZE = 250;
         private static string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp";
+        private static string serverURITest = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/life/simulation";
 
         private MessageEvent[] messageEvents;
         private int eHead;
@@ -37,7 +38,7 @@ namespace StockGames.CommunicationProtocol
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {
                     instance = new MessageHandler();
                 }
@@ -72,20 +73,27 @@ namespace StockGames.CommunicationProtocol
 
         public bool RequestServer()
         {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(
+                new Uri(serverURITest+"/"+"results"));
 
-#if WINDOWS_PHONE
+            request.BeginGetResponse(GetSimulationCallback, request);
+
+            return true;
+        }
+
+        public bool RequestServer2()
+        {
             using (IsolatedStorageFile xmlFile = IsolatedStorageFile.GetUserStoreForApplication())
-#else
-            using(IsolatedStorageFile xmlFile = IsolatedStorageFile.GetUserStoreForDomain())
-#endif
             {
                 if (xmlFile.FileExists("message.xml"))
                 {
-                    string ServerMessage = "";
+                    string ServerMessage = "test";
 
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(
-                        new Uri(serverURI + "/" + xmlFile.GetFileNames("message.xml")));
-
+                            new Uri(serverURI + "/" + xmlFile.GetFileNames("message.xml")));
+                    
+                    request.BeginGetResponse(GetSimulationCallback, request);
+            
                     ServerMessage sm = new ServerMessage(ServerMessage, 3);
                     messageQueue.Push(sm);
                     return true;
@@ -93,6 +101,18 @@ namespace StockGames.CommunicationProtocol
                 return false;
             }
         }
+
+        private void GetSimulationCallback(IAsyncResult result)
+        {
+            HttpWebRequest request = result.AsyncState as HttpWebRequest;
+            if (request != null)
+            {
+                WebResponse response = request.EndGetResponse(result);
+                Console.WriteLine(response.ToString());
+                
+            }
+        }
+
 
         public void AddEvent(MessageEvent evnt)
         {

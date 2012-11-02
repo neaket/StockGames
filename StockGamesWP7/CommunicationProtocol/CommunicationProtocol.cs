@@ -13,7 +13,7 @@ namespace StockGames.CommunicationProtocol
 {
     public sealed class CommunicationProtocol
     {
-        private static CommunicationProtocol instance;
+        private static CommunicationProtocol instance = null;
 
         private MessageQueue messageQueue;
         private MessageHandler messageHandler;
@@ -32,7 +32,7 @@ namespace StockGames.CommunicationProtocol
             messageCoder.AddMessageHandler(messageHandler);
         }
 
-        public static CommunicationProtocol Init
+        public static CommunicationProtocol Instance
         {
             get
             {

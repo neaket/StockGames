@@ -22,5 +22,9 @@ namespace StockGames.CommunicationProtocol
             eventNumber = eventReference;
         }
 
+        public string GetMessageString()
+        {
+            return messageString;
+        }
     }
 }

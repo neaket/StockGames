@@ -19,18 +19,7 @@ namespace StockGames.CommunicationProtocol
 
         private MessageHandler messageHandler;
 
-        public MessageCoder()
-        {
-
-        }
-
-        public static MessageCoder Instance
-        private MessageHandler messageHandler;
-
-        public MessageCoder()
-        {
-
-        }
+        public MessageCoder() {}
 
         public static MessageCoder Instance
         {
@@ -46,20 +35,34 @@ namespace StockGames.CommunicationProtocol
 
         public void AddMessageHandler(MessageHandler handler)
         {
-            handler = handler;
+            messageHandler = handler;
         }
        
         public void DecodeMessage(Message message)
         {
+            ServerMessage m = (ServerMessage)message;
+            m.GetMessageString();
         }
 
         public void EncodeMessage(Message message)
         {
-#if WINDOWS_PHONE
-                IsolatedStorageFile xmlFile = IsolatedStorageFile.GetUserStoreForApplication();
-#else
-                IsolatedStorageFile xmlFile = IsolatedStorageFile.GetUserStoreForDomain();
-#endif
+            if (messageHandler.RequestServer())
+            {
+                ClientMessage n = (ClientMessage)message;
+                int eventNum = n.GetEventReference();
+
+                messageHandler.GetMessageEvent(eventNum).WasSent();
+
+                if (!messageHandler.IsRunning())
+                {
+                    messageHandler.RunHandler();
+                }
+            }
+        }
+
+        public void EncodeMessage2(Message message)
+        {
+            IsolatedStorageFile xmlFile = IsolatedStorageFile.GetUserStoreForApplication();
 
             IsolatedStorageFileStream fs = null;
             using (fs = xmlFile.CreateFile("message.xml"))
