@@ -69,13 +69,13 @@
     <Compile Include="CommunicationProtocol\MessageCoder.cs" />
     <Compile Include="CommunicationProtocol\MessageEvent.cs" />
     <Compile Include="CommunicationProtocol\MessageHandler.cs" />
-    <Compile Include="CommunicationProtocol\MessageQueue.cs" />
     <Compile Include="CommunicationProtocol\ServerMessage.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\StockEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SharpGIS.UnZipper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

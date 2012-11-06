@@ -15,7 +15,6 @@ namespace StockGames.CommunicationProtocol
     {
         private static CommunicationProtocol instance = null;
 
-        private MessageQueue messageQueue;
         private MessageHandler messageHandler;
         private MessageCoder messageCoder;
 
@@ -23,12 +22,9 @@ namespace StockGames.CommunicationProtocol
 
         private CommunicationProtocol()
         {
-            messageQueue = MessageQueue.Instance;
             messageHandler = MessageHandler.Instance;
             messageCoder = MessageCoder.Instance;
 
-            messageQueue.AddMessageCoder(messageCoder);
-            messageHandler.AddMessageQueue(messageQueue);
             messageCoder.AddMessageHandler(messageHandler);
         }
 
@@ -62,11 +58,6 @@ namespace StockGames.CommunicationProtocol
         public MessageHandler GetMessageHandler()
         {
             return messageHandler;
-        }
-
-        public MessageQueue GetMessageQueue()
-        {
-            return messageQueue;
         }
     }
 }

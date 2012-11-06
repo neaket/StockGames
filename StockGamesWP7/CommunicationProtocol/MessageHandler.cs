@@ -10,6 +10,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Xml;
+using System.Collections.Generic;
+using SharpGIS;
+using System.IO;
 
 namespace StockGames.CommunicationProtocol
 {
@@ -20,18 +23,21 @@ namespace StockGames.CommunicationProtocol
         private static bool ISRUNNING = false;
         private static int EVENTBUFFERSIZE = 250;
         private static string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp";
-        private static string serverURITest = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/life/simulation";
+        private static string serverURITest = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/life";
 
         private MessageEvent[] messageEvents;
         private int eHead;
         private int eTail;
 
-        private MessageQueue messageQueue;
+        private  Queue<Message> messageQueue;
+        private MessageCoder messageCoder;
 
         private MessageHandler()
         {
             messageEvents = new MessageEvent[EVENTBUFFERSIZE];
             eHead = eTail = 0;
+            messageCoder = MessageCoder.Instance;
+            messageQueue = new Queue<Message>();
         }
 
         public static MessageHandler Instance
@@ -51,14 +57,22 @@ namespace StockGames.CommunicationProtocol
             ISRUNNING = true;
             while (ISRUNNING)
             {
-                if (messageQueue.QueueFilled() != 0) messageQueue.Pop();
+                if (messageQueue.Count != 0)
+                {
+                    Message m = messageQueue.Dequeue();
+
+                    if (m is ClientMessage)
+                    {
+
+                        messageCoder.EncodeMessage(m as ClientMessage);
+                    }
+                    else if (m is ServerMessage)
+                    {
+                        messageCoder.DecodeMessage(m as ServerMessage);
+                    }
+                }
                 else ISRUNNING = false;
             }
-        }
-
-        public void AddMessageQueue(MessageQueue queue)
-        {
-            messageQueue = queue;
         }
 
         public bool IsRunning()
@@ -73,8 +87,9 @@ namespace StockGames.CommunicationProtocol
 
         public bool RequestServer()
         {
+            Uri temp = new Uri(serverURITest + "/" + "results/");
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(
-                new Uri(serverURITest+"/"+"results"));
+                temp);
 
             request.BeginGetResponse(GetSimulationCallback, request);
 
@@ -95,7 +110,7 @@ namespace StockGames.CommunicationProtocol
                     request.BeginGetResponse(GetSimulationCallback, request);
             
                     ServerMessage sm = new ServerMessage(ServerMessage, 3);
-                    messageQueue.Push(sm);
+                    messageQueue.Enqueue(sm);
                     return true;
                 }
                 return false;
@@ -104,12 +119,30 @@ namespace StockGames.CommunicationProtocol
 
         private void GetSimulationCallback(IAsyncResult result)
         {
+            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
+
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
             if (request != null)
             {
                 WebResponse response = request.EndGetResponse(result);
-                Console.WriteLine(response.ToString());
                 
+                using (IsolatedStorageFileStream fileStream = storage.CreateFile("resultstemp.zip"))
+                {
+                    if (fileStream != null)
+                    {
+                        response.GetResponseStream().CopyTo(fileStream);
+
+                        // TODO put this in a separate method atleast
+                        UnZipper un = new UnZipper(fileStream);
+                        foreach (String filename in un.GetFileNamesInZip())
+                        {
+                            Stream stream = un.GetFileStream(filename);
+                            StreamReader reader = new StreamReader(stream);
+                            System.Diagnostics.Debug.WriteLine(reader.ReadLine());
+
+                        }
+                    }
+                }                
             }
         }
 
@@ -128,7 +161,7 @@ namespace StockGames.CommunicationProtocol
 
                 ClientMessage m = new ClientMessage(evnt.GetStockReference(),
                     evnt.GetStockValue(), evnt.GetEventNumber());
-                messageQueue.Push(m);
+                messageQueue.Enqueue(m);
             }
         }
     }
