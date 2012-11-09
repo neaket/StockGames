@@ -30,7 +30,9 @@ namespace StockGames
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            cp.AddEvent(new MessageEvent(4, 200));
+            //cp.AddEvent(new MessageEvent(4, 200));
+            ServerCommunication.CreateServerModelWorkspace();
+            //ServerCommunication.StartSimulation();
           
         }
     }

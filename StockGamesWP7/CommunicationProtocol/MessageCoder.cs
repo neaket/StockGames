@@ -46,7 +46,7 @@ namespace StockGames.CommunicationProtocol
 
         public void EncodeMessage(Message message)
         {
-            if (messageHandler.RequestServer())
+            if (ServerCommunication.RequestServerResults())
             {
                 ClientMessage n = (ClientMessage)message;
                 int eventNum = n.GetEventReference();
@@ -72,7 +72,7 @@ namespace StockGames.CommunicationProtocol
                     //TODO change data to the xml file
                 }
             }
-            if (messageHandler.RequestServer())
+            if (ServerCommunication.RequestServerResults())
             {
                 ClientMessage n = (ClientMessage)message;
                 int eventNum = n.GetEventReference();
