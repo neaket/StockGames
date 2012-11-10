@@ -69,7 +69,7 @@
     <Compile Include="CommunicationModule\ServerCommunication.cs" />
     <Compile Include="CommunicationModule\ClientMessage.cs" />
     <Compile Include="CommunicationModule\CommunicationProtocol.cs" />
-    <Compile Include="CommunicationModule\Message.cs" />
+    <Compile Include="CommunicationModule\IMessage.cs" />
     <Compile Include="CommunicationModule\MessageCoder.cs" />
     <Compile Include="CommunicationModule\MessageEvent.cs" />
     <Compile Include="CommunicationModule\MessageHandler.cs" />

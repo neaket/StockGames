@@ -11,20 +11,20 @@ using System.Windows.Shapes;
 
 namespace StockGames.CommunicationModule
 {
-    public class ServerMessage : Message
+    public class ServerMessage : IMessage
     {
-        private string messageString;
         private int eventNumber;
 
         public ServerMessage(string message, int eventReference)
         {
-            messageString = message;
+            Message = message;
             eventNumber = eventReference;
         }
 
-        public string GetMessageString()
+        public string Message
         {
-            return messageString;
+            get;
+            private set;
         }
     }
 }

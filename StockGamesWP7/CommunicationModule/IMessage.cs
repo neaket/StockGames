@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace StockGames.CommunicationModule
 {
-    public abstract class Message
+    public interface IMessage
     {
     }
 }

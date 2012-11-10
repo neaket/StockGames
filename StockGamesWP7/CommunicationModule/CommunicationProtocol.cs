@@ -15,19 +15,6 @@ namespace StockGames.CommunicationModule
     {
         private static CommunicationProtocol instance = null;
 
-        private MessageHandler messageHandler;
-        private MessageCoder messageCoder;
-
-        private Object clientReference;
-
-        private CommunicationProtocol()
-        {
-            messageHandler = MessageHandler.Instance;
-            messageCoder = MessageCoder.Instance;
-
-            messageCoder.AddMessageHandler(messageHandler);
-        }
-
         public static CommunicationProtocol Instance
         {
             get
@@ -40,24 +27,25 @@ namespace StockGames.CommunicationModule
             }
         }
 
-        public void AddEvent(MessageEvent evnt)
+        public MessageHandler MessageHandler
         {
-            messageHandler.AddEvent(evnt);
+            get;
+            private set;
+        }
 
-            if (!messageHandler.IsRunning())
+        private CommunicationProtocol()
+        {
+            MessageHandler = MessageHandler.Instance;
+        }
+
+        public void AddEvent(MessageEvent messageEvent)
+        {
+            MessageHandler.AddEvent(messageEvent);
+
+            if (!MessageHandler.IsRunning)
             {
-                messageHandler.RunHandler();
+                MessageHandler.RunHandler();
             }
-        }
-
-        public void AddClientReference(Object reference)
-        {
-            clientReference = reference;
-        }
-
-        public MessageHandler GetMessageHandler()
-        {
-            return messageHandler;
         }
     }
 }

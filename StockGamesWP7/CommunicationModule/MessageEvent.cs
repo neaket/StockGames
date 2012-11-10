@@ -13,58 +13,40 @@ namespace StockGames.CommunicationModule
 {
     public class MessageEvent
     {
-        private static bool isSent = false;
-        private static bool isAnswered = false;
-
-        private int stockReference;
-        private int stockValue;
-
-        private int eventNumber;
-        
-        public MessageEvent(int reference, int value) 
+        public int StockReference
         {
-            stockReference = reference;
-            stockValue = value;
+            get;
+            private set;
         }
 
-        public int GetStockReference()
+        public int StockValue
         {
-            return stockReference;
+            get;
+            private set;
         }
 
-        public int GetStockValue()
+        public bool IsSent
         {
-            return stockValue;
-        }
-        
-        public bool IsSent()
-        {
-            return isSent;
+            get;
+            set;
         }
 
-        public void WasSent()
+        public bool IsAnswered
         {
-            isSent = true;
+            get;
+            private set;
         }
 
-        public bool IsAnswered()
+        public int EventNumber
         {
-            return isAnswered;
+            get;
+            set;
         }
 
-        public void WasAnswered()
+        public MessageEvent(int stockReference, int stockValue) 
         {
-            isAnswered = true;
-        }
-
-        public void SetEventNumber(int eventNum)
-        {
-            eventNumber = eventNum;
-        }
-
-        public int GetEventNumber()
-        {
-            return eventNumber;
+            StockReference = stockReference;
+            StockValue = stockValue;
         }
     }
 }

@@ -18,25 +18,6 @@ namespace StockGames.CommunicationModule
     public sealed class MessageHandler
     {
         private static MessageHandler instance;
-
-        private static bool ISRUNNING = false;
-        private static int EVENTBUFFERSIZE = 250;
-
-        private MessageEvent[] messageEvents;
-        private int eHead;
-        private int eTail;
-
-        private  Queue<Message> messageQueue;
-        private MessageCoder messageCoder;
-
-        private MessageHandler()
-        {
-            messageEvents = new MessageEvent[EVENTBUFFERSIZE];
-            eHead = eTail = 0;
-            messageCoder = MessageCoder.Instance;
-            messageQueue = new Queue<Message>();
-        }
-
         public static MessageHandler Instance
         {
             get
@@ -49,14 +30,39 @@ namespace StockGames.CommunicationModule
             }
         }
 
+        private const int eventBufferSize = 250;
+
+        private MessageEvent[] messageEvents;
+        private int eHead;
+        private int eTail;
+
+        private  Queue<IMessage> messageQueue;
+        private MessageCoder messageCoder;
+
+        public bool IsRunning
+        {
+            get;
+            private set;
+        }
+
+        private MessageHandler()
+        {
+            messageEvents = new MessageEvent[eventBufferSize];
+            eHead = eTail = 0;
+            messageCoder = MessageCoder.Instance;
+            messageQueue = new Queue<IMessage>();
+        }
+
+
+
         public void RunHandler()
         {
-            ISRUNNING = true;
-            while (ISRUNNING)
+            IsRunning = true;
+            while (IsRunning)
             {
                 if (messageQueue.Count != 0)
                 {
-                    Message m = messageQueue.Dequeue();
+                    IMessage m = messageQueue.Dequeue();
 
                     if (m is ClientMessage)
                     {
@@ -68,37 +74,31 @@ namespace StockGames.CommunicationModule
                         messageCoder.DecodeMessage(m as ServerMessage);
                     }
                 }
-                else ISRUNNING = false;
+                else IsRunning = false;
             }
         }
 
-        public bool IsRunning()
-        {
-            return ISRUNNING;
-        }
+        
 
         public MessageEvent GetMessageEvent(int n)
         {
             return messageEvents[n];
         }
 
-
-
-
-        public void AddEvent(MessageEvent evnt)
+        public void AddEvent(MessageEvent messageEvent)
         {
-            if (eTail == EVENTBUFFERSIZE - 1)
+            if (eTail == eventBufferSize - 1)
             {
                 //TODO
             }
-            else if (eTail < EVENTBUFFERSIZE - 1)
+            else if (eTail < eventBufferSize - 1)
             {
-                evnt.SetEventNumber(eTail);
-                messageEvents[eTail] = evnt;
+                messageEvent.EventNumber = eTail;
+                messageEvents[eTail] = messageEvent;
                 eTail += 1;
 
-                ClientMessage m = new ClientMessage(evnt.GetStockReference(),
-                    evnt.GetStockValue(), evnt.GetEventNumber());
+                ClientMessage m = new ClientMessage(messageEvent.StockReference,
+                    messageEvent.StockValue, messageEvent.EventNumber);
                 messageQueue.Enqueue(m);
             }
         }

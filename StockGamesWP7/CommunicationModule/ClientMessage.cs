@@ -11,17 +11,8 @@ using System.Windows.Shapes;
 
 namespace StockGames.CommunicationModule
 {
-    public class ClientMessage : Message
+    public class ClientMessage : IMessage
     {
-        private int stockValue;
-        private int eventReference;
-
-        public ClientMessage(int reference, int value, int eventRef)
-        {
-            StockReference = reference;
-            stockValue = value;
-            eventReference = eventRef;
-        }
 
         public int StockReference
         {
@@ -29,19 +20,23 @@ namespace StockGames.CommunicationModule
             private set;
         }
 
-        public int GetStockValue()
+        public int StockValue
         {
-            return stockValue;
+            get;
+            private set;
         }
 
-        public int GetEventReference()
+        public int EventReference
         {
-            return eventReference;
+            get;
+            private set;
         }
 
-        private String StockName()
+        public ClientMessage(int stockReference, int stockValue, int eventReference)
         {
-            return "";
-        }
+            StockReference = stockReference;
+            StockValue = stockValue;
+            EventReference = eventReference;
+        }       
     }
 }
