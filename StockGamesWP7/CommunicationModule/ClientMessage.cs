@@ -9,24 +9,24 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace StockGames.CommunicationProtocol
+namespace StockGames.CommunicationModule
 {
     public class ClientMessage : Message
     {
-        private int stockReference;
         private int stockValue;
         private int eventReference;
 
         public ClientMessage(int reference, int value, int eventRef)
         {
-            stockReference = reference;
+            StockReference = reference;
             stockValue = value;
             eventReference = eventRef;
         }
 
-        public int GetStockReference()
+        public int StockReference
         {
-            return stockReference;
+            get;
+            private set;
         }
 
         public int GetStockValue()

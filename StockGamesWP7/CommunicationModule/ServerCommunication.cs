@@ -13,19 +13,19 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using SharpGIS;
 
-namespace StockGames.CommunicationProtocol
+namespace StockGames.CommunicationModule
 {
     public static class ServerCommunication
     {
-        private static string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/DCDpp";
-        private static string serverURITest = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/life";
+        private const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp";
+        private const string serverURITest = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/life";
 
         private static string workSpaceXML = "<DCDpp><Servers>" + 
             "<Server IP=\"134.117.53.66\" PORT=\"8080\">" +
             "<MODEL>StockGames</MODEL></Server>" +
             "</Servers></DCDpp>";
 
-        public static void CreateServerModelWorkspace()
+        public static void CreateServerModelFramework()
         {
             Uri temp = new Uri(serverURI + "/" + "StockGames");
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(temp);
@@ -39,7 +39,7 @@ namespace StockGames.CommunicationProtocol
         //Server
         private static void PostModelToServer()
         {
-            Uri temp = new Uri(serverURITest + "/" + "StockGames?" + "");
+            Uri temp = new Uri(serverURI + "/" + "StockGames?zdir" + "");
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(temp);
 
             request.Method = "POST";

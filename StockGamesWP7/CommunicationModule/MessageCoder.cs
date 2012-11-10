@@ -11,7 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Xml;
 
-namespace StockGames.CommunicationProtocol
+namespace StockGames.CommunicationModule
 {
     public sealed class MessageCoder
     {

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ConfigFramework>
+   <Doc> This model Simulates Fire using Cell-Devs. It uses only one machine to do the simulation. </Doc>
+      <Files>
+         <File ftype="sup">fire.val</File>
+	 <File ftype="ma">fire.ma</File>
+      </Files>
+   <Options>
+      <TimeOp>null</TimeOp>
+      <ParsingOp>false</ParsingOp>
+   </Options>
+   <DCDpp>
+      <Servers>
+         <Server IP="localhost" PORT="8080">
+	    <ZONE>fire(0,0)..(29,29)</ZONE>
+	 </Server>
+      </Servers>
+   </DCDpp>
+</ConfigFramework>

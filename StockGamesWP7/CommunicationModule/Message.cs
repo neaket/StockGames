@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace StockGames.CommunicationProtocol
+namespace StockGames.CommunicationModule
 {
     public abstract class Message
     {

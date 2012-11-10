@@ -13,7 +13,7 @@ using System.Xml;
 using System.Collections.Generic;
 using System.IO;
 
-namespace StockGames.CommunicationProtocol
+namespace StockGames.CommunicationModule
 {
     public sealed class MessageHandler
     {
