@@ -43,11 +43,30 @@ namespace StockGames.Tests.CommunciatonModule
             request.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), request);
         }
 
-        //[TestMethod]
-        //[Asynchronous]
-        //public void PostModelToServerTest()
-        //{
-        //}
+        [TestMethod]
+        [Asynchronous]
+        public void PostModelToServerTest()
+        {
+            stream = Application.GetResourceStream(new Uri("fire.zip", UriKind.Relative)).Stream;
+            HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "fire2?zdir=fire"));
+            request.Method = "POST";
+            request.ContentType = "application/zip";
+            request.Credentials = new NetworkCredential("andrew", "andrew");
+
+            request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
+        }
+
+        private void postModelBeginGetRequestStreamCallback(IAsyncResult result)
+        {
+            HttpWebRequest request = result.AsyncState as HttpWebRequest;
+            Stream putStream = request.EndGetRequestStream(result);
+
+            stream.CopyTo(putStream);
+            putStream.Close();
+            stream.Close();
+
+            request.BeginGetResponse(new AsyncCallback(GetCallBack), request);
+        }
 
         public void GetCallBack(IAsyncResult result)
         {
@@ -67,8 +86,7 @@ namespace StockGames.Tests.CommunciatonModule
         {
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
             Stream putStream = request.EndGetRequestStream(result);
-            Stream stream = Application.GetResourceStream(new Uri("fire.xml", UriKind.Relative)).Stream;
-
+            
             using (StreamReader sr = new StreamReader(stream))
             {
                 using (StreamWriter writer = new StreamWriter(putStream, Encoding.UTF8))
