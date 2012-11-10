@@ -16,11 +16,6 @@ namespace StockGames.CommunicationModule
     public sealed class MessageCoder
     {
         private static MessageCoder instance;
-
-        private MessageHandler messageHandler;
-
-        public MessageCoder() {}
-
         public static MessageCoder Instance
         {
             get
@@ -33,53 +28,30 @@ namespace StockGames.CommunicationModule
             }
         }
 
+        private MessageHandler messageHandler; 
+
+        private MessageCoder() { }
+
         public void AddMessageHandler(MessageHandler handler)
         {
             messageHandler = handler;
         }
        
-        public void DecodeMessage(Message message)
+        public void DecodeMessage(ServerMessage message)
         {
-            ServerMessage m = (ServerMessage)message;
-            m.GetMessageString();
+            //TODO
+            //message.MessageString;
         }
 
-        public void EncodeMessage(Message message)
+        public void EncodeMessage(ClientMessage message)
         {
             if (ServerCommunication.RequestServerResults())
             {
-                ClientMessage n = (ClientMessage)message;
-                int eventNum = n.GetEventReference();
+                int eventNum = message.EventReference;
 
-                messageHandler.GetMessageEvent(eventNum).WasSent();
+                messageHandler.GetMessageEvent(eventNum).IsSent = true;
 
-                if (!messageHandler.IsRunning())
-                {
-                    messageHandler.RunHandler();
-                }
-            }
-        }
-
-        public void EncodeMessage2(Message message)
-        {
-            IsolatedStorageFile xmlFile = IsolatedStorageFile.GetUserStoreForApplication();
-
-            IsolatedStorageFileStream fs = null;
-            using (fs = xmlFile.CreateFile("message.xml"))
-            {
-                if (fs != null)
-                {
-                    //TODO change data to the xml file
-                }
-            }
-            if (ServerCommunication.RequestServerResults())
-            {
-                ClientMessage n = (ClientMessage)message;
-                int eventNum = n.GetEventReference();
-
-                messageHandler.GetMessageEvent(eventNum).WasSent();
-
-                if (! messageHandler.IsRunning())
+                if (!messageHandler.IsRunning)
                 {
                     messageHandler.RunHandler();
                 }
