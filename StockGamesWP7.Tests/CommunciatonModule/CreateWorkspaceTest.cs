@@ -56,6 +56,19 @@ namespace StockGames.Tests.CommunciatonModule
             request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
         }
 
+        [TestMethod]
+        [Asynchronous]
+        public void StartSimulationTest()
+        {
+            //TODO try and figure out what the server really wants for input here, for now this works
+            stream = Application.GetResourceStream(new Uri("fire.xml", UriKind.Relative)).Stream;
+            HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "fire2"));
+            request.Method = "PUT";
+            request.ContentType = "text/xml";
+            request.Credentials = new NetworkCredential("andrew", "andrew");
+            request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
+        }
+
         private void postModelBeginGetRequestStreamCallback(IAsyncResult result)
         {
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
