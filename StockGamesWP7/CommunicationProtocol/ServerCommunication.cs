@@ -20,10 +20,10 @@ namespace StockGames.CommunicationProtocol
         private static string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/DCDpp";
         private static string serverURITest = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/life";
 
-        private static string workSpaceXML = "<xml><DCDpp><Servers>" + 
+        private static string workSpaceXML = "<DCDpp><Servers>" + 
             "<Server IP=\"134.117.53.66\" PORT=\"8080\">" +
             "<MODEL>StockGames</MODEL></Server>" +
-            "</Servers></DCDpp></xml>";
+            "</Servers></DCDpp>";
 
         public static void CreateServerModelWorkspace()
         {
@@ -85,13 +85,10 @@ namespace StockGames.CommunicationProtocol
             byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(workSpaceXML);
 
             putStream.Write(byteArray, 0, byteArray.Length);
-            //string s = System.Text.Encoding.UTF8.GetString(byteArray);
-            //System.Diagnostics.Debug.WriteLine(s);
             putStream.Flush();
             putStream.Close();
 
             request.BeginGetResponse(GetSimulationCallback, request);
-
         }
 
         private static void GetResponseStreamCallback(IAsyncResult result)
