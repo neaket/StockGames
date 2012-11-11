@@ -12,98 +12,82 @@ using System.Xml;
 using System.IO;
 using System.IO.IsolatedStorage;
 using SharpGIS;
+using System.Text;
 
 namespace StockGames.CommunicationModule
 {
     public static class ServerCommunication
     {
-        private const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp";
-        private const string serverURITest = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/life";
+        private const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
+        private const string modelName = "StockGamesTest";
+        private const string userString = ""; //TODO create a way to create a testing framework unique us
 
-        private static string workSpaceXML = "<DCDpp><Servers>" + 
-            "<Server IP=\"134.117.53.66\" PORT=\"8080\">" +
-            "<MODEL>StockGames</MODEL></Server>" +
-            "</Servers></DCDpp>";
-
-        public static void CreateServerModelFramework()
+        public static void CreateStockGamesFramework()
         {
-            Uri temp = new Uri(serverURI + "/" + "StockGames");
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(temp);
+            HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName);
 
+            //Change to Put, state sending an xml and add server credentials
             request.Method = "PUT";
             request.ContentType = "text/xml";
-            request.BeginGetRequestStream(GetRequestStreamCallback, request);
-        }
+            request.Credentials = new NetworkCredential("andrew", "andrew");
 
-        //Only to be called when we need to update the model on the
-        //Server
-        private static void PostModelToServer()
-        {
-            Uri temp = new Uri(serverURI + "/" + "StockGames?zdir" + "");
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(temp);
-
-            request.Method = "POST";
-
-            request.BeginGetResponse(GetSimulationCallback, request);
+            request.BeginGetRequestStream(new AsyncCallback(frameworkRequestCallback), request);
         }
 
         public static void StartSimulation()
         {
-            Uri temp = new Uri(serverURITest + "/" + "simulation");
+            Uri temp = new Uri(serverURI + modelName + "/simulation");
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(temp);
 
             request.Method = "PUT";
+            request.ContentType = "text/xml";
+            request.Credentials = new NetworkCredential("andrew", "andrew");
 
-            request.BeginGetResponse(GetSimulationCallback, request);
+            request.BeginGetResponse(beginGetSimulationCallback, request);
         }
 
-        public static bool RequestServerResults()
+        public static void RequestServerResults()
         {
-            Uri temp = new Uri(serverURITest + "/" + "results/");
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(temp);
-
-            request.BeginGetResponse(GetSimulationCallbackZip, request);
-
-            return true;
+            HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName + "/results");
+            request.BeginGetResponse(beginGetZipResponseStreamCallback, request);
         }
 
-        private static void GetSimulationCallback(IAsyncResult result)
+
+        private static void frameworkRequestCallback(IAsyncResult result)
         {
+            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
-            if (request != null)
-            {
-                WebResponse response = request.EndGetResponse(result);
-                System.Diagnostics.Debug.WriteLine(response.ToString());
-            }
-        }
-
-        private static void GetRequestStreamCallback(IAsyncResult result) 
-        {
-            HttpWebRequest request = (HttpWebRequest)result.AsyncState;
             Stream putStream = request.EndGetRequestStream(result);
 
-            byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(workSpaceXML);
-
-            putStream.Write(byteArray, 0, byteArray.Length);
-            putStream.Flush();
+            if(storage.FileExists("StockGamesModel/StockGames.xml"))
+            {
+                using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream(
+                    "StockGamesModel/StockGames.xml", FileMode.Open, storage))
+                {
+                    using (StreamReader reader = new StreamReader(ISStream))
+                    {
+                        using (StreamWriter writer = new StreamWriter(putStream, Encoding.UTF8))
+                        {
+                            writer.Write(reader.ReadToEnd());
+                        }
+                    }
+                }
+            }
             putStream.Close();
 
-            request.BeginGetResponse(GetSimulationCallback, request);
+            request.BeginGetResponse(new AsyncCallback(beginGetStatusCallBack), request);
         }
 
-        private static void GetResponseStreamCallback(IAsyncResult result)
+        private static void beginGetSimulationCallback(IAsyncResult result)
         {
-            HttpWebRequest request = (HttpWebRequest)result.AsyncState;
-            HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(result);
-            using (StreamReader httpWebStreamReader = new StreamReader(response.GetResponseStream()))
-            {
-                string answer = httpWebStreamReader.ReadToEnd();
-                //For debug: show results
-                System.Diagnostics.Debug.WriteLine(answer);
-            }
+            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
+            HttpWebRequest request = result.AsyncState as HttpWebRequest;
+            Stream putStream = request.EndGetRequestStream(result);
+
+            request.BeginGetResponse(beginGetStatusCallBack, request);
         }
 
-        private static void GetSimulationCallbackZip(IAsyncResult result)
+        private static void beginGetZipResponseStreamCallback(IAsyncResult result)
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
 
@@ -112,23 +96,22 @@ namespace StockGames.CommunicationModule
             {
                 WebResponse response = request.EndGetResponse(result);
 
-                using (IsolatedStorageFileStream fileStream = storage.CreateFile("resultstemp.zip"))
+                using (IsolatedStorageFileStream fileStream = storage.CreateFile("StockGamesModel/resultstemp.zip"))
                 {
                     if (fileStream != null)
                     {
                         response.GetResponseStream().CopyTo(fileStream);
-
-                        // TODO put this in a separate method atleast
-                        UnZipper un = new UnZipper(fileStream);
-                        foreach (String filename in un.GetFileNamesInZip())
-                        {
-                            Stream stream = un.GetFileStream(filename);
-                            StreamReader reader = new StreamReader(stream);
-                            System.Diagnostics.Debug.WriteLine(reader.ReadLine());
-
-                        }
                     }
                 }
+            }
+        }
+
+        private static void beginGetStatusCallBack(IAsyncResult result)
+        {
+            HttpWebRequest request = result.AsyncState as HttpWebRequest;
+            if (request != null)
+            {
+                HttpWebResponse response = request.EndGetResponse(result) as HttpWebResponse;
             }
         }
     }

@@ -13,11 +13,13 @@ using System.IO;
 using System.Threading;
 using Microsoft.Silverlight.Testing;
 using System.Text;
+using SharpGIS;
+using System.IO.IsolatedStorage;
 
 namespace StockGames.Tests.CommunciatonModule
 {
     [TestClass]
-    public class CreateWorkspaceTest : SilverlightTest
+    public class ServerCommunicationTests : SilverlightTest
     {
         private const string SERVERURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
         private Stream stream;
@@ -27,8 +29,7 @@ namespace StockGames.Tests.CommunciatonModule
         public void TestServerStatus()
         {
             HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI));
-            
-            request.BeginGetResponse(GetCallBack, request);
+            request.BeginGetResponse(getCallBack, request);
         }
 
         [TestMethod]
@@ -40,7 +41,7 @@ namespace StockGames.Tests.CommunciatonModule
             request.Method = "PUT";
             request.ContentType = "text/xml";
             request.Credentials = new NetworkCredential("andrew", "andrew");
-            request.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), request);
+            request.BeginGetRequestStream(new AsyncCallback(getRequestStreamCallback), request);
         }
 
         [TestMethod]
@@ -69,6 +70,14 @@ namespace StockGames.Tests.CommunciatonModule
             request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
         }
 
+        [TestMethod]
+        [Asynchronous]
+        public void GetSimulationResultsTest()
+        {
+            HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "fire2/results"));
+            request.BeginGetResponse(new AsyncCallback(getCallBack), request);
+        }
+
         private void postModelBeginGetRequestStreamCallback(IAsyncResult result)
         {
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
@@ -78,10 +87,10 @@ namespace StockGames.Tests.CommunciatonModule
             putStream.Close();
             stream.Close();
 
-            request.BeginGetResponse(new AsyncCallback(GetCallBack), request);
+            request.BeginGetResponse(new AsyncCallback(getCallBack), request);
         }
 
-        public void GetCallBack(IAsyncResult result)
+        private void getCallBack(IAsyncResult result)
         {
             EnqueueCallback(() =>
             {
@@ -95,7 +104,7 @@ namespace StockGames.Tests.CommunciatonModule
             EnqueueTestComplete();
         }
 
-        public void GetRequestStreamCallback(IAsyncResult result)
+        private void getRequestStreamCallback(IAsyncResult result)
         {
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
             Stream putStream = request.EndGetRequestStream(result);
@@ -110,7 +119,7 @@ namespace StockGames.Tests.CommunciatonModule
             putStream.Close();
             stream.Close();
 
-            request.BeginGetResponse(new AsyncCallback(GetCallBack), request);
+            request.BeginGetResponse(new AsyncCallback(getCallBack), request);
         }
     }
 }

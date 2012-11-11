@@ -39,23 +39,10 @@ namespace StockGames.CommunicationModule
        
         public void DecodeMessage(ServerMessage message)
         {
-            //TODO
-            //message.MessageString;
         }
 
         public void EncodeMessage(ClientMessage message)
         {
-            if (ServerCommunication.RequestServerResults())
-            {
-                int eventNum = message.EventReference;
-
-                messageHandler.GetMessageEvent(eventNum).IsSent = true;
-
-                if (!messageHandler.IsRunning)
-                {
-                    messageHandler.RunHandler();
-                }
-            }
         }
     }
 }
