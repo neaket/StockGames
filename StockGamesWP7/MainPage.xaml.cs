@@ -31,6 +31,7 @@ namespace StockGames
         private void ViewStocks_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/ListStocksView.xaml", UriKind.Relative));
+            communication.AddEvent(new MessageEventArgs(1,1));
         }
     }
 }

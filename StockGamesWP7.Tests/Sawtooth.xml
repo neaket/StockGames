@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ConfigFramework>
+	<Doc> This simulates our sawtooth stock model. </Doc>
+	<Files>
+		<File ftype="ev">trial.ev</File>
+    <File ftype="ma">Sawtooth.ma</File>
+		<File ftype="src">SawtoothType.cpp</File>
+		<File ftype="hdr" class="SawtoothType">SawtoothType.h</File>
+	</Files>
+	<DCDpp>
+		<Servers>
+			<Server PORT="8080" IP="LocalHost">
+				<MODEL>SawtoothType</MODEL>
+			</Server>
+		</Servers>
+	</DCDpp>
+</ConfigFramework>

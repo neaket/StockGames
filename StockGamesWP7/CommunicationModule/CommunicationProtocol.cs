@@ -51,10 +51,31 @@ namespace StockGames.CommunicationModule
                     storage.CreateDirectory("StockGamesModel");
                     FrameWorkCreated = true;
                 }
+                if (!storage.FileExists("StockGamesModel/simulation.txt"))
+                {
+                    storage.CreateFile("StockGamesModel/simulation.txt");
+                }
             }
             if (FrameWorkCreated)
             {
+                CreateSimulationTextFile();
                 CreateModelXMLConfigFile();
+            }
+        }
+
+        private void CreateSimulationTextFile()
+        {
+            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
+            if(!storage.FileExists("StockGamesModel/simulation.txt"))
+            {
+                IsolatedStorageFileStream stream = null;
+                using (stream = storage.CreateFile("StockGamesModel/simulation.txt"))
+                {
+                    using (StreamWriter writer = new StreamWriter(stream))
+                    {
+                        writer.WriteLine("Run the Simulation");
+                    }
+                }
             }
         }
 
@@ -88,6 +109,20 @@ namespace StockGames.CommunicationModule
                             writer.WriteAttributeString("ftype", "ev");
                             writer.WriteString("trial.ev");
                             writer.WriteEndElement();
+                            writer.WriteStartElement("File");
+                            writer.WriteAttributeString("ftype", "src");
+                            writer.WriteString("SawtoothType.cpp");
+                            writer.WriteEndElement();
+                            writer.WriteStartElement("File");
+                            writer.WriteAttributeString("ftype", "hdr");
+                            writer.WriteAttributeString("class", "SawtoothType");
+                            writer.WriteString("SawtoothType.h");
+                            writer.WriteEndElement();
+                            writer.WriteEndElement();
+
+                            writer.WriteStartElement("Options");
+                            writer.WriteElementString("TimeOp", "00:00:00:10");
+                            writer.WriteElementString("ParsingOp", "false");
                             writer.WriteEndElement();
 
                             writer.WriteStartElement("DCDpp");
@@ -95,8 +130,8 @@ namespace StockGames.CommunicationModule
                             writer.WriteStartElement("Server");
                             writer.WriteAttributeString("PORT", "8080");
                             writer.WriteAttributeString("IP", "localhost");
-                            writer.WriteStartElement("Zone");
-                            writer.WriteString("stocks(0,0)..(19,19)");
+                            writer.WriteStartElement("MODEL");
+                            writer.WriteString("sawtooth");
                             writer.WriteEndElement();
                             writer.WriteEndElement();
                             writer.WriteEndElement();
@@ -110,7 +145,7 @@ namespace StockGames.CommunicationModule
             ServerCommunication.CreateStockGamesFramework();
         }
 
-        public void AddEvent(MessageEvent messageEvent)
+        public void AddEvent(MessageEventArgs messageEvent)
         {
             MessageHandler.AddEvent(messageEvent);
 

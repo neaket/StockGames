@@ -14,10 +14,10 @@ namespace StockGames.CommunicationModule
     public class ClientMessage : IMessage
     {
 
-        public int StockReference
+        public int EventTime
         {
             get;
-            private set;
+            set;
         }
 
         public int StockValue
@@ -29,14 +29,13 @@ namespace StockGames.CommunicationModule
         public int EventReference
         {
             get;
-            private set;
+            set;
         }
 
-        public ClientMessage(int stockReference, int stockValue, int eventReference)
+        public ClientMessage(int time, int stockValue)
         {
-            StockReference = stockReference;
             StockValue = stockValue;
-            EventReference = eventReference;
+            EventTime = time;
         }       
     }
 }

@@ -32,11 +32,8 @@ namespace StockGames.CommunicationModule
 
         private const int eventBufferSize = 250;
 
-        private MessageEvent[] messageEvents;
-        private int eHead;
-        private int eTail;
-
-        private  Queue<IMessage> messageQueue;
+        private Queue<IMessage> messageQueue;
+        private List<MessageEventArgs> eventQueue;
         private MessageCoder messageCoder;
 
         public bool IsRunning
@@ -47,13 +44,10 @@ namespace StockGames.CommunicationModule
 
         private MessageHandler()
         {
-            messageEvents = new MessageEvent[eventBufferSize];
-            eHead = eTail = 0;
+            eventQueue = new List<MessageEventArgs>(eventBufferSize);
             messageCoder = MessageCoder.Instance;
             messageQueue = new Queue<IMessage>();
         }
-
-
 
         public void RunHandler()
         {
@@ -78,27 +72,28 @@ namespace StockGames.CommunicationModule
             }
         }
 
-        
-
-        public MessageEvent GetMessageEvent(int n)
+        public void RemoveMessageEvent(MessageEventArgs messageEvent)
         {
-            return messageEvents[n];
+            eventQueue.RemoveAt(messageEvent.EventIdentifier);
         }
 
-        public void AddEvent(MessageEvent messageEvent)
+        public void AddEvent(MessageEventArgs messageEvent)
         {
-            if (eTail == eventBufferSize - 1)
+            //TODO Write code that willdo something is the list is full
+            if (eventQueue.Count < eventBufferSize)
             {
-                //TODO
-            }
-            else if (eTail < eventBufferSize - 1)
-            {
-                messageEvent.EventNumber = eTail;
-                messageEvents[eTail] = messageEvent;
-                eTail += 1;
-
-                ClientMessage m = new ClientMessage(messageEvent.StockReference,
-                    messageEvent.StockValue, messageEvent.EventNumber);
+                int index = 0;
+                foreach (MessageEventArgs evnt in eventQueue)
+                {
+                    if (evnt == null)
+                    {
+                        eventQueue.Insert(index, messageEvent);
+                        messageEvent.EventIdentifier = index;
+                    }
+                    index++;
+                }
+                ClientMessage m = new ClientMessage(messageEvent.EventTime, messageEvent.StockInputValue);
+                m.EventReference = index;
                 messageQueue.Enqueue(m);
             }
         }

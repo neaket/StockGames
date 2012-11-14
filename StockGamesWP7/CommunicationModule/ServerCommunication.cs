@@ -19,31 +19,42 @@ namespace StockGames.CommunicationModule
     public static class ServerCommunication
     {
         private const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
-        private const string modelName = "StockGamesTest";
+        private const string modelName = "StockGamesTest3";
         private const string userString = ""; //TODO create a way to create a testing framework unique us
+
+        private static NetworkCredential serverCredentials = new NetworkCredential("andrew", "andrew");
 
         public static void CreateStockGamesFramework()
         {
             HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName);
 
-            //Change to Put, state sending an xml and add server credentials
             request.Method = "PUT";
             request.ContentType = "text/xml";
-            request.Credentials = new NetworkCredential("andrew", "andrew");
+            request.Credentials = serverCredentials;
 
             request.BeginGetRequestStream(new AsyncCallback(frameworkRequestCallback), request);
         }
 
+        public static void UpdateModel()
+        {
+            HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName);
+
+            request.Method = "Post";
+            request.ContentType = "text/xml";
+            request.Credentials = serverCredentials;
+
+            request.BeginGetRequestStream(new AsyncCallback(beginGetUpdateModelCallback), request);
+        }
+
         public static void StartSimulation()
         {
-            Uri temp = new Uri(serverURI + modelName + "/simulation");
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(temp);
+            HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName + "/simulation");
 
             request.Method = "PUT";
             request.ContentType = "text/xml";
-            request.Credentials = new NetworkCredential("andrew", "andrew");
+            request.Credentials = serverCredentials;
 
-            request.BeginGetResponse(beginGetSimulationCallback, request);
+            request.BeginGetRequestStream(beginGetSimulationCallback, request);
         }
 
         public static void RequestServerResults()
@@ -78,12 +89,52 @@ namespace StockGames.CommunicationModule
             request.BeginGetResponse(new AsyncCallback(beginGetStatusCallBack), request);
         }
 
+        private static void beginGetUpdateModelCallback(IAsyncResult result)
+        {
+            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
+            HttpWebRequest request = result.AsyncState as HttpWebRequest;
+            Stream putStream = request.EndGetRequestStream(result);
+
+            if (storage.FileExists("StockGamesModel/trial.ev"))
+            {
+                using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream(
+                    "StockGamesModel/trial.ev", FileMode.Open, storage))
+                {
+                    using (StreamReader reader = new StreamReader(ISStream))
+                    {
+                        using (StreamWriter writer = new StreamWriter(putStream, Encoding.UTF8))
+                        {
+                            writer.Write(reader.ReadToEnd());
+                        }
+                    }
+                }
+            }
+            putStream.Close();
+
+            request.BeginGetResponse(new AsyncCallback(beginGetStatusCallBack), request);
+        }
+
         private static void beginGetSimulationCallback(IAsyncResult result)
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
             Stream putStream = request.EndGetRequestStream(result);
 
+            if(storage.FileExists("StockGamesModel/simulation.txt"))
+            {
+                using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream(
+                        "StockGamesModel/simulation.txt", FileMode.Open, storage))
+                {
+                    using (StreamReader reader = new StreamReader(ISStream))
+                    {
+                        using (StreamWriter writer = new StreamWriter(putStream, Encoding.UTF8))
+                        {
+                            writer.Write(reader.ReadToEnd());
+                        }
+                    }
+                }
+            }
+            putStream.Close();
             request.BeginGetResponse(beginGetStatusCallBack, request);
         }
 
@@ -96,7 +147,7 @@ namespace StockGames.CommunicationModule
             {
                 WebResponse response = request.EndGetResponse(result);
 
-                using (IsolatedStorageFileStream fileStream = storage.CreateFile("StockGamesModel/resultstemp.zip"))
+                using (IsolatedStorageFileStream fileStream = storage.CreateFile("StockGamesModel/SimulationResults.zip"))
                 {
                     if (fileStream != null)
                     {
