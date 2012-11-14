@@ -32,16 +32,9 @@ namespace StockGames.CommunicationModule
             }
         }
 
-        public MessageHandler MessageHandler
-        {
-            get;
-            private set;
-        }
 
         private CommunicationProtocol()
         {
-            MessageHandler = MessageHandler.Instance;
-
             using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 //Check the storage for a Properties file
@@ -66,7 +59,7 @@ namespace StockGames.CommunicationModule
         private void CreateSimulationTextFile()
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
-            if(!storage.FileExists("StockGamesModel/simulation.txt"))
+            if (!storage.FileExists("StockGamesModel/simulation.txt"))
             {
                 IsolatedStorageFileStream stream = null;
                 using (stream = storage.CreateFile("StockGamesModel/simulation.txt"))
@@ -142,17 +135,7 @@ namespace StockGames.CommunicationModule
                     }
                 }
             }
-            ServerCommunication.CreateStockGamesFramework();
-        }
-
-        public void AddEvent(MessageEventArgs messageEvent)
-        {
-            MessageHandler.AddEvent(messageEvent);
-
-            if (!MessageHandler.IsRunning)
-            {
-                MessageHandler.RunHandler();
-            }
+            //ServerCommunication.CreateStockGamesFramework();
         }
     }
 }

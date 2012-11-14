@@ -11,11 +11,10 @@ using System.Windows.Shapes;
 
 namespace StockGames.CommunicationModule
 {
-    public class MessageEventArgs :EventArgs
+    public class MessageEventArgs : EventArgs
     {
         private int currentEventTime;
         private int inputStockValue;
-        private int eventReference;
 
         public MessageEventArgs(int eventTime, int stockValue)
         {
@@ -35,13 +34,13 @@ namespace StockGames.CommunicationModule
             set { inputStockValue = value; }
         }
 
-        public int EventIdentifier
+        public bool EventSent
         {
-            get { return eventReference; }
-            set { eventReference = value; }
+            get;
+            set;
         }
 
-        public bool IsSent
+        public bool SimulationStarted
         {
             get;
             set;

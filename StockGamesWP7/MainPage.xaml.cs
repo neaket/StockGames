@@ -21,17 +21,23 @@ namespace StockGames
     {
 
         CommunicationProtocol communication;
+        MessageCoder mc;
         // Constructor
         public MainPage()
         {
             InitializeComponent();
             communication = CommunicationProtocol.Instance;
+            mc = MessageCoder.Instance;
         }
 
         private void ViewStocks_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/ListStocksView.xaml", UriKind.Relative));
-            communication.AddEvent(new MessageEventArgs(1,1));
+
+            MessageEvent myEvent = new MessageEvent();
+            MessageEventHandler myEventHandler = new MessageEventHandler(myEvent, mc);
+
+            myEvent.ActivateMessageEvent(3, 6);
         }
     }
 }
