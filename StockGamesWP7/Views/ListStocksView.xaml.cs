@@ -24,9 +24,6 @@ namespace StockGames.Views
             InitializeComponent();
 
             viewModel = new ListStocksViewModel();
-            // temp
-            // TODO 
-          //  LayoutRoot.DataContext = new StockViewModel();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -36,16 +33,14 @@ namespace StockGames.Views
             StockListBox.SelectedItem = null; // clear the current selection
         }
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void StockListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
             {
                 StockEntity selected = e.AddedItems[0] as StockEntity;
                 
                 NavigationService.Navigate(new Uri("/Views/StockView.xaml?StockIndex=" + selected.StockIndex, UriKind.Relative));                
-            }
-            
-            
+            }           
         }
     }
 }

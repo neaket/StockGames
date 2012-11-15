@@ -9,22 +9,33 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using System.Data.Linq.Mapping;
 
 namespace StockGames.Models
 {
+    [Table]
     public class StockEntity :INotifyPropertyChanged
     {
-        //Private Variables
+        #region Private Variables
+       
         private string _StockIndex;
         private string _CompanyName;
         private decimal _CurrentPrice;
         private decimal _PreviousPrice = 0;
 
+        #endregion
+
         //List of string constants used for notifying subscribers
         public static string CURRENT_PRICE = "current price";
         public static string PREVIOUS_PRICE = "previous price";
 
-        //Public variables and Manipulators
+        #region Public variables and Manipulators
+        [Column(
+            IsPrimaryKey = true, 
+            IsDbGenerated = false, 
+            DbType = "VARCHAR NOT NULL Identity", 
+            CanBeNull = false, 
+            AutoSync = AutoSync.OnInsert)]
         public string StockIndex
         {
             get
@@ -37,6 +48,11 @@ namespace StockGames.Models
             }
 
         }
+
+        [Column(
+            DbType = "VARCHAR(10) NOT NULL",
+            CanBeNull = false,
+            AutoSync = AutoSync.OnInsert)]
         public string CompanyName
         {
             get
@@ -48,6 +64,11 @@ namespace StockGames.Models
                 _CompanyName = value;
             }
         }
+
+        [Column(
+            DbType = "MONEY NOT NULL",
+            CanBeNull = false,
+            AutoSync = AutoSync.OnUpdate)]
         public decimal CurrentPrice
         {
             get
@@ -61,6 +82,11 @@ namespace StockGames.Models
             }
             
         }
+
+        [Column(
+            DbType = "MONEY NOT NULL",
+            CanBeNull = false,
+            AutoSync = AutoSync.OnUpdate)]
         public decimal PreviousPrice
         {
             get
@@ -91,6 +117,11 @@ namespace StockGames.Models
                 }
                 return DailyChange / PreviousPrice; 
             }
+        }
+        #endregion
+
+        public StockEntity()
+        {
         }
 
         /// <summary>

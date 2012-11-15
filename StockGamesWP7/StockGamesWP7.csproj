@@ -56,6 +56,7 @@
       <HintPath>..\packages\SilverlightToolkitWP.4.2012.10.9\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="system.data.linq" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -71,11 +72,14 @@
     <Compile Include="Commands\RequestStockUpdateCmd.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandInvoker.cs" />
+    <Compile Include="Controllers\PersistanceController.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\StockEntity.cs" />
+    <Compile Include="Persistance\DataContexts\StockGamesDataContext.cs" />
     <Compile Include="Models\StocksManager.cs" />
+    <Compile Include="Persistance\Services\StockService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stubs\MessageEvent.cs" />
     <Compile Include="Stubs\MessageHandler.cs" />
