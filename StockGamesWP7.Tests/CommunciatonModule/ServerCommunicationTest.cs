@@ -44,14 +44,27 @@ namespace StockGames.Tests.CommunciatonModule
             request.BeginGetRequestStream(new AsyncCallback(getRequestStreamCallback), request);
         }
 
+        //[TestMethod]
+        //[Asynchronous]
+        //public void PostModelToServerTest()
+        //{
+        //    stream = Application.GetResourceStream(new Uri("Sawtooth.zip", UriKind.Relative)).Stream;
+        //    HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "TestUnit?zdir=Sawtooth"));
+        //    request.Method = "POST";
+        //    request.ContentType = "application/zip";
+        //    request.Credentials = new NetworkCredential("andrew", "andrew");
+
+        //    request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
+        //}
+
         [TestMethod]
         [Asynchronous]
-        public void PostModelToServerTest()
+        public void PostNewFilesToServerTest()
         {
-            stream = Application.GetResourceStream(new Uri("Sawtooth.zip", UriKind.Relative)).Stream;
-            HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "TestUnit?zdir=Sawtooth"));
+            stream = Application.GetResourceStream(new Uri("update.zip", UriKind.Relative)).Stream;
+            HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "TestUnit"));
             request.Method = "POST";
-            request.ContentType = "application/zip";
+            request.ContentType = "text/plain";
             request.Credentials = new NetworkCredential("andrew", "andrew");
 
             request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
@@ -63,7 +76,7 @@ namespace StockGames.Tests.CommunciatonModule
         {
             //TODO try and figure out what the server really wants for input here, for now this works
             stream = Application.GetResourceStream(new Uri("simulation.txt", UriKind.Relative)).Stream;
-            HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "StockGamesTest3/simulation"));
+            HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "TestUnit/simulation"));
             request.Method = "PUT";
             request.ContentType = "text/xml";
             request.Credentials = new NetworkCredential("andrew", "andrew");
@@ -74,7 +87,7 @@ namespace StockGames.Tests.CommunciatonModule
         [Asynchronous]
         public void ZCheckSimulationStatus()
         {
-            HttpWebRequest request = WebRequest.CreateHttp(SERVERURI + "StockGamesTest3/simulation");
+            HttpWebRequest request = WebRequest.CreateHttp(SERVERURI + "?sim=status");
             request.BeginGetResponse(new AsyncCallback(pollSimStatus), request);
         }
 

@@ -89,6 +89,7 @@
     <Content Include="Sawtooth.zip" />
     <Content Include="simulation.txt" />
     <Content Include="trial.ev" />
+    <Content Include="update.zip" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
