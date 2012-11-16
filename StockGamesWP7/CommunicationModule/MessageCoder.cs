@@ -30,21 +30,14 @@ namespace StockGames.CommunicationModule
             }
         }
 
-        private MessageHandler messageHandler; 
-
         private MessageCoder() { }
 
-        public void AddMessageHandler(MessageHandler handler)
+        public void DecodeMessage()
         {
-            messageHandler = handler;
+
         }
        
-        public void DecodeMessage(ServerMessage message)
-        {
-
-        }
-
-        public void EncodeMessage(ClientMessage message)
+        public void EncodeMessage(MessageEventArgs messageEvent)
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
             IsolatedStorageFileStream fileStream = null;
@@ -52,13 +45,14 @@ namespace StockGames.CommunicationModule
             {
                 using (StreamWriter Writer = new StreamWriter(fileStream))
                 {
-                    string runTime = "00:01:00:00";
-                    Writer.WriteLine(runTime + " InStockPrice " + message.StockValue.ToString());
-                    Writer.WriteLine(runTime + " InTime " + message.EventTime.ToString());
+                    string runTime = "00:00:00:05";
+                    Writer.WriteLine(runTime + " InStockPrice " + messageEvent.StockInputValue.ToString());
+                    Writer.WriteLine(runTime + " InTime " + messageEvent.EventTime.ToString());
                 }
             }
+            //TODO catch the error
             ServerCommunication.UpdateModel();
-            //ServerCommunication.StartSimulation();
+            messageEvent.EventSent = true;
         }
     }
 }
