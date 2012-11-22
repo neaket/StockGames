@@ -11,13 +11,12 @@ using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Collections;
 using StockGames.Controllers;
+using StockGames.Persistance.V1.Services;
 
 namespace StockGames.Models
 {
-    public class StocksManager : IEnumerable
+    public class StocksManager
     {
-        //Private Variables
-        private List<StockEntity> _Stocks;
 
         private static StocksManager _Instance = null;
         public static StocksManager Instance
@@ -34,41 +33,27 @@ namespace StockGames.Models
 
         private StocksManager()
         {
-            _Stocks = new List<StockEntity>();
-            _PopulateStocks();
         }
 
         public void AddStock(StockEntity stock)
         {
-            _Stocks.Add(stock);
+            StockService.Instance.AddStock(stock);
         }
-
-        public void RemoveStock(StockEntity stock)
-        {
-            _Stocks.Remove(stock);
-        }
-
         
         public StockEntity FindStock(String stockIndex)
         {
-            foreach (StockEntity stock in this)
-            {
-                if (stock.StockIndex.Equals(stockIndex))
-                    return stock;
-            }
-
-            throw new ArgumentException("Stock Index not in list");
+            return StockService.Instance.GetStock(stockIndex);
         }
 
         //IENumerable interface implementation
-        public IEnumerator GetEnumerator()
+        public IEnumerable<StockEntity> GetStocks()
         {
-            return _Stocks.GetEnumerator();
+            return StockService.Instance.GetStocks();
         }
 
         private void _PopulateStocks()
         {
-            _Stocks = PersistanceController.Instance.GetAllStocks();
+            //_Stocks = PersistanceController.Instance.GetAllStocks();
         }
     }
 }
