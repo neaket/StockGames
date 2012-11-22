@@ -72,7 +72,6 @@
     <Compile Include="Commands\RequestStockUpdateCmd.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandInvoker.cs" />
-    <Compile Include="Controllers\PersistanceController.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -82,6 +81,7 @@
     <Compile Include="Persistance\V1\DataModel\MarketModel.cs" />
     <Compile Include="Persistance\V1\DataModel\StockSnapshotModel.cs" />
     <Compile Include="Persistance\V1\Migrations\InitialCreate.cs" />
+    <Compile Include="Persistance\V1\Migrations\MigrationManager.cs" />
     <Compile Include="Persistance\V1\Services\MarketService.cs" />
     <Compile Include="Persistance\V1\Services\StockService.cs" />
     <Compile Include="Persistance\V1\DataModel\StockModel.cs" />

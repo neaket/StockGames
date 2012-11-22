@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using StockGames.Persistance.V1.Migrations;
 
 namespace StockGames
 {
@@ -18,7 +19,9 @@ namespace StockGames
         // Constructor
         public MainPage()
         {
+            MigrationManager.InitializeDatabase();
             InitializeComponent();
+            
         }
 
         private void ViewStocks_Click(object sender, RoutedEventArgs e)
