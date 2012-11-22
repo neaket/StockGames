@@ -48,5 +48,14 @@ namespace StockGames.Persistance.V1.Services
                 context.SubmitChanges();
             }
         }
+
+        public MarketModel GetMarket(string marketID)
+        {
+            using (var context = StockGamesDataContext.GetReadOnly())
+            {
+                var query = from m in context.Markets where m.MarketID == marketID select m;
+                return query.Single();
+            }
+        }
     }
 }

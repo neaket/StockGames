@@ -150,5 +150,21 @@ namespace StockGames.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            StockEntity other = obj as StockEntity;
+            if (other == null) 
+            {
+                return false;
+            }
+            
+            return this.StockIndex == other.StockIndex;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.StockIndex.GetHashCode();
+        }
     }
 }

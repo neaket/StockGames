@@ -28,5 +28,21 @@ namespace StockGames.Persistance.V1.DataModel
             CanBeNull = false,
             AutoSync = AutoSync.OnInsert)]
         public string MarketName { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            MarketModel other = obj as MarketModel;
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.MarketID == other.MarketID;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.MarketID.GetHashCode();
+        }
     }
 }

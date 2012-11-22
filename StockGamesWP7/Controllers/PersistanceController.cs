@@ -40,11 +40,11 @@ namespace StockGames.Controllers
 
         private void initDatabase()
         {
-            using (StockGamesDataContext dataContext = StockGamesDataContext.GetReadWrite())
+            using (StockGamesDataContext context = StockGamesDataContext.GetReadWrite())
             {
-                if (!dataContext.DatabaseExists())
+                if (!context.DatabaseExists())
                 {
-                    dataContext.CreateDatabase();
+                    context.CreateDatabase();
                     //InitialCreate.Update();
                     populateFirstTimeStocks();
                 }
