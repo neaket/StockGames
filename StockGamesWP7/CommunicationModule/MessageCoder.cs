@@ -51,7 +51,7 @@ namespace StockGames.CommunicationModule
                 }
             }
             //TODO catch the error
-            ServerCommunication.UpdateModel();
+            //ServerCommunication.UpdateModel();
             messageEvent.EventSent = true;
         }
     }

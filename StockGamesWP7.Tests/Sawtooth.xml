@@ -7,10 +7,14 @@
 		<File ftype="src">SawtoothType.cpp</File>
 		<File ftype="hdr" class="SawtoothType">SawtoothType.h</File>
 	</Files>
+  <Options>
+    <TimeOp>00:00:00:10</TimeOp>
+    <ParsingOp>false</ParsingOp>
+  </Options>
 	<DCDpp>
 		<Servers>
 			<Server PORT="8080" IP="LocalHost">
-				<MODEL>SawtoothType</MODEL>
+				<MODEL>sawtooth</MODEL>
 			</Server>
 		</Servers>
 	</DCDpp>

@@ -44,31 +44,31 @@ namespace StockGames.Tests.CommunciatonModule
             request.BeginGetRequestStream(new AsyncCallback(getRequestStreamCallback), request);
         }
 
+        [TestMethod]
+        [Asynchronous]
+        public void PostModelToServerTest()
+        {
+            stream = Application.GetResourceStream(new Uri("Sawtooth.zip", UriKind.Relative)).Stream;
+            HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "TestUnit?zdir=Sawtooth"));
+            request.Method = "POST";
+            request.ContentType = "application/zip";
+            request.Credentials = new NetworkCredential("andrew", "andrew");
+
+            request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
+        }
+
         //[TestMethod]
         //[Asynchronous]
-        //public void PostModelToServerTest()
+        //public void PostNewFilesToServerTest()
         //{
-        //    stream = Application.GetResourceStream(new Uri("Sawtooth.zip", UriKind.Relative)).Stream;
-        //    HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "TestUnit?zdir=Sawtooth"));
+        //    stream = Application.GetResourceStream(new Uri("update.zip", UriKind.Relative)).Stream;
+        //    HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "TestUnit"));
         //    request.Method = "POST";
         //    request.ContentType = "application/zip";
         //    request.Credentials = new NetworkCredential("andrew", "andrew");
 
         //    request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
         //}
-
-        [TestMethod]
-        [Asynchronous]
-        public void PostNewFilesToServerTest()
-        {
-            stream = Application.GetResourceStream(new Uri("update.zip", UriKind.Relative)).Stream;
-            HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "TestUnit"));
-            request.Method = "POST";
-            request.ContentType = "text/plain";
-            request.Credentials = new NetworkCredential("andrew", "andrew");
-
-            request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
-        }
 
         [TestMethod]
         [Asynchronous]
@@ -88,22 +88,24 @@ namespace StockGames.Tests.CommunciatonModule
         public void ZCheckSimulationStatus()
         {
             HttpWebRequest request = WebRequest.CreateHttp(SERVERURI + "?sim=status");
-            request.BeginGetResponse(new AsyncCallback(pollSimStatus), request);
+            request.BeginGetResponse(new AsyncCallback(getRequestStreamCallback), request);
         }
 
         private void pollSimStatus(IAsyncResult result)
         {
             EnqueueCallback(() =>
                 {
+                    IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
                     HttpWebRequest request = (HttpWebRequest)result.AsyncState;
 
                     HttpWebResponse response = request.EndGetResponse(result) as HttpWebResponse;
-                    System.Diagnostics.Debug.WriteLine(response.StatusDescription);
-                    //if (response.GetResponseStream() != null)
-                    //{
-                      //  StreamReader writer = new StreamReader(response.GetResponseStream());
-                        //System.Diagnostics.Debug.WriteLine(writer.ReadToEnd());
-                    //}
+                    using (IsolatedStorageFileStream fileStream = storage.CreateFile("SimResult.xml"))
+                    {
+                        if (fileStream != null)
+                        {
+                            response.GetResponseStream().CopyTo(fileStream);
+                        }
+                    }
                 });
         }
 
