@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockGames;
+using StockGames.Persistance.V1.DataContexts;
 using StockGames.ViewModels;
 
 namespace StockGames.Tests.ViewModels
@@ -17,6 +18,19 @@ namespace StockGames.Tests.ViewModels
     [TestClass]
     public class ListStocksViewModelTest
     {
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            using (StockGamesDataContext context = StockGamesDataContext.GetReadWrite())
+            {
+                if (!context.DatabaseExists())
+                {
+                    context.CreateDatabase();
+                }
+            }
+        }
+
         [TestMethod]
         public void TestViewModelSetup()
         {

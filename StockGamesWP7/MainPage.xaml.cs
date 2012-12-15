@@ -20,8 +20,7 @@ namespace StockGames
         public MainPage()
         {
             MigrationManager.InitializeDatabase();
-            InitializeComponent();
-            
+            InitializeComponent();            
         }
 
         private void ViewStocks_Click(object sender, RoutedEventArgs e)
