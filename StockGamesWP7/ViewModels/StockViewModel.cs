@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 using StockGames.Models;
+using StockGames.Persistance.V1.Services;
 
 namespace StockGames.ViewModels
 {
@@ -19,7 +20,7 @@ namespace StockGames.ViewModels
 
         public StockViewModel(string stockIndex)
         {
-            Stock = StocksManager.Instance.FindStock(stockIndex);
+            Stock = StockService.Instance.GetStock(stockIndex);
         }
     }
 }

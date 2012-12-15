@@ -16,6 +16,7 @@ namespace StockGames.Persistance.V1.DataModel
     [Table]
     public class StockSnapshotModel
     {
+        
         private EntityRef<StockModel> stock = new EntityRef<StockModel>();
         private EntityRef<MarketModel> market = new EntityRef<MarketModel>();
         
@@ -26,14 +27,14 @@ namespace StockGames.Persistance.V1.DataModel
            DbType = "NVARCHAR(10) NOT NULL",
            CanBeNull = false,           
            AutoSync = AutoSync.OnInsert)]
-        public string StockIndex { get; set; }
+        private string stockIndex { get; set; }
 
 
         [Association(
             Name = "FK_StockSnapshots_Stock",
             IsForeignKey = true,
             Storage = "stock",
-            ThisKey = "StockIndex",
+            ThisKey = "stockIndex",
             OtherKey = "StockIndex")]
         public StockModel Stock {
             get
@@ -42,6 +43,7 @@ namespace StockGames.Persistance.V1.DataModel
             }
             set
             {
+                stockIndex = value.StockIndex;
                 stock.Entity = value;
             }
         }
@@ -53,13 +55,13 @@ namespace StockGames.Persistance.V1.DataModel
            DbType = "NVARCHAR(10) NOT NULL",
            CanBeNull = false,
            AutoSync = AutoSync.OnInsert)]
-        public string MarketID { get; set; }
+        private string marketID { get; set; }
         
         [Association(
             Name = "FK_StockSnapshots_Market",
             IsForeignKey = true,
             Storage = "market",
-            ThisKey = "MarketID",
+            ThisKey = "marketID",
             OtherKey = "MarketID")]
         public MarketModel Market {
             get
@@ -68,7 +70,8 @@ namespace StockGames.Persistance.V1.DataModel
             }
             set
             {
-                market.Entity = value;
+                marketID = value.MarketID;
+                //market.Entity = value;
             }
         }
 

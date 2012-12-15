@@ -18,13 +18,11 @@ namespace StockGames.Commands
     {
         //Private Variables
         private MessageHandler _msgHandler;
-        private StocksManager _stocksMnger;
         private string _cmdName = CommandInvoker.REQUEST_UPDATE_STOCK;
         
-        public RequestStockUpdateCmd(MessageHandler msgHandler, StocksManager stocksMnger)
+        public RequestStockUpdateCmd(MessageHandler msgHandler)
         {
             _msgHandler = msgHandler;
-            _stocksMnger = stocksMnger;
         }
 
         //ICommand Interface implementation

@@ -27,7 +27,7 @@ namespace StockGames.Persistance.V1.Migrations
             {               
 
                 var updater = context.CreateDatabaseSchemaUpdater();
-                if (updater.DatabaseSchemaVersion > Version) {
+                if (updater.DatabaseSchemaVersion >= Version) {
                     return;
                 }
 

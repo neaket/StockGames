@@ -9,16 +9,16 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Silverlight.Testing;
 using StockGames.Persistance.V1.DataModel;
 using System.Linq;
 using StockGames.Persistance.V1.DataContexts;
 using StockGames.Persistance.V1.Services;
+using Microsoft.Phone.Testing;
 
 namespace StockGames.Tests.Persistance.V1.Services
 {
     [TestClass]
-    [Tag("p")]
+    [Tag("Persistance")]
     public class MarketServiceTests
     {
         [TestInitialize]

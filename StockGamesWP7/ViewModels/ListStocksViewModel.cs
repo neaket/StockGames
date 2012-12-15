@@ -13,6 +13,7 @@ using StockGames.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using StockGames.Controllers;
+using StockGames.Persistance.V1.Services;
 
 namespace StockGames.ViewModels
 {
@@ -24,7 +25,7 @@ namespace StockGames.ViewModels
         {
             Stocks = new ObservableCollection<StockEntity>();
 
-            foreach (StockEntity stock in StocksManager.Instance.GetStocks())
+            foreach (StockEntity stock in StockService.Instance.GetStocks())
             {
                 Stocks.Add(stock);
             }

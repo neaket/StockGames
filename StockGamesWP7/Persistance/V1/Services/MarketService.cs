@@ -27,18 +27,16 @@ namespace StockGames.Persistance.V1.Services
             }
         }
 
-        private static MarketService instance;
+        private static MarketService instance = new MarketService();
         public static MarketService Instance
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new MarketService();
-                }
                 return instance;
             }
         }
+
+        private MarketService() { }
 
         public void AddMarket(MarketModel market)
         {

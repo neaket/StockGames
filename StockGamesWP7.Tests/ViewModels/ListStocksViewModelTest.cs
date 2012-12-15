@@ -18,7 +18,7 @@ namespace StockGames.Tests.ViewModels
     public class ListStocksViewModelTest
     {
         [TestMethod]
-        public void pass()
+        public void TestViewModelSetup()
         {
             ListStocksViewModel viewModel = new ListStocksViewModel();
             Assert.IsTrue(viewModel.Stocks != null);

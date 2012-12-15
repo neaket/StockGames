@@ -18,15 +18,15 @@ namespace StockGames.Persistance.V1.Services
 {
     public class StockService
     {
-        private static StockService instance;
+        private static StockService instance = new StockService();
         public static StockService Instance {
-            get {
-                if (instance == null) {
-                    instance = new StockService();
-                }
+            get 
+            {
                 return instance;
             }
         }
+
+        private StockService() { }
 
         public StockEntity GetStock(string stockIndex)
         {
@@ -78,23 +78,29 @@ namespace StockGames.Persistance.V1.Services
         {
             using (var context = StockGamesDataContext.GetReadWrite())
             {
-                StockModel stock = new StockModel();
-                stock.StockIndex = stockEntity.StockIndex;
-                stock.CompanyName = stockEntity.CompanyName;
-                context.Stocks.InsertOnSubmit(stock);
+                StockModel stock;
+
+                var existingQuery = from s in context.Stocks where s.StockIndex == stockEntity.StockIndex select s;
+                stock = existingQuery.SingleOrDefault();
+                if (stock == null)
+                {
+                    stock = stock = new StockModel();
+                    stock.StockIndex = stockEntity.StockIndex;
+                    stock.CompanyName = stockEntity.CompanyName;
+                }
 
                 DateTime current = DateTime.Now;
                 DateTime previous = new DateTime(current.Year, current.Month, current.Day);
                 StockSnapshotModel prevStockSnapshot = new StockSnapshotModel();
                 prevStockSnapshot.Stock = stock;
-                prevStockSnapshot.MarketID = MarketService.TestMarket.MarketID;
+                prevStockSnapshot.Market = MarketService.TestMarket;
                 prevStockSnapshot.Tombstone = previous;
                 prevStockSnapshot.Price = stockEntity.PreviousPrice;
                 context.StockSnapshots.InsertOnSubmit(prevStockSnapshot);
 
                 StockSnapshotModel currentStockSnapshot = new StockSnapshotModel();
                 currentStockSnapshot.Stock = stock;
-                currentStockSnapshot.MarketID = MarketService.TestMarket.MarketID;
+                currentStockSnapshot.Market = MarketService.TestMarket;
                 currentStockSnapshot.Tombstone = current;
                 currentStockSnapshot.Price = stockEntity.CurrentPrice;
                 context.StockSnapshots.InsertOnSubmit(currentStockSnapshot);

@@ -31,19 +31,19 @@ namespace StockGames.Controllers
                 if (_Instance == null)
                 {
                     // TODO add MessageHandler
-                    _Instance = new CommandInvoker(StocksManager.Instance, new MessageHandler());
+                    _Instance = new CommandInvoker(new MessageHandler());
                 }
                 return _Instance;
             }
         }
 
-        private CommandInvoker(StocksManager stockMnger, MessageHandler msgHandler)
+        private CommandInvoker(MessageHandler msgHandler)
         {
             _commands = new List<IStockCommand>();
 
             //Populate List with Commands
-            _commands.Add( new RequestStockUpdateCmd(msgHandler, stockMnger) );
-            _commands.Add( new PushStockChangesCmd(stockMnger) );
+            _commands.Add( new RequestStockUpdateCmd(msgHandler) );
+            _commands.Add( new PushStockChangesCmd());
         }
 
         /// <summary>

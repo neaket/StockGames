@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Phone.Controls;
-using Microsoft.Silverlight.Testing;
+using Microsoft.Phone.Testing;
+
 
 namespace StockGames.Tests
 {
@@ -22,13 +14,16 @@ namespace StockGames.Tests
             const bool runUnitTests = true;
             if (runUnitTests)
             {
-                Content = UnitTestSystem.CreateTestPage();
-                IMobileTestPage testPage = Content as IMobileTestPage;
-                if (testPage != null)
+                UnitTestSettings settings = UnitTestSystem.CreateDefaultSettings();
+                settings.TagExpression = "All";
+                settings.TestHarness.Settings = settings;
+
+                settings.SampleTags = new System.Collections.Generic.List<string>
                 {
-                    BackKeyPress += (x, xe) =>
-                        xe.Cancel = testPage.NavigateBack();
-                }
+                    "Persistance",
+                    "Test2"
+                };
+                this.Content = UnitTestSystem.CreateTestPage(settings);
             }
         }
     }
