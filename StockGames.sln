@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual Studio 2010 Express for Windows Phone
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockGamesWP7", "StockGamesWP7\StockGamesWP7.csproj", "{EB929115-76C5-489D-A153-21B05388A360}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockGamesWP7.Tests", "StockGamesWP7.Tests\StockGamesWP7.Tests.csproj", "{716087DF-D773-414A-9300-F30FBE80B21E}"

@@ -29,13 +29,7 @@ namespace StockGames.Models
         public static string CURRENT_PRICE = "current price";
         public static string PREVIOUS_PRICE = "previous price";
 
-        #region Public variables and Manipulators
-        [Column(
-            IsPrimaryKey = true, 
-            IsDbGenerated = false, 
-            DbType = "VARCHAR NOT NULL Identity", 
-            CanBeNull = false, 
-            AutoSync = AutoSync.OnInsert)]
+        #region Public Properties and Manipulators
         public string StockIndex
         {
             get
@@ -48,11 +42,6 @@ namespace StockGames.Models
             }
 
         }
-
-        [Column(
-            DbType = "VARCHAR(10) NOT NULL",
-            CanBeNull = false,
-            AutoSync = AutoSync.OnInsert)]
         public string CompanyName
         {
             get
@@ -64,11 +53,6 @@ namespace StockGames.Models
                 _CompanyName = value;
             }
         }
-
-        [Column(
-            DbType = "MONEY NOT NULL",
-            CanBeNull = false,
-            AutoSync = AutoSync.OnUpdate)]
         public decimal CurrentPrice
         {
             get
@@ -82,11 +66,6 @@ namespace StockGames.Models
             }
             
         }
-
-        [Column(
-            DbType = "MONEY NOT NULL",
-            CanBeNull = false,
-            AutoSync = AutoSync.OnUpdate)]
         public decimal PreviousPrice
         {
             get
@@ -120,10 +99,6 @@ namespace StockGames.Models
         }
         #endregion
 
-        public StockEntity()
-        {
-        }
-
         /// <summary>
         /// Constructor for Class, creates a stock with a name and index
         /// </summary>
@@ -153,18 +128,15 @@ namespace StockGames.Models
 
         public override bool Equals(object obj)
         {
-            StockEntity other = obj as StockEntity;
-            if (other == null) 
-            {
-                return false;
-            }
-            
-            return this.StockIndex == other.StockIndex;
+            var other = obj as StockEntity;
+            if (other == null) return false;
+
+            return other.StockIndex == StockIndex;
         }
 
         public override int GetHashCode()
         {
-            return this.StockIndex.GetHashCode();
+            return StockIndex.GetHashCode();
         }
     }
 }
