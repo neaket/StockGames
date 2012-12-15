@@ -28,5 +28,10 @@ namespace StockGames
         {
             NavigationService.Navigate(new Uri("/Views/ListStocksView.xaml", UriKind.Relative));                
         }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/AboutView.xaml", UriKind.Relative));
+        }
     }
 }
