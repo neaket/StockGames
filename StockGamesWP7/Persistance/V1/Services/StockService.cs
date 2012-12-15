@@ -31,80 +31,58 @@ namespace StockGames.Persistance.V1.Services
                 var currentStockSnapshot = newestTwoStockSnapshots.First();
                 var prevStockSnapshot = newestTwoStockSnapshots.ElementAt(1);
 
-                StockEntity stock = new StockEntity(currentStockSnapshot.Stock.StockIndex, currentStockSnapshot.Stock.CompanyName);
-                stock.CurrentPrice = currentStockSnapshot.Price;
-                stock.PreviousPrice = prevStockSnapshot.Price;
+                var stock = new StockEntity(currentStockSnapshot.Stock.StockIndex, currentStockSnapshot.Stock.CompanyName)
+                    {
+                        CurrentPrice = currentStockSnapshot.Price,
+                        PreviousPrice = prevStockSnapshot.Price
+                    };
 
                 return stock;
             }
         }
 
-        /// <summary>
-        /// Note: This method needs to be optimized in the future
-        /// </summary> 
-        /// <returns></returns>
         public IEnumerable<StockEntity> GetStocks()
         {
-            List<StockEntity> stocks = new List<StockEntity>();
+            // TODO This method needs to be optimized in the future
             List<string> stockIndexes;
             using (var context = StockGamesDataContext.GetReadOnly())
             {
-
                 stockIndexes = (from s in context.Stocks select s.StockIndex).ToList();
-                var count = (from s in context.Stocks select s).Count();
             }
 
-
-            
-
-            foreach (var stockIndex in stockIndexes)
-            {
-                stocks.Add(GetStock(stockIndex));
-            }
-
-            return stocks;
+            return stockIndexes.Select(GetStock).ToList();
         }
 
         public void AddStock(StockEntity stockEntity) 
         {
             using (var context = StockGamesDataContext.GetReadWrite())
             {
-                StockModel stock;
-
                 var existingQuery = from s in context.Stocks where s.StockIndex == stockEntity.StockIndex select s;
-                stock = existingQuery.SingleOrDefault();
-                if (stock == null)
-                {
-                    stock = stock = new StockModel();
-                    stock.StockIndex = stockEntity.StockIndex;
-                    stock.CompanyName = stockEntity.CompanyName;
-                }
+                var stock = existingQuery.SingleOrDefault() ??
+                            new StockModel {StockIndex = stockEntity.StockIndex, CompanyName = stockEntity.CompanyName};
 
-                DateTime current = DateTime.Now;
-                DateTime previous = new DateTime(current.Year, current.Month, current.Day);
-                StockSnapshotModel prevStockSnapshot = new StockSnapshotModel();
-                prevStockSnapshot.Stock = stock;
-                prevStockSnapshot.Market = MarketService.TestMarket;
-                prevStockSnapshot.Tombstone = previous;
-                prevStockSnapshot.Price = stockEntity.PreviousPrice;
+                var current = DateTime.Now;
+                var previous = new DateTime(current.Year, current.Month, current.Day);
+                var prevStockSnapshot = new StockSnapshotModel
+                    {
+                        Stock = stock,
+                        Market = MarketService.TestMarket,
+                        Tombstone = previous,
+                        Price = stockEntity.PreviousPrice
+                    };
                 context.StockSnapshots.InsertOnSubmit(prevStockSnapshot);
 
-                StockSnapshotModel currentStockSnapshot = new StockSnapshotModel();
-                currentStockSnapshot.Stock = stock;
-                currentStockSnapshot.Market = MarketService.TestMarket;
-                currentStockSnapshot.Tombstone = current;
-                currentStockSnapshot.Price = stockEntity.CurrentPrice;
+                var currentStockSnapshot = new StockSnapshotModel
+                    {
+                        Stock = stock,
+                        Market = MarketService.TestMarket,
+                        Tombstone = current,
+                        Price = stockEntity.CurrentPrice
+                    };
                 context.StockSnapshots.InsertOnSubmit(currentStockSnapshot);
 
-
                 context.SubmitChanges();
-
-                                
             }
         }
-
-
-        
-
     }
 }
