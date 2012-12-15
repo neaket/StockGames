@@ -1,20 +1,10 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockGames.Persistance.V1.DataContexts;
 using StockGames.Persistance.V1.Services;
 using StockGames.Models;
 using System.Linq;
 using StockGames.Persistance.V1.DataModel;
-using Microsoft.Phone.Testing;
 
 namespace StockGames.Tests.Persistance.V1.Services
 {
@@ -40,17 +30,17 @@ namespace StockGames.Tests.Persistance.V1.Services
         }
         
         [TestMethod]
-        public void testAddAndGetStockEntity()
+        public void TestAddAndGetStockEntity()
         {
             StockEntity stockEntity = new StockEntity("ABC", "ABC Company Test");
 
             StockService.Instance.AddStock(stockEntity);
 
-            Assert.Equals(1, StockService.Instance.GetStocks().Count());
+            Assert.AreEqual(1, StockService.Instance.GetStocks().Count());
 
             StockEntity persisted = StockService.Instance.GetStock("ABC");
 
-            Assert.Equals(stockEntity, persisted);
+            Assert.AreEqual(stockEntity, persisted);
         }
 
         [TestCleanup]

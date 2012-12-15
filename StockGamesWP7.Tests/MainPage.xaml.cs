@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Testing;
+using Microsoft.Silverlight.Testing;
 
 
 namespace StockGames.Tests
@@ -14,16 +14,13 @@ namespace StockGames.Tests
             const bool runUnitTests = true;
             if (runUnitTests)
             {
-                UnitTestSettings settings = UnitTestSystem.CreateDefaultSettings();
-                settings.TagExpression = "All";
-                settings.TestHarness.Settings = settings;
-
-                settings.SampleTags = new System.Collections.Generic.List<string>
+                Content = UnitTestSystem.CreateTestPage();
+                IMobileTestPage testPage = Content as IMobileTestPage;
+                if (testPage != null)
                 {
-                    "Persistance",
-                    "Test2"
-                };
-                this.Content = UnitTestSystem.CreateTestPage(settings);
+                    BackKeyPress += (x, xe) =>
+                        xe.Cancel = testPage.NavigateBack();
+                }
             }
         }
     }

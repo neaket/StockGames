@@ -50,6 +50,9 @@
   <ItemGroup>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Microsoft.Silverlight.Testing">
+      <HintPath>..\lib\Microsoft.Silverlight.Testing.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="system.data.linq" />
     <Reference Include="System.Windows" />
@@ -101,10 +104,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Downloads\silverlight-80285 %281%29\Release\WindowsPhone71\TestFramework\Microsoft.Phone.Toolkit.Testing\Microsoft.Phone.Toolkit.Testing.csproj">
-      <Project>{CA302FEA-4CFF-4F9F-A5BC-3D8C681DD065}</Project>
-      <Name>Microsoft.Phone.Toolkit.Testing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StockGamesWP7\StockGamesWP7.csproj">
       <Project>{EB929115-76C5-489D-A153-21B05388A360}</Project>
       <Name>StockGamesWP7</Name>
