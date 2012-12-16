@@ -40,7 +40,7 @@ namespace StockGames.Persistance.V1.Migrations
 
         private static void populateFirstTimeStocks()
         {
-            MarketModel market = new MarketModel() { MarketID = "ONE", MarketName = "Initial Market" };
+            MarketModel market = new MarketModel() { MarketId = "ONE", MarketName = "Initial Market" };
             MarketService.Instance.AddMarket(market);
 
             var ss = StockService.Instance;

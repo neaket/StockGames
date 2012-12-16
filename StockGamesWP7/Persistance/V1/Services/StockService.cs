@@ -24,7 +24,7 @@ namespace StockGames.Persistance.V1.Services
             using (var context = StockGamesDataContext.GetReadOnly())
             {
                 // create query to get stocksnapshots 
-                var query = from s in context.StockSnapshots where stockIndex == s.Stock.StockIndex orderby s.Tombstone select s;
+                var query = from s in context.StockSnapshots where stockIndex == s.Stock.StockIndex orderby s.Tombstone descending select s;
                 
                 var newestTwoStockSnapshots = query.Take(2).ToList();
 
@@ -57,9 +57,8 @@ namespace StockGames.Persistance.V1.Services
         {
             using (var context = StockGamesDataContext.GetReadWrite())
             {
-                var existingQuery = from s in context.Stocks where s.StockIndex == stockEntity.StockIndex select s;
-                var stock = existingQuery.SingleOrDefault() ??
-                            new StockModel {StockIndex = stockEntity.StockIndex, CompanyName = stockEntity.CompanyName};
+                // TODO ensure no duplicates
+                var stock = new StockModel {StockIndex = stockEntity.StockIndex, CompanyName = stockEntity.CompanyName};
 
                 var current = DateTime.Now;
                 var previous = new DateTime(current.Year, current.Month, current.Day);
@@ -81,6 +80,27 @@ namespace StockGames.Persistance.V1.Services
                     };
                 context.StockSnapshots.InsertOnSubmit(currentStockSnapshot);
 
+                context.SubmitChanges();
+            }
+        }
+
+
+        public void AddStockSnapshot(StockEntity stockEntity)
+        {
+            using (var context = StockGamesDataContext.GetReadWrite())
+            {
+                var current = DateTime.Now;
+                var stock = (from s in context.Stocks where s.StockIndex == stockEntity.StockIndex select s).Single();
+
+                var stockSnapshot = new StockSnapshotModel
+                {
+                    Stock = stock,
+                    Market = MarketService.TestMarket, // TODO use the actual market
+                    Tombstone = current,
+                    Price = stockEntity.CurrentPrice
+                };
+
+                context.StockSnapshots.InsertOnSubmit(stockSnapshot);
                 context.SubmitChanges();
             }
         }

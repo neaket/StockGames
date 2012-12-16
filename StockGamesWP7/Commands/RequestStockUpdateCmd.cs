@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using StockGames.Persistance.V1.Services;
 using StockGames.Stubs;
 using StockGames.Models;
 using StockGames.Controllers;
@@ -28,10 +29,20 @@ namespace StockGames.Commands
         //ICommand Interface implementation
         public void Execute(Object o)
         {
-            if (!(o is StockEntity))
+            var stockEntity = o as StockEntity;
+            if (stockEntity == null)
             {
                 throw new ArgumentException("Object is not a stock Entity");
             }
+
+            // TODO do some real updates :) instead of random numbers
+            var random = new Random();
+            stockEntity.PreviousPrice = stockEntity.CurrentPrice;
+            stockEntity.CurrentPrice += (decimal)(random.NextDouble() - .4) * stockEntity.CurrentPrice;
+            
+            
+            StockService.Instance.AddStockSnapshot(stockEntity);
+            // END TODO
         }
 
         public void Execute(StockEntity stock)

@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
 using System.Data.Linq;
 
@@ -17,8 +8,8 @@ namespace StockGames.Persistance.V1.DataModel
     public class StockSnapshotModel
     {
         
-        private EntityRef<StockModel> stock = new EntityRef<StockModel>();
-        private EntityRef<MarketModel> market = new EntityRef<MarketModel>();
+        private EntityRef<StockModel> _stock;
+        private EntityRef<MarketModel> _market;
         
         
         [Column(
@@ -27,24 +18,24 @@ namespace StockGames.Persistance.V1.DataModel
            DbType = "NVARCHAR(10) NOT NULL",
            CanBeNull = false,           
            AutoSync = AutoSync.OnInsert)]
-        private string stockIndex { get; set; }
+        private string StockIndex { get; set; }
 
 
         [Association(
             Name = "FK_StockSnapshots_Stock",
             IsForeignKey = true,
-            Storage = "stock",
-            ThisKey = "stockIndex",
+            Storage = "_stock",
+            ThisKey = "StockIndex",
             OtherKey = "StockIndex")]
         public StockModel Stock {
             get
             {
-                return stock.Entity;
+                return _stock.Entity;
             }
             set
             {
-                stockIndex = value.StockIndex;
-                stock.Entity = value;
+                StockIndex = value.StockIndex;
+                _stock.Entity = value;
             }
         }
 
@@ -55,23 +46,23 @@ namespace StockGames.Persistance.V1.DataModel
            DbType = "NVARCHAR(10) NOT NULL",
            CanBeNull = false,
            AutoSync = AutoSync.OnInsert)]
-        private string marketID { get; set; }
+        private string MarketId { get; set; }
         
         [Association(
             Name = "FK_StockSnapshots_Market",
             IsForeignKey = true,
-            Storage = "market",
-            ThisKey = "marketID",
-            OtherKey = "MarketID")]
+            Storage = "_market",
+            ThisKey = "MarketId",
+            OtherKey = "MarketId")]
         public MarketModel Market {
             get
             {
-                return market.Entity;
+                return _market.Entity;
             }
             set
             {
-                marketID = value.MarketID;
-                //market.Entity = value;
+                MarketId = value.MarketId;
+                //_market.Entity = value;  // TODO uncomment and avoid duplicate markets...
             }
         }
 

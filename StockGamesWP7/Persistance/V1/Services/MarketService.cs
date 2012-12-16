@@ -51,7 +51,7 @@ namespace StockGames.Persistance.V1.Services
         {
             using (var context = StockGamesDataContext.GetReadOnly())
             {
-                var query = from m in context.Markets where m.MarketID == marketID select m;
+                var query = from m in context.Markets where m.MarketId == marketID select m;
                 return query.Single();
             }
         }

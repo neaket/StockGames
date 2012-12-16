@@ -25,7 +25,7 @@ namespace StockGames.Tests.Persistance.V1.Services
             }
 
             // TODO remove me
-            MarketModel market = new MarketModel() { MarketID = "ONE", MarketName = "Initial Market" };
+            MarketModel market = new MarketModel() { MarketId = "ONE", MarketName = "Initial Market" };
             MarketService.Instance.AddMarket(market);
         }
         

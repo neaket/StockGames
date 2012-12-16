@@ -16,20 +16,20 @@ namespace StockGames.Persistance.V1.DataContexts
 {
     public class StockGamesDataContext : DataContext
     {
-        private const string dbConnectionString = @"DataSource = 'isostore:StockGamesDB.sdf';";
-        private const string readOnlyDbConnectionString = dbConnectionString + " File Mode='Read Only';";
+        private const string DbConnectionString = @"DataSource = 'isostore:StockGamesDB.sdf';";
+        private const string ReadOnlyDbConnectionString = DbConnectionString + " File Mode='Read Only';";
 
         private StockGamesDataContext(string dbConnectionString)
             : base(dbConnectionString)
         { }
 
         public static StockGamesDataContext GetReadOnly() {
-            return new StockGamesDataContext(readOnlyDbConnectionString);
+            return new StockGamesDataContext(ReadOnlyDbConnectionString);
         }
 
         public static StockGamesDataContext GetReadWrite()
         {
-            return new StockGamesDataContext(dbConnectionString);
+            return new StockGamesDataContext(DbConnectionString);
         }
 
         public Table<StockModel> Stocks

@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Data.Linq.Mapping;
 
@@ -18,27 +9,27 @@ namespace StockGames.Models
     {
         #region Private Variables
        
-        private string _StockIndex;
-        private string _CompanyName;
-        private decimal _CurrentPrice;
-        private decimal _PreviousPrice = 0;
+        private string _stockIndex;
+        private string _companyName;
+        private decimal _currentPrice;
+        private decimal _previousPrice;
 
         #endregion
 
         //List of string constants used for notifying subscribers
-        public static string CURRENT_PRICE = "current price";
-        public static string PREVIOUS_PRICE = "previous price";
+        private const string CurrentPricePropertyName = "CurrentPrice";
+        private const string PreviousPricePropertyName = "PreviousPrice";
 
         #region Public Properties and Manipulators
         public string StockIndex
         {
             get
             {
-                return _StockIndex;
+                return _stockIndex;
             }
             private set 
             {
-                _StockIndex = value;
+                _stockIndex = value;
             }
 
         }
@@ -46,23 +37,23 @@ namespace StockGames.Models
         {
             get
             {
-                return _CompanyName;
+                return _companyName;
             }
             private set
             {
-                _CompanyName = value;
+                _companyName = value;
             }
         }
         public decimal CurrentPrice
         {
             get
             {
-                return _CurrentPrice;
+                return _currentPrice;
             }
             set
             {
-                _CurrentPrice = value;
-                NotifyPropertyChanged(CURRENT_PRICE);
+                _currentPrice = value;
+                NotifyPropertyChanged(CurrentPricePropertyName);
             }
             
         }
@@ -70,12 +61,12 @@ namespace StockGames.Models
         {
             get
             {
-                return _PreviousPrice;
+                return _previousPrice;
             }
             set
             {
-                _PreviousPrice = value;
-                NotifyPropertyChanged(PREVIOUS_PRICE);
+                _previousPrice = value;
+                NotifyPropertyChanged(PreviousPricePropertyName);
             }
         }
  		public decimal DailyChange
@@ -136,7 +127,7 @@ namespace StockGames.Models
 
         public override int GetHashCode()
         {
-            return StockIndex.GetHashCode();
+            return StockIndex.GetHashCode();  
         }
     }
 }
