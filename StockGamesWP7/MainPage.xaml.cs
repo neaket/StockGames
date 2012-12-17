@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using StockGames.Persistance.V1.Migrations;
 
@@ -16,21 +7,47 @@ namespace StockGames
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        private static bool _existingGame = false; // TODO this needs to be persisted
+
         // Constructor
         public MainPage()
         {
-            MigrationManager.InitializeDatabase();
             InitializeComponent();            
         }
 
-        private void ViewStocks_Click(object sender, RoutedEventArgs e)
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Views/ListStocksView.xaml", UriKind.Relative));                
+            ContinueBtn.Visibility = _existingGame ? Visibility.Visible : Visibility.Collapsed;
+            base.OnNavigatedTo(e);
         }
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/AboutView.xaml", UriKind.Relative));
+        }
+
+        private void NewGame_Click(object sender, RoutedEventArgs e)
+        {
+            if (_existingGame) { 
+                var result =
+                    MessageBox.Show("Are you sure you want to start a new game?  Your existing game will be deleted.", "Confirm", MessageBoxButton.OKCancel );
+                if (result != MessageBoxResult.OK) return;
+            }
+            MigrationManager.IfExistsRemoveDatabase();
+            MigrationManager.InitializeDatabase();
+
+            _existingGame = true;
+            ViewStocks();
+        }
+
+        private void ContinueGame_Click(object sender, RoutedEventArgs e)
+        {
+            ViewStocks();             
+        }
+
+        private void ViewStocks()
+        {
+            NavigationService.Navigate(new Uri("/Views/ListStocksView.xaml", UriKind.Relative));                
         }
     }
 }

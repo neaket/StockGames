@@ -1,31 +1,42 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using StockGames.Persistance.V1.DataContexts;
+﻿using StockGames.Persistance.V1.DataContexts;
 
 namespace StockGames.Persistance.V1.Migrations
 {
     public static class MigrationManager
     {
+        private static object _lock = new object();
         public static void InitializeDatabase()
         {
-            using (var context = StockGamesDataContext.GetReadWrite())
+            lock (_lock)
             {
-                if (!context.DatabaseExists())
-                {
-                    context.CreateDatabase();
-                }                
-            }
 
-            // TODO optimize this code with versions.
-            InitialCreate.Update();
+                using (var context = StockGamesDataContext.GetReadWrite())
+                {
+                    if (!context.DatabaseExists())
+                    {
+                        context.CreateDatabase();
+                    }
+                }
+
+                // TODO optimize this code with versions.
+                InitialCreate.Update();
+            }
+        }
+
+        public static void IfExistsRemoveDatabase()
+        {
+            lock (_lock)
+            {
+             
+                using (var context = StockGamesDataContext.GetReadWrite())
+                {
+                    if (context.DatabaseExists())
+                    {
+                        context.DeleteDatabase();
+                    }
+                }
+
+            }
         }
     }
 }
