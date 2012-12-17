@@ -1,14 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using StockGames.Persistance.V1.DataModel;
+﻿using StockGames.Persistance.V1.DataModel;
 using StockGames.Persistance.V1.DataContexts;
 using System.Linq;
 
@@ -27,7 +17,7 @@ namespace StockGames.Persistance.V1.Services
             }
         }
 
-        private static MarketService instance = new MarketService();
+        private static readonly MarketService instance = new MarketService();
         public static MarketService Instance
         {
             get
@@ -47,11 +37,11 @@ namespace StockGames.Persistance.V1.Services
             }
         }
 
-        public MarketModel GetMarket(string marketID)
+        public MarketModel GetMarket(string marketId)
         {
             using (var context = StockGamesDataContext.GetReadOnly())
             {
-                var query = from m in context.Markets where m.MarketId == marketID select m;
+                var query = from m in context.Markets where m.MarketId == marketId select m;
                 return query.Single();
             }
         }

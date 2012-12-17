@@ -76,6 +76,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\StockEntity.cs" />
+    <Compile Include="Models\StockManager.cs" />
     <Compile Include="Persistance\V1\DataContexts\StockGamesDataContext.cs" />
     <Compile Include="Persistance\V1\DataModel\MarketModel.cs" />
     <Compile Include="Persistance\V1\DataModel\StockSnapshotModel.cs" />

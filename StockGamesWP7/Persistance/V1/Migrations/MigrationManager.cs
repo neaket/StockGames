@@ -12,7 +12,7 @@ using StockGames.Persistance.V1.DataContexts;
 
 namespace StockGames.Persistance.V1.Migrations
 {
-    public class MigrationManager
+    public static class MigrationManager
     {
         public static void InitializeDatabase()
         {

@@ -59,13 +59,13 @@ namespace StockGames.Persistance.V1.Services
             {
                 // TODO ensure no duplicates
                 var stock = new StockModel {StockIndex = stockEntity.StockIndex, CompanyName = stockEntity.CompanyName};
-
+                var market = context.Markets.First(); // TODO replace me
                 var current = DateTime.Now;
                 var previous = new DateTime(current.Year, current.Month, current.Day);
                 var prevStockSnapshot = new StockSnapshotModel
                     {
                         Stock = stock,
-                        Market = MarketService.TestMarket,
+                        Market = market,
                         Tombstone = previous,
                         Price = stockEntity.PreviousPrice
                     };
@@ -74,12 +74,12 @@ namespace StockGames.Persistance.V1.Services
                 var currentStockSnapshot = new StockSnapshotModel
                     {
                         Stock = stock,
-                        Market = MarketService.TestMarket,
+                        Market = market,
                         Tombstone = current,
                         Price = stockEntity.CurrentPrice
                     };
                 context.StockSnapshots.InsertOnSubmit(currentStockSnapshot);
-
+                
                 context.SubmitChanges();
             }
         }

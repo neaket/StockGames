@@ -7,10 +7,8 @@ namespace StockGames.Persistance.V1.DataModel
     [Table]
     public class StockSnapshotModel
     {
-        
         private EntityRef<StockModel> _stock;
         private EntityRef<MarketModel> _market;
-        
         
         [Column(
            IsPrimaryKey = true,
@@ -19,7 +17,6 @@ namespace StockGames.Persistance.V1.DataModel
            CanBeNull = false,           
            AutoSync = AutoSync.OnInsert)]
         private string StockIndex { get; set; }
-
 
         [Association(
             Name = "FK_StockSnapshots_Stock",
@@ -38,7 +35,6 @@ namespace StockGames.Persistance.V1.DataModel
                 _stock.Entity = value;
             }
         }
-
 
         [Column(
            IsPrimaryKey = true,
@@ -62,7 +58,7 @@ namespace StockGames.Persistance.V1.DataModel
             set
             {
                 MarketId = value.MarketId;
-                //_market.Entity = value;  // TODO uncomment and avoid duplicate markets...
+                _market.Entity = value;
             }
         }
 

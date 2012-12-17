@@ -11,7 +11,7 @@ namespace StockGames.ViewModels
 
         public StockViewModel(string stockIndex)
         {
-            Stock = StockService.Instance.GetStock(stockIndex);
+            Stock = StocksManager.Instance.GetStock(stockIndex);
         }
 
         public void Update()

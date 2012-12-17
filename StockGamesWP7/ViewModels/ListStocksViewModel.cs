@@ -25,12 +25,10 @@ namespace StockGames.ViewModels
         {
             Stocks = new ObservableCollection<StockEntity>();
 
-            foreach (StockEntity stock in StockService.Instance.GetStocks())
+            foreach (StockEntity stock in StocksManager.Instance.GetStocks())
             {
                 Stocks.Add(stock);
             }
-
         }
-
     }
 }
