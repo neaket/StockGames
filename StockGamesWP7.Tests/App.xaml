@@ -7,6 +7,7 @@
 
     <!--Application Resources-->
     <Application.Resources>
+        <local:Resources xmlns:local="clr-namespace:StockGames.Resources;assembly=StockGames" x:Key="Resources" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
