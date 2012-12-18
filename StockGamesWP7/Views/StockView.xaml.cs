@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Phone.Controls;
 using System.Windows.Navigation;
 using StockGames.ViewModels;
@@ -26,7 +27,9 @@ namespace StockGames.Views
 
         private void Update_Click(object sender, EventArgs e)
         {
-            _viewModel.Update();
+            Debug.Assert(_viewModel != null, "View Model Must Be Set");
+
+            _viewModel.UpdateCommand.Execute(null);
         }
     }
 }

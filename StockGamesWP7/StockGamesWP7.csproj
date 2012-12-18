@@ -95,6 +95,7 @@
     <Compile Include="Stubs\MessageEvent.cs" />
     <Compile Include="Stubs\MessageHandler.cs" />
     <Compile Include="ViewModels\ListStocksViewModel.cs" />
+    <Compile Include="MVVM\RelayCommand.cs" />
     <Compile Include="ViewModels\StockViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>

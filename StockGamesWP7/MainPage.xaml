@@ -27,7 +27,13 @@
 		</StackPanel>
 
 		<!--ContentPanel - place additional content here-->
-		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="14,0,10,0">
+			<Canvas Margin="8,-87,0,0" Opacity="0.3" Height="332" VerticalAlignment="Top">
+				<Path Data="M65.5,78.499191 L145.5,118.49973 L225.5,94.499443 L305.5,94.499443 L385.5,54.499031 C385.5,54.499031 391.08524,376.30402 391.08524,376.30402 C391.08524,376.30402 59.91478,376.30402 59.91478,376.30402" Fill="#FFA1A1A1" Height="715" Stretch="Fill" Stroke="Black" UseLayoutRounding="False" Canvas.Left="-30.5" Canvas.Top="3.5" Width="505" Opacity="0.6"/>
+				<Path Data="M61.732121,77.382332 L143.71715,122.43375 L225.5,94.499443 L305.50031,94.499321 C305.50031,94.499321 389.1048,50.50312 389.1048,50.50312" Height="156" Stretch="Fill" Stroke="Red" UseLayoutRounding="False" StrokeThickness="8" Width="504" Canvas.Left="-30" Canvas.Top="-4"/>
+            
+			</Canvas>
+            
 			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button x:Name="ContinueBtn" Content="Continue Game" Visibility="Collapsed" Width="250"  Padding="15" HorizontalAlignment="Center" Click="ContinueGame_Click" />
                 <Button Content="New Game" Padding="15" Width="250" HorizontalAlignment="Center" Click="NewGame_Click" />

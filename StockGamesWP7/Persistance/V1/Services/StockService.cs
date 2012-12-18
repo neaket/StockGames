@@ -23,34 +23,38 @@ namespace StockGames.Persistance.V1.Services
         {
             using (var context = StockGamesDataContext.GetReadOnly())
             {
-                // create query to get stocksnapshots 
-                var query = from s in context.StockSnapshots where stockIndex == s.Stock.StockIndex orderby s.Tombstone descending select s;
-                
-                var newestTwoStockSnapshots = query.Take(2).ToList();
+                var stock = context.Stocks.Single(s => s.StockIndex == stockIndex);
 
-                var currentStockSnapshot = newestTwoStockSnapshots.First();
-                var prevStockSnapshot = newestTwoStockSnapshots.ElementAt(1);
-
-                var stock = new StockEntity(currentStockSnapshot.Stock.StockIndex, currentStockSnapshot.Stock.CompanyName)
+                var stockEntity = new StockEntity(stock.StockIndex, stock.CompanyName)
                     {
-                        CurrentPrice = currentStockSnapshot.Price,
-                        PreviousPrice = prevStockSnapshot.Price
+                        CurrentPrice = stock.CurrentPrice,
+                        PreviousPrice = stock.PreviousPrice
                     };
 
-                return stock;
+                return stockEntity;
             }
         }
 
         public IEnumerable<StockEntity> GetStocks()
         {
+            
             // TODO This method needs to be optimized in the future
-            List<string> stockIndexes;
             using (var context = StockGamesDataContext.GetReadOnly())
             {
-                stockIndexes = (from s in context.Stocks select s.StockIndex).ToList();
-            }
+                var stocks = (from s in context.Stocks select s).ToList();
+                IList<StockEntity> stockEntities = new List<StockEntity>(stocks.Count);
 
-            return stockIndexes.Select(GetStock).ToList();
+                foreach (var stock in stocks)
+                {
+                    stockEntities.Add(new StockEntity(stock.StockIndex, stock.CompanyName)
+                    {
+                        CurrentPrice = stock.CurrentPrice,
+                        PreviousPrice = stock.PreviousPrice
+                    });
+                }
+
+                return stockEntities;
+            }
         }
 
         public void AddStock(StockEntity stockEntity) 
@@ -58,7 +62,7 @@ namespace StockGames.Persistance.V1.Services
             using (var context = StockGamesDataContext.GetReadWrite())
             {
                 // TODO ensure no duplicates
-                var stock = new StockModel {StockIndex = stockEntity.StockIndex, CompanyName = stockEntity.CompanyName};
+                var stock = new StockModel {StockIndex = stockEntity.StockIndex, CompanyName = stockEntity.CompanyName, CurrentPrice = stockEntity.CurrentPrice, PreviousPrice = stockEntity.PreviousPrice};
                 var market = context.Markets.First(); // TODO replace me
                 var current = DateTime.Now;
                 var previous = new DateTime(current.Year, current.Month, current.Day);
@@ -91,11 +95,11 @@ namespace StockGames.Persistance.V1.Services
             {
                 var current = DateTime.Now;
                 var stock = (from s in context.Stocks where s.StockIndex == stockEntity.StockIndex select s).Single();
-
+                var market = context.Markets.First(); // TODO replace me
                 var stockSnapshot = new StockSnapshotModel
                 {
                     Stock = stock,
-                    Market = MarketService.TestMarket, // TODO use the actual market
+                    Market = market, // TODO use the actual market
                     Tombstone = current,
                     Price = stockEntity.CurrentPrice
                 };
