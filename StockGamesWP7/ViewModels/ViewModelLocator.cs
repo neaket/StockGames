@@ -12,11 +12,10 @@
   See http://www.galasoft.ch/mvvm
 */
 
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
-namespace StockGames.ViewModel
+namespace StockGames.ViewModels
 {
     /// <summary>
     /// This class contains static references to all the view models in the
@@ -42,14 +41,14 @@ namespace StockGames.ViewModel
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
-            SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<DashboardViewModel>();
         }
 
-        public MainViewModel Main
+        public DashboardViewModel Dashboard
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
+                return ServiceLocator.Current.GetInstance<DashboardViewModel>();
             }
         }
         

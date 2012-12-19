@@ -67,6 +67,7 @@
     </Reference>
     <Reference Include="mscorlib.Extensions" />
     <Reference Include="system.data.linq" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -85,8 +86,9 @@
     <Compile Include="Commands\RequestStockUpdateCmd.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandInvoker.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="Resources\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Views\MainMenuView.xaml.cs">
+      <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\StockEntity.cs" />
     <Compile Include="Models\StockManager.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Persistance\V1\DataModel\MarketModel.cs" />
     <Compile Include="Persistance\V1\DataModel\PortfolioModel.cs" />
     <Compile Include="Persistance\V1\DataModel\StockSnapshotModel.cs" />
+    <Compile Include="Persistance\V1\GameSettings.cs" />
     <Compile Include="Persistance\V1\Migrations\InitialCreate.cs" />
     <Compile Include="Persistance\V1\Migrations\MigrationManager.cs" />
     <Compile Include="Persistance\V1\Services\MarketService.cs" />
@@ -111,9 +114,9 @@
     <Compile Include="Stubs\MessageHandler.cs" />
     <Compile Include="ViewModels\DashboardViewModel.cs" />
     <Compile Include="ViewModels\ListStocksViewModel.cs" />
+    <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\StockViewModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
@@ -132,7 +135,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="Views\MainMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

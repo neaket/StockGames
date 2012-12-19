@@ -11,15 +11,7 @@ namespace StockGames.Views
         {
             InitializeComponent();
 
-            var viewMarketCommand = new RelayCommand(ViewMarket);
-
-            var viewModel = new DashboardViewModel(viewMarketCommand);
-            DataContext = viewModel;
-        }
-
-        private void ViewMarket()
-        {
-            NavigationService.Navigate(new Uri("/Views/ListStocksView.xaml", UriKind.Relative));  
+            DataContext = new DashboardViewModel(); 
         }
     }
 }
