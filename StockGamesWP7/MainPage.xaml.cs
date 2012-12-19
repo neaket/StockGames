@@ -37,17 +37,17 @@ namespace StockGames
             MigrationManager.InitializeDatabase();
 
             _existingGame = true;
-            ViewStocks();
+            ViewDashboard();
         }
 
         private void ContinueGame_Click(object sender, RoutedEventArgs e)
         {
-            ViewStocks();             
+            ViewDashboard();             
         }
 
-        private void ViewStocks()
+        private void ViewDashboard()
         {
-            NavigationService.Navigate(new Uri("/Views/ListStocksView.xaml", UriKind.Relative));                
+            NavigationService.Navigate(new Uri("/Views/DashboardView.xaml", UriKind.Relative));             
         }
     }
 }

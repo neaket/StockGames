@@ -32,14 +32,17 @@ namespace StockGames.Persistance.V1.Migrations
                     return;
                 }
 
-                populateFirstTimeStocks();
+                PopulateFirstTimeStocks();
+                CreateFirstPortfolio();
 
                 updater.DatabaseSchemaVersion = Version;
                 updater.Execute();
             }
         }
 
-        private static void populateFirstTimeStocks()
+        
+
+        private static void PopulateFirstTimeStocks()
         {
             MarketModel market = new MarketModel() { MarketId = "ONE", MarketName = "Initial Market" };
             MarketService.Instance.AddMarket(market);
@@ -102,6 +105,13 @@ namespace StockGames.Persistance.V1.Migrations
             });
 
 
+        }
+
+        private static void CreateFirstPortfolio()
+        {
+            var portfolio = new PortfolioModel {Name = "Practice"};
+
+            PortfolioService.Instance.AddPortfolio(portfolio);
         }
     }
 }

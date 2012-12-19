@@ -28,7 +28,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock x:Name="StockIndex" Text="{Binding Path=Stock.StockIndex, Mode=OneTime}"  Margin="0" FontSize="50" Style="{StaticResource PhoneTextAccentStyle}" Grid.ColumnSpan="2"/>
+                        <TextBlock x:Name="StockIndex" Text="{Binding Path=Stock.StockIndex, Mode=OneTime}"  Margin="0" FontSize="50" Foreground="#1BA1E2" Grid.ColumnSpan="2"/>
                         <TextBlock Text="{Binding Path=Stock.CompanyName, Mode=OneTime}" Margin="0,0,0,15" Grid.Row="1" Grid.ColumnSpan="2" />
 
                         <Grid Grid.Row="2" Width="426" HorizontalAlignment="Left">

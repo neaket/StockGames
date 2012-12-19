@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
 using Microsoft.Phone.Controls;
 using StockGames.MVVM;
 using StockGames.ViewModels;
@@ -30,13 +33,55 @@ namespace StockGames.Views
             base.OnNavigatedTo(e);
 
             _viewModel.RefreshCommand.Execute(null);
-            
-            StockListBox.SelectedItem = _viewModel.SelectedStock; 
+            StockListBox.Visibility = Visibility.Visible;
+            StockListBox.SelectedItem = _viewModel.SelectedStock;
         }
 
         private void ViewStock(StockEntity stockEntity)
         {
-            NavigationService.Navigate(new Uri("/Views/StockView.xaml?StockIndex=" + stockEntity.StockIndex, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Views/StockView.xaml?StockIndex=" + stockEntity.StockIndex,
+                                               UriKind.Relative));
         }
     }
+
+    public class PositiveToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Debug.Assert(value is decimal);
+            decimal from = (decimal) value;
+
+            if (from > 0)
+            {
+                return Visibility.Visible;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
+    public class NegativeToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Debug.Assert(value is decimal);
+            decimal from = (decimal)value;
+
+            if (from < 0)
+            {
+                return Visibility.Visible;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
 }

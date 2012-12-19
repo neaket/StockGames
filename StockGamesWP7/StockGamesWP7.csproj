@@ -79,10 +79,12 @@
     <Compile Include="Models\StockManager.cs" />
     <Compile Include="Persistance\V1\DataContexts\StockGamesDataContext.cs" />
     <Compile Include="Persistance\V1\DataModel\MarketModel.cs" />
+    <Compile Include="Persistance\V1\DataModel\PortfolioModel.cs" />
     <Compile Include="Persistance\V1\DataModel\StockSnapshotModel.cs" />
     <Compile Include="Persistance\V1\Migrations\InitialCreate.cs" />
     <Compile Include="Persistance\V1\Migrations\MigrationManager.cs" />
     <Compile Include="Persistance\V1\Services\MarketService.cs" />
+    <Compile Include="Persistance\V1\Services\PortfolioService.cs" />
     <Compile Include="Persistance\V1\Services\StockService.cs" />
     <Compile Include="Persistance\V1\DataModel\StockModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Stubs\MessageEvent.cs" />
     <Compile Include="Stubs\MessageHandler.cs" />
+    <Compile Include="ViewModels\DashboardViewModel.cs" />
     <Compile Include="ViewModels\ListStocksViewModel.cs" />
     <Compile Include="MVVM\RelayCommand.cs" />
     <Compile Include="ViewModels\StockViewModel.cs" />
