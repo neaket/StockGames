@@ -1,6 +1,6 @@
 ﻿using System;
+using GalaSoft.MvvmLight.Command;
 using Microsoft.Phone.Controls;
-using StockGames.MVVM;
 using StockGames.ViewModels;
 
 namespace StockGames.Views
@@ -11,7 +11,7 @@ namespace StockGames.Views
         {
             InitializeComponent();
 
-            var viewMarketCommand = new RelayCommand(param => ViewMarket());
+            var viewMarketCommand = new RelayCommand(ViewMarket);
 
             var viewModel = new DashboardViewModel(viewMarketCommand);
             DataContext = viewModel;

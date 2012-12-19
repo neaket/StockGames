@@ -1,9 +1,7 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
 using StockGames.Controllers;
-using StockGames.MVVM;
 using StockGames.Models;
-using StockGames.Persistance.V1.Services;
 
 namespace StockGames.ViewModels
 {
@@ -17,7 +15,7 @@ namespace StockGames.ViewModels
         {
 
             Stock = StocksManager.Instance.GetStock(stockIndex);
-            UpdateCommand = new RelayCommand(param => Update());
+            UpdateCommand = new RelayCommand(Update);
         }
 
         private void Update()

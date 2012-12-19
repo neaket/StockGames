@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using GalaSoft.MvvmLight.Command;
 using Microsoft.Phone.Controls;
-using StockGames.MVVM;
 using StockGames.ViewModels;
 using System.Windows.Navigation;
 using StockGames.Models;
@@ -19,11 +19,7 @@ namespace StockGames.Views
         {
             InitializeComponent();
 
-            _viewModel = new ListStocksViewModel(new RelayCommand(param =>
-                {
-                    Debug.Assert(param is StockEntity);
-                    ViewStock(param as StockEntity);
-                }));
+            _viewModel = new ListStocksViewModel(new RelayCommand<StockEntity>(ViewStock));
 
             DataContext = _viewModel;
         }
