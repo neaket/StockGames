@@ -1,38 +1,47 @@
 ﻿using System;
 using System.Windows.Input;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using StockGames.Models;
 using System.Collections.ObjectModel;
 
 namespace StockGames.ViewModels
 {
-    public class ListStocksViewModel
+    public class ListStocksViewModel : ViewModelBase
     {
         public ObservableCollection<StockEntity> Stocks { get; set; }
-        public ICommand RefreshCommand { get; private set; }
-        private ICommand ViewStockCommand { get; set; }
 
-        public StockEntity SelectedStock { get { return null; } set { if (value != null) ViewStockCommand.Execute(value); } }
+        private StockEntity _selectedStock;
+        public StockEntity SelectedStock 
+        { 
+            get { return _selectedStock; } 
+            set
+            {
+                _selectedStock = value; 
+                if (_selectedStock != null) ViewStock();
+                
+            } 
+        }
 
-        public ListStocksViewModel(ICommand viewStockCommand)
+        public ListStocksViewModel()
         {
-            if (viewStockCommand == null) 
-                throw new ArgumentNullException("viewStockCommand");
-
-            RefreshCommand = new RelayCommand(LoadStocks);
-            ViewStockCommand = viewStockCommand;
-            Stocks = new ObservableCollection<StockEntity>();
+            
             LoadStocks();
         }
 
         private void LoadStocks()
         {
-            Stocks.Clear();
+            Stocks = new ObservableCollection<StockEntity>(StocksManager.Instance.GetStocks());
+        }
 
-            foreach (StockEntity stock in StocksManager.Instance.GetStocks())
-            {
-                Stocks.Add(stock);
-            }
+        private void ViewStock()
+        {
+            var uri = new Uri("/Views/StockView.xaml?StockIndex=" + SelectedStock.StockIndex, UriKind.Relative);
+            Messenger.Default.Send(uri, "Navigate");
+            SelectedStock = null;
+            RaisePropertyChanged("SelectedStock");
+            
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockGames;
-using StockGames.Persistance.V1.DataContexts;
+using StockGames.Persistence.V1.DataContexts;
 using StockGames.ViewModels;
 
 namespace StockGames.Tests.ViewModels
@@ -34,7 +34,7 @@ namespace StockGames.Tests.ViewModels
         [TestMethod]
         public void TestViewModelSetup()
         {
-            ListStocksViewModel viewModel = new ListStocksViewModel(null);
+            ListStocksViewModel viewModel = new ListStocksViewModel();
             Assert.IsTrue(viewModel.Stocks != null);
 
             foreach (var stock in viewModel.Stocks)

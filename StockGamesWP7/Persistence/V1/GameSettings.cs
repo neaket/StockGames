@@ -1,9 +1,8 @@
 ﻿using System.IO;
 using System.IO.IsolatedStorage;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
-namespace StockGames.Persistance.V1
+namespace StockGames.Persistence.V1
 {
     [DataContract]
     public class GameSettings

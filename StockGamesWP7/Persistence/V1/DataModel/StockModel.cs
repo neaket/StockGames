@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.Linq.Mapping;
 
-namespace StockGames.Persistance.V1.DataModel
+namespace StockGames.Persistence.V1.DataModel
 {
     [Table]
     public class StockModel

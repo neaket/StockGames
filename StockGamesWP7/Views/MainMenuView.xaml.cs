@@ -1,10 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Windows;
+using System.Diagnostics;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Phone.Controls;
-using StockGames.Persistance.V1;
-using StockGames.Persistance.V1.Migrations;
 using StockGames.ViewModels;
 
 namespace StockGames.Views

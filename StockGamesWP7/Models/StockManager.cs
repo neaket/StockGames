@@ -1,7 +1,7 @@
 ﻿﻿using System;
 ﻿using System.Collections.Generic;
 ﻿using System.Linq;
-﻿using StockGames.Persistance.V1.Services;
+﻿using StockGames.Persistence.V1.Services;
 
 namespace StockGames.Models
 {
@@ -31,9 +31,9 @@ namespace StockGames.Models
             {
                 for (int i = 0; i < stocks.Length; i++)
                 {
-                    if (!_stocks.ContainsKey(stocks[i].StockIndex)) continue;
-                    WeakReference tempStock;
                     StockEntity stockEntity = null;
+                    WeakReference tempStock;
+                        
                     var result = _stocks.TryGetValue(stocks[i].StockIndex, out tempStock);
 
                     if (result)

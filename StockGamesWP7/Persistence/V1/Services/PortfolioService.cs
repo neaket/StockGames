@@ -1,8 +1,7 @@
-﻿using System.Diagnostics;
-using StockGames.Persistance.V1.DataContexts;
-using StockGames.Persistance.V1.DataModel;
+﻿using StockGames.Persistence.V1.DataContexts;
+using StockGames.Persistence.V1.DataModel;
 
-namespace StockGames.Persistance.V1.Services
+namespace StockGames.Persistence.V1.Services
 {
     public class PortfolioService
     {

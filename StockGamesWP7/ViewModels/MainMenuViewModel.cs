@@ -1,59 +1,59 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using StockGames.Persistance.V1;
-using StockGames.Persistance.V1.Migrations;
+using StockGames.Persistence.V1;
+using StockGames.Persistence.V1.Migrations;
 
 namespace StockGames.ViewModels
 {
     public class MainMenuViewModel : ViewModelBase
     {
-        public Visibility ContinueVisiblity { get; private set; }
+        private Visibility _continueVisibility;
+        public Visibility ContinueVisibility { 
+            get { return _continueVisibility; }
+            private set 
+            { 
+                _continueVisibility = value;
+                RaisePropertyChanged("ContinueVisibility");
+            } 
+        }
         public ICommand ContinueGameCommand { get; private set; }
         public ICommand NewGameCommand { get; private set; }
         public ICommand AboutCommand { get; private set; }
-        private bool showProgressBar;
+        private bool _showProgressBar;
         public bool ShowProgressBar { 
             get
             {
-                return showProgressBar;
+                return _showProgressBar;
             } 
             set { 
-                showProgressBar = value;
+                _showProgressBar = value;
                 RaisePropertyChanged("ShowProgressBar");
             }
         }
 
+
         public MainMenuViewModel()
         {
-            ContinueVisiblity = GameSettings.Instance.ExistingGame ? Visibility.Visible : Visibility.Collapsed;
-
+            ContinueVisibility = GameSettings.Instance.ExistingGame ? Visibility.Visible : Visibility.Collapsed;
+            ShowProgressBar = false;
             ContinueGameCommand = new RelayCommand(ViewDashboard);
             NewGameCommand = new RelayCommand(NewGame);
             AboutCommand = new RelayCommand(ViewAbout);
-            ShowProgressBar = false;
         }
 
         private void ViewDashboard()
         {
-            Messenger.Default.Send<Uri>(new Uri("/Views/DashboardView.xaml", UriKind.Relative), "Navigate");
+            Messenger.Default.Send(new Uri("/Views/DashboardView.xaml", UriKind.Relative), "Navigate");
         }
 
         private void ViewAbout()
         {
-            Messenger.Default.Send<Uri>(new Uri("/Views/AboutView.xaml", UriKind.Relative), "Navigate");
+            Messenger.Default.Send(new Uri("/Views/AboutView.xaml", UriKind.Relative), "Navigate");
         }
 
         private void NewGame()
@@ -85,6 +85,7 @@ namespace StockGames.ViewModels
         void NewGameWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             ShowProgressBar = false;
+            ContinueVisibility = Visibility.Visible;
             ViewDashboard();
         }
     }

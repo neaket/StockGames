@@ -1,6 +1,6 @@
-﻿using StockGames.Persistance.V1.DataContexts;
+﻿using StockGames.Persistence.V1.DataContexts;
 
-namespace StockGames.Persistance.V1.Migrations
+namespace StockGames.Persistence.V1.Migrations
 {
     public static class MigrationManager
     {

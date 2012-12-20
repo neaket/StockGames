@@ -8,8 +8,6 @@ namespace StockGames.Views
 {
     public partial class StockView : PhoneApplicationPage
     {
-        StockViewModel _viewModel;
-
         public StockView()
         {
             InitializeComponent();
@@ -19,17 +17,20 @@ namespace StockGames.Views
         {
             base.OnNavigatedTo(e);
             var parameters = NavigationContext.QueryString;
-                        
-            _viewModel = new StockViewModel(parameters["StockIndex"]);
+            var stockIndex = parameters["StockIndex"];
 
-            DataContext = _viewModel;
+            var vm = DataContext as StockViewModel;
+            Debug.Assert(vm != null, "View Model Must Be Set");
+
+            vm.LoadStockCommand.Execute(stockIndex);
         }
 
         private void Update_Click(object sender, EventArgs e)
         {
-            Debug.Assert(_viewModel != null, "View Model Must Be Set");
+            var vm = DataContext as StockViewModel;
+            Debug.Assert(vm != null, "View Model Must Be Set");
 
-            _viewModel.UpdateCommand.Execute(null);
+            vm.UpdateCommand.Execute(null);
         }
     }
 }

@@ -2,41 +2,18 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
-using GalaSoft.MvvmLight.Command;
 using Microsoft.Phone.Controls;
-using StockGames.ViewModels;
-using System.Windows.Navigation;
-using StockGames.Models;
 
 namespace StockGames.Views
 {
     public partial class ListStocksView : PhoneApplicationPage
     {
-        private readonly ListStocksViewModel _viewModel;
 
         public ListStocksView()
         {
             InitializeComponent();
-
-            _viewModel = new ListStocksViewModel(new RelayCommand<StockEntity>(ViewStock));
-
-            DataContext = _viewModel;
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-
-            _viewModel.RefreshCommand.Execute(null);
-            StockListBox.Visibility = Visibility.Visible;
-            StockListBox.SelectedItem = _viewModel.SelectedStock;
-        }
-
-        private void ViewStock(StockEntity stockEntity)
-        {
-            NavigationService.Navigate(new Uri("/Views/StockView.xaml?StockIndex=" + stockEntity.StockIndex,
-                                               UriKind.Relative));
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿using System.Data.Linq;
-using StockGames.Persistance.V1.DataModel;
+using StockGames.Persistence.V1.DataModel;
 
-namespace StockGames.Persistance.V1.DataContexts
+namespace StockGames.Persistence.V1.DataContexts
 {
     public class StockGamesDataContext : DataContext
     {
@@ -26,14 +26,6 @@ namespace StockGames.Persistance.V1.DataContexts
             get
             {
                 return GetTable<StockModel>();
-            }
-        }
-
-        public Table<MarketModel> Markets
-        {
-            get
-            {
-                return GetTable<MarketModel>();
             }
         }
 

@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using StockGames.Persistance.V1.Services;
+using StockGames.Persistence.V1.Services;
 using StockGames.Stubs;
 using StockGames.Models;
 using StockGames.Controllers;

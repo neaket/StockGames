@@ -42,6 +42,9 @@ namespace StockGames.ViewModels
             ////}
 
             SimpleIoc.Default.Register<DashboardViewModel>();
+            SimpleIoc.Default.Register<StockViewModel>();
+            SimpleIoc.Default.Register<ListStocksViewModel>();
+            
         }
 
         public DashboardViewModel Dashboard
@@ -49,6 +52,22 @@ namespace StockGames.ViewModels
             get
             {
                 return ServiceLocator.Current.GetInstance<DashboardViewModel>();
+            }
+        }
+
+        public StockViewModel Stock
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<StockViewModel>();
+            }
+        }
+
+        public ListStocksViewModel ListStocks
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ListStocksViewModel>();
             }
         }
         

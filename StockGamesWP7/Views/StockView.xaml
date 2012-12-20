@@ -12,7 +12,8 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True" d:DataContext="{d:DesignData /SampleData/StockViewModelSampleData.xaml}">
+    shell:SystemTray.IsVisible="True" d:DataContext="{d:DesignData /SampleData/StockViewModelSampleData.xaml}"
+    DataContext="{Binding Stock, Source={StaticResource Locator}}">
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <controls:Pivot Title="View Stock">
             <!--Pivot item one-->

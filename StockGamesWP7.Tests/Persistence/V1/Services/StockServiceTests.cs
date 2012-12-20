@@ -1,12 +1,11 @@
 ﻿using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockGames.Persistance.V1.DataContexts;
-using StockGames.Persistance.V1.Services;
 using StockGames.Models;
 using System.Linq;
-using StockGames.Persistance.V1.DataModel;
+using StockGames.Persistence.V1.DataContexts;
+using StockGames.Persistence.V1.Services;
 
-namespace StockGames.Tests.Persistance.V1.Services
+namespace StockGames.Tests.Persistence.V1.Services
 {
     [TestClass]
     [Tag("Persistance")]
@@ -23,10 +22,6 @@ namespace StockGames.Tests.Persistance.V1.Services
                     context.CreateDatabase();     
                 }
             }
-
-            // TODO remove me
-            MarketModel market = new MarketModel() { MarketId = "ONE", MarketName = "Initial Market" };
-            MarketService.Instance.AddMarket(market);
         }
         
         [TestMethod]

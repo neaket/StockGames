@@ -11,7 +11,7 @@
 	FontSize="{StaticResource PhoneFontSizeNormal}"
 	Foreground="{StaticResource PhoneForegroundBrush}"
 	SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
-	shell:SystemTray.IsVisible="True">
+	shell:SystemTray.IsVisible="True" >
     
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot" Background="Transparent">
@@ -36,7 +36,7 @@
 			</Canvas>
             
 			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="Continue Game" Visibility="{Binding Path=ConinueVisibility}" Width="250"  Padding="15" HorizontalAlignment="Center" Command="{Binding ContinueGameCommand}" />
+                <Button Content="Continue Game" Visibility="{Binding ContinueVisibility}" Width="250"  Padding="15" HorizontalAlignment="Center" Command="{Binding ContinueGameCommand}" />
                 <Button Content="New Game" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding NewGameCommand}" />
                 <Button Content="About" Padding="15" Width="250" Command="{Binding AboutCommand}" />
 			</StackPanel>

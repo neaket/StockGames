@@ -2,13 +2,12 @@
 using System.Data.Linq.Mapping;
 using System.Data.Linq;
 
-namespace StockGames.Persistance.V1.DataModel
+namespace StockGames.Persistence.V1.DataModel
 {
     [Table]
     public class StockSnapshotModel
     {
         private EntityRef<StockModel> _stock;
-        private EntityRef<MarketModel> _market;
         
         [Column(
            IsPrimaryKey = true,
@@ -33,32 +32,6 @@ namespace StockGames.Persistance.V1.DataModel
             {
                 StockIndex = value.StockIndex;
                 _stock.Entity = value;
-            }
-        }
-
-        [Column(
-           IsPrimaryKey = true,
-           IsDbGenerated = false,
-           DbType = "NVARCHAR(10) NOT NULL",
-           CanBeNull = false,
-           AutoSync = AutoSync.OnInsert)]
-        private string MarketId { get; set; }
-        
-        [Association(
-            Name = "FK_StockSnapshots_Market",
-            IsForeignKey = true,
-            Storage = "_market",
-            ThisKey = "MarketId",
-            OtherKey = "MarketId")]
-        public MarketModel Market {
-            get
-            {
-                return _market.Entity;
-            }
-            set
-            {
-                MarketId = value.MarketId;
-                _market.Entity = value;
             }
         }
 

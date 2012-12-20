@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockGames.Persistance.V1.DataContexts;
+using StockGames.Persistence.V1.DataContexts;
 using StockGames.Views;
 
 namespace StockGames.Tests.Views
