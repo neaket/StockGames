@@ -73,18 +73,15 @@ namespace StockGames.CommunicationModule
                     request2.ContentType = "text/xml";
                     request2.Credentials = serverCredentials;
 
-                    System.Diagnostics.Debug.WriteLine("Test1");
                     request2.BeginGetRequestStream(new AsyncCallback(beginGetSimulationCallback), request2);
                 }
                 else if (response.StatusCode == HttpStatusCode.OK && CommunicationState == SimulationStarted)
                 {
-                    System.Diagnostics.Debug.WriteLine("Test2");
                     HttpWebRequest request3 = WebRequest.CreateHttp(serverURI + modelName + "?sim=status") as HttpWebRequest;
                     request3.BeginGetResponse(new AsyncCallback(beginGetSimulationStatusCallback), request3);
                 }
                 else if (response.StatusCode == HttpStatusCode.OK && CommunicationState == SimulationEnded)
                 {
-                    System.Diagnostics.Debug.WriteLine("Test3");
                     HttpWebRequest request4 = WebRequest.CreateHttp(serverURI + modelName + "/results");
                     request4.BeginGetResponse(new AsyncCallback(beginGetZipResponseStreamCallback), request4);
                 }
@@ -129,7 +126,6 @@ namespace StockGames.CommunicationModule
                 using (var fileStream = new IsolatedStorageFileStream("StockGamesModel/SimStatus.xml",
                     FileMode.OpenOrCreate, storage))
                 {
-                    System.Diagnostics.Debug.WriteLine("Got Here CREATING XML");
                     response.GetResponseStream().CopyTo(fileStream);
                 }
             }
@@ -181,8 +177,6 @@ namespace StockGames.CommunicationModule
                         string result;
                         for(string test = reader.ReadLine(); test != null; test = reader.ReadLine())
                         {
-                            System.Diagnostics.Debug.WriteLine("Got Here PARSING");
-                            System.Diagnostics.Debug.WriteLine(test);
                             if (test.Contains("DONE")) { result = "DONE"; return result; }
                             else if (test.Contains("IDLE")) { result = "IDLE"; return result; }
                             else if (test.Contains("INIT")) { result = "INIT"; return result; }
@@ -233,8 +227,6 @@ namespace StockGames.CommunicationModule
                             }
                             arrayIndex = 0;
                         }
-                        
-                        System.Diagnostics.Debug.WriteLine(reader.ReadLine());
                     }
                 }
             }
