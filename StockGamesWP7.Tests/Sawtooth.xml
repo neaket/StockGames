@@ -8,7 +8,7 @@
 		<File ftype="hdr" class="SawtoothType">SawtoothType.h</File>
 	</Files>
   <Options>
-    <TimeOp>00:00:00:10</TimeOp>
+    <TimeOp>00:06:00:00</TimeOp>
     <ParsingOp>false</ParsingOp>
   </Options>
 	<DCDpp>

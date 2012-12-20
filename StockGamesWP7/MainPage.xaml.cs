@@ -19,21 +19,18 @@ namespace StockGames
 {
     public partial class MainPage : PhoneApplicationPage
     {
-
-        CommunicationProtocol communication;
-        MessageCoder mc;
+        ServerCommunication com;
         // Constructor
         public MainPage()
         {
             InitializeComponent();
-            communication = CommunicationProtocol.Instance;
-            mc = MessageCoder.Instance;
+            com = ServerCommunication.GetInstance;
         }
 
         private void ViewStocks_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/ListStocksView.xaml", UriKind.Relative));
-            ServerCommunication.StartSimulation();
+            com.StartSimulation();
         }
     }
 }

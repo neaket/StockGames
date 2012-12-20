@@ -66,18 +66,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CommunicationModule\MessageCoder.cs" />
-    <Compile Include="CommunicationModule\MessageEvent.cs" />
-    <Compile Include="CommunicationModule\MessageEventArgs.cs" />
-    <Compile Include="CommunicationModule\MessageEventHandler.cs" />
     <Compile Include="CommunicationModule\ServerCommunication.cs" />
     <Compile Include="CommunicationModule\CommunicationProtocol.cs" />
-    <Compile Include="CommunicationModule\MessageCoder.cs" />
-    <Compile Include="CommunicationModule\MessageHandler.cs" />
-    <Compile Include="CommunicationModule\ServerMessage.cs" />
     <Compile Include="Commands\IStockCommand.cs" />
     <Compile Include="Commands\PushStockChangesCmd.cs" />
     <Compile Include="Commands\RequestStockUpdateCmd.cs" />
+    <Compile Include="CommunicationModule\ServerResponse.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandInvoker.cs" />
     <Compile Include="MainPage.xaml.cs">

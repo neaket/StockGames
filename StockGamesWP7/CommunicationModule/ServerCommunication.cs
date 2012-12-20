@@ -16,42 +16,59 @@ using System.Text;
 
 namespace StockGames.CommunicationModule
 {
-    public static class ServerCommunication
+    public sealed class ServerCommunication
     {
+        private readonly static ServerCommunication instance = new ServerCommunication();
+
         private const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
-        private const string modelName = "StockGamesTest3";
+        private const string modelName = "TestUnit";
         private const string userString = ""; //TODO create a way to create a testing framework unique us
 
-        private static char SimulationNotStarted = 'n';
-        private static char SimulationStarted = 's';
-        private static char SimulationEnded = 'e';
-        private static char SimulationResultsStored = 'r';
+        private const char SimulationNotStarted = 'n';
+        private const char SimulationStarted = 's';
+        private const char SimulationEnded = 'e';
+        private const char SimulationResultsStored = 'r';
 
-        private static char RequestState = SimulationNotStarted;
+        private static char CommunicationState = SimulationNotStarted;
 
-        private static NetworkCredential serverCredentials = new NetworkCredential("andrew", "andrew");
+        private readonly NetworkCredential serverCredentials = new NetworkCredential("andrew", "andrew");
 
-        public static void StartSimulation()
+        private ServerCommunication() 
         {
-            HttpWebRequest request = WebRequest.CreateHttp(serverURI + "/simulation");
+            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
+
+            if (!storage.DirectoryExists("StockGamesModel"))
+            {
+                storage.CreateDirectory("StockGamesModel");
+            }
+        }
+
+        public static ServerCommunication GetInstance
+        {
+            get { return instance; }
+        }
+
+        public void StartSimulation()
+        {
+            HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName);
             request.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request);
         }
 
-        public static void SimulationStatusRequest()
+        public void SimulationStatusRequest()
         {
-            HttpWebRequest request = WebRequest.CreateHttp(serverURI + "?sim=status");
+            HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName + "?sim=status");
             request.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request);
         }
-
-        private static void getStatusCodeCallback(IAsyncResult result)
+         
+        private void getStatusCodeCallback(IAsyncResult result)
         {
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
             if (request != null)
             {
                 HttpWebResponse response = request.EndGetResponse(result) as HttpWebResponse;
-                if (response.StatusCode == HttpStatusCode.OK && RequestState == SimulationNotStarted)
+                if (response.StatusCode == HttpStatusCode.OK && CommunicationState == SimulationNotStarted)
                 {
-                    HttpWebRequest request2 = WebRequest.CreateHttp(serverURI + "/simulation");
+                    HttpWebRequest request2 = WebRequest.CreateHttp(serverURI + modelName + "/simulation");
                     request2.Method = "PUT";
                     request2.ContentType = "text/xml";
                     request2.Credentials = serverCredentials;
@@ -59,26 +76,22 @@ namespace StockGames.CommunicationModule
                     System.Diagnostics.Debug.WriteLine("Test1");
                     request2.BeginGetRequestStream(new AsyncCallback(beginGetSimulationCallback), request2);
                 }
-                else if (response.StatusCode == HttpStatusCode.OK && RequestState == SimulationStarted)
+                else if (response.StatusCode == HttpStatusCode.OK && CommunicationState == SimulationStarted)
                 {
                     System.Diagnostics.Debug.WriteLine("Test2");
-                    HttpWebRequest request3 = WebRequest.CreateHttp(serverURI + "?sim=status") as HttpWebRequest;
-                    request3.BeginGetRequestStream(new AsyncCallback(beginGetSimulationStatusCallback), request3);
+                    HttpWebRequest request3 = WebRequest.CreateHttp(serverURI + modelName + "?sim=status") as HttpWebRequest;
+                    request3.BeginGetResponse(new AsyncCallback(beginGetSimulationStatusCallback), request3);
                 }
-                else if (response.StatusCode == HttpStatusCode.OK && RequestState == SimulationEnded)
+                else if (response.StatusCode == HttpStatusCode.OK && CommunicationState == SimulationEnded)
                 {
                     System.Diagnostics.Debug.WriteLine("Test3");
-                    request.BeginGetRequestStream(new AsyncCallback(beginGetZipResponseStreamCallback), request);
-                }
-                else if (response.StatusCode == HttpStatusCode.OK && RequestState == SimulationResultsStored)
-                {
-                    System.Diagnostics.Debug.WriteLine("Test4");
-                    //TODO: Code to update goes here
+                    HttpWebRequest request4 = WebRequest.CreateHttp(serverURI + modelName + "/results");
+                    request4.BeginGetResponse(new AsyncCallback(beginGetZipResponseStreamCallback), request4);
                 }
             }
         }
 
-        private static void beginGetSimulationCallback(IAsyncResult result)
+        private void beginGetSimulationCallback(IAsyncResult result)
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
             
@@ -101,12 +114,11 @@ namespace StockGames.CommunicationModule
                 }
             }
             putStream.Close();
-            RequestState = SimulationStarted;
+            CommunicationState = SimulationStarted;
             SimulationStatusRequest();
-            //request.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), result);
         }
 
-        private static void beginGetSimulationStatusCallback(IAsyncResult result)
+        private void beginGetSimulationStatusCallback(IAsyncResult result)
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
 
@@ -114,7 +126,8 @@ namespace StockGames.CommunicationModule
             if (request != null)
             {
                 WebResponse response = request.EndGetResponse(result);
-                using (IsolatedStorageFileStream fileStream = storage.CreateFile("StockGamesModel/SimStatus.xml"))
+                using (var fileStream = new IsolatedStorageFileStream("StockGamesModel/SimStatus.xml",
+                    FileMode.OpenOrCreate, storage))
                 {
                     System.Diagnostics.Debug.WriteLine("Got Here CREATING XML");
                     response.GetResponseStream().CopyTo(fileStream);
@@ -124,17 +137,16 @@ namespace StockGames.CommunicationModule
             switch (s)
             {
                 case "DONE":
-                    RequestState = SimulationEnded;
-                    request.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request);
+                    CommunicationState = SimulationEnded;
+                    HttpWebRequest request2 = WebRequest.CreateHttp(serverURI + modelName);
+                    request2.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request2);
                     break;
                 default:
-                    System.Diagnostics.Debug.WriteLine("Got Here2");
-                    request.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request);
                     break;
             }
         }
 
-        private static void beginGetZipResponseStreamCallback(IAsyncResult result)
+        private void beginGetZipResponseStreamCallback(IAsyncResult result)
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
 
@@ -151,10 +163,11 @@ namespace StockGames.CommunicationModule
                     }
                 }
             }
-            RequestState = SimulationResultsStored;
+            CommunicationState = SimulationResultsStored;
+            ReadSimulationOutput();
         }
 
-        public static string ParseXMLFile()
+        public string ParseXMLFile()
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
             
@@ -166,10 +179,10 @@ namespace StockGames.CommunicationModule
                     using (StreamReader reader = new StreamReader(ISStream))
                     {
                         string result;
-                        while (true)
+                        for(string test = reader.ReadLine(); test != null; test = reader.ReadLine())
                         {
                             System.Diagnostics.Debug.WriteLine("Got Here PARSING");
-                            string test = reader.ReadLine();
+                            System.Diagnostics.Debug.WriteLine(test);
                             if (test.Contains("DONE")) { result = "DONE"; return result; }
                             else if (test.Contains("IDLE")) { result = "IDLE"; return result; }
                             else if (test.Contains("INIT")) { result = "INIT"; return result; }
@@ -182,6 +195,50 @@ namespace StockGames.CommunicationModule
                 }
             }
             return "ERR";
+        }
+
+        public ServerResponse ReadSimulationOutput()
+        {
+            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
+            ServerResponse response = new ServerResponse(0, 0);
+
+            if (storage.FileExists("StockGamesModel/SimulationResults.zip"))
+            {
+                using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream(
+                        "StockGamesModel/SimulationResults.zip", FileMode.Open, storage))
+                {
+                    UnZipper un = new UnZipper(ISStream);
+                    foreach (String filename in un.GetFileNamesInZip())
+                    {
+                        Stream stream = un.GetFileStream(filename);
+                        StreamReader reader = new StreamReader(stream);
+                        
+                        string[] lines = reader.ReadToEnd().Split('\n');
+                        foreach (string line in lines)
+                        {
+                            string[] words = line.Split(' ');
+                            int arrayIndex = 0;
+                            foreach(string word in words)
+                            {
+                                if (word.Equals("outtime"))
+                                {
+                                    response.Time = Int32.Parse(words[arrayIndex + 1]);
+                                }
+                                if (word.Equals("outstockprice"))
+                                {
+                                    response.StockPrice = Int32.Parse(words[arrayIndex + 1]);
+                                    //TODO: information for the update is here
+                                }
+                                arrayIndex += 1;
+                            }
+                            arrayIndex = 0;
+                        }
+                        
+                        System.Diagnostics.Debug.WriteLine(reader.ReadLine());
+                    }
+                }
+            }
+            return response;
         }
     }
 }
