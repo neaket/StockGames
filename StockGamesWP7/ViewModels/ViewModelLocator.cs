@@ -44,7 +44,6 @@ namespace StockGames.ViewModels
             SimpleIoc.Default.Register<DashboardViewModel>();
             SimpleIoc.Default.Register<StockViewModel>();
             SimpleIoc.Default.Register<ListStocksViewModel>();
-            
         }
 
         public DashboardViewModel Dashboard

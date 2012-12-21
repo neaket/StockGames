@@ -27,9 +27,7 @@ namespace StockGames.ViewModels
 
         private void LoadStock(string stockIndex)
         {
-            Stock = StocksManager.Instance.GetStock(stockIndex);
+            Stock = StockManager.Instance.GetStock(stockIndex);
         }
-
-        
     }
 }

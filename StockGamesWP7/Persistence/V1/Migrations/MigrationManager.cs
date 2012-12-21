@@ -4,12 +4,15 @@ namespace StockGames.Persistence.V1.Migrations
 {
     public static class MigrationManager
     {
-        private static object _lock = new object();
-        public static void InitializeDatabase()
+        private static readonly object Lock = new object();
+        
+        /// <summary>
+        /// This method should be called to create the DataContext or to upgrade an existing DataContext to the latest Migration.
+        /// </summary>
+        public static void InitializeDataContext()
         {
-            lock (_lock)
+            lock (Lock)
             {
-
                 using (var context = StockGamesDataContext.GetReadWrite())
                 {
                     if (!context.DatabaseExists())
@@ -23,11 +26,13 @@ namespace StockGames.Persistence.V1.Migrations
             }
         }
 
-        public static void IfExistsRemoveDatabase()
+        /// <summary>
+        /// This method deletes an existing DataContext if it exists.
+        /// </summary>
+        public static void IfExistsRemoveDataContext()
         {
-            lock (_lock)
+            lock (Lock)
             {
-             
                 using (var context = StockGamesDataContext.GetReadWrite())
                 {
                     if (context.DatabaseExists())
@@ -35,7 +40,6 @@ namespace StockGames.Persistence.V1.Migrations
                         context.DeleteDatabase();
                     }
                 }
-
             }
         }
     }

@@ -5,12 +5,17 @@
 
 namespace StockGames.Models
 {
-    public class StocksManager
+    /// <summary>
+    /// The StockManager is used to perform all Stock specific operations.  The StockManager also keeps a WeakReference to
+    /// all currently used StockEntities.  Which allows multiple ViewModel's to share the same data.  If a StockEntity is not
+    /// referenced by other code, then it will be properly garbage collected.   
+    /// </summary>
+    public class StockManager
     {
         private readonly Dictionary<string, WeakReference> _stocks = new Dictionary<string, WeakReference>();
 
-        private static readonly StocksManager instance = new StocksManager();
-        public static StocksManager Instance
+        private static readonly StockManager instance = new StockManager();
+        public static StockManager Instance
         {
             get
             {
@@ -18,10 +23,12 @@ namespace StockGames.Models
             }
         }
 
-        private StocksManager()
+        private StockManager()
         {
         }
 
+
+        /// <returns>A IEnumerable of All StockEntities currently persisted in the App.</returns>
         public IEnumerable<StockEntity> GetStocks()
         {
             // TODO optimize (should use a filter and should not need two lists;
@@ -38,6 +45,8 @@ namespace StockGames.Models
 
                     if (result)
                     {
+                        // If a weakreference exists, attempt to get a strong reference to the StockEntity
+                        // Note: the garbage collector can run at any time collecting the StockEntity
                         stockEntity = tempStock.Target as StockEntity;
                     }
 
@@ -72,6 +81,8 @@ namespace StockGames.Models
                 
                 if (result)
                 {
+                    // If a weakreference exists, attempt to get a strong reference to the StockEntity
+                    // Note: the garbage collector can run at any time collecting the StockEntity
                     stockEntity = tempStock.Target as StockEntity;
                 }
 

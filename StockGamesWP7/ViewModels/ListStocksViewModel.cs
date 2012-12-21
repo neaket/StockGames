@@ -18,9 +18,8 @@ namespace StockGames.ViewModels
             get { return _selectedStock; } 
             set
             {
-                _selectedStock = value; 
+                _selectedStock = value;
                 if (_selectedStock != null) ViewStock();
-                
             } 
         }
 
@@ -32,7 +31,7 @@ namespace StockGames.ViewModels
 
         private void LoadStocks()
         {
-            Stocks = new ObservableCollection<StockEntity>(StocksManager.Instance.GetStocks());
+            Stocks = new ObservableCollection<StockEntity>(StockManager.Instance.GetStocks());
         }
 
         private void ViewStock()
@@ -41,7 +40,6 @@ namespace StockGames.ViewModels
             Messenger.Default.Send(uri, "Navigate");
             SelectedStock = null;
             RaisePropertyChanged("SelectedStock");
-            
         }
     }
 }

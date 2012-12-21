@@ -4,7 +4,6 @@ using System.Data.Linq.Mapping;
 
 namespace StockGames.Models
 {
-    [Table]
     public class StockEntity :INotifyPropertyChanged
     {
         #region Private Variables

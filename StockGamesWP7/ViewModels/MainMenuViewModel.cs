@@ -36,10 +36,9 @@ namespace StockGames.ViewModels
             }
         }
 
-
         public MainMenuViewModel()
         {
-            ContinueVisibility = GameSettings.Instance.ExistingGame ? Visibility.Visible : Visibility.Collapsed;
+            ContinueVisibility = GameState.Instance.ExistingGame ? Visibility.Visible : Visibility.Collapsed;
             ShowProgressBar = false;
             ContinueGameCommand = new RelayCommand(ViewDashboard);
             NewGameCommand = new RelayCommand(NewGame);
@@ -58,7 +57,7 @@ namespace StockGames.ViewModels
 
         private void NewGame()
         {
-            if (GameSettings.Instance.ExistingGame)
+            if (GameState.Instance.ExistingGame)
             {
                 var result =
                     MessageBox.Show("Are you sure you want to start a new game?  Your existing game will be deleted.", "Confirm", MessageBoxButton.OKCancel);
@@ -75,11 +74,11 @@ namespace StockGames.ViewModels
 
         private void NewGameWorker_DoWork(object sender, DoWorkEventArgs doWorkEventArgs)
         {
-            MigrationManager.IfExistsRemoveDatabase();
-            MigrationManager.InitializeDatabase();
+            MigrationManager.IfExistsRemoveDataContext();
+            MigrationManager.InitializeDataContext();
 
-            GameSettings.Instance.ExistingGame = true;
-            GameSettings.Instance.Save();
+            GameState.Instance.ExistingGame = true;
+            GameState.Instance.Save();
         }
 
         void NewGameWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

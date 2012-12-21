@@ -95,7 +95,7 @@
     <Compile Include="Persistence\V1\DataContexts\StockGamesDataContext.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioModel.cs" />
     <Compile Include="Persistence\V1\DataModel\StockSnapshotModel.cs" />
-    <Compile Include="Persistence\V1\GameSettings.cs" />
+    <Compile Include="Persistence\V1\GameState.cs" />
     <Compile Include="Persistence\V1\Migrations\InitialCreate.cs" />
     <Compile Include="Persistence\V1\Migrations\MigrationManager.cs" />
     <Compile Include="Persistence\V1\Services\PortfolioService.cs" />
@@ -170,7 +170,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\refresh.png" />
-    <Content Include="MVVMLight.Nuget.Readme.txt" />
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />

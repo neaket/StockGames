@@ -12,10 +12,18 @@ namespace StockGames.Persistence.V1.DataContexts
             : base(dbConnectionString)
         { }
 
+        /// <summary>
+        /// Intended for ReadOnly DataContext operations.
+        /// </summary> 
+        /// <returns>A new Readonly DataContext.</returns>
         public static StockGamesDataContext GetReadOnly() {
             return new StockGamesDataContext(ReadOnlyDbConnectionString);
         }
 
+        /// <summary>
+        /// Intended for Write DataContext operations.  If you do not need to Write, use <see cref="GetReadOnly()"/>
+        /// </summary> 
+        /// <returns>A new ReadWrite DataContext.</returns>
         public static StockGamesDataContext GetReadWrite()
         {
             return new StockGamesDataContext(DbConnectionString);

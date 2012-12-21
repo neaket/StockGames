@@ -5,6 +5,10 @@ using System.Windows.Data;
 
 namespace StockGames.Resources
 {
+    /// <summary>
+    /// This Converter class is extracted from the Presentation component of the full .Net framework.
+    /// http://msdn.microsoft.com/en-us/library/system.windows.controls.booleantovisibilityconverter.aspx
+    /// </summary>
     public sealed class BooleanToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

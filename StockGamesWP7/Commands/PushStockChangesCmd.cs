@@ -46,7 +46,7 @@ namespace StockGames.Commands
             StockEntity targetStock;
             try
             {
-                targetStock = StocksManager.Instance.GetStock(stock.StockIndex);
+                targetStock = StockManager.Instance.GetStock(stock.StockIndex);
             }
             catch (ArgumentException)
             {

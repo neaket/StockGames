@@ -12,7 +12,6 @@ namespace StockGames.Persistence.V1.Migrations
 
         public static void Update()
         {
-
             using (var context = StockGamesDataContext.GetReadWrite())
             {               
 
@@ -28,8 +27,6 @@ namespace StockGames.Persistence.V1.Migrations
                 updater.Execute();
             }
         }
-
-        
 
         private static void PopulateFirstTimeStocks()
         {
