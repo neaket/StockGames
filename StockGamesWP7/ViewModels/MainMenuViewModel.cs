@@ -78,7 +78,6 @@ namespace StockGames.ViewModels
             MigrationManager.InitializeDataContext();
 
             GameState.Instance.ExistingGame = true;
-            GameState.Instance.Save();
         }
 
         void NewGameWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

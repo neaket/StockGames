@@ -53,6 +53,12 @@ namespace StockGames.Persistence.V1.DataContexts
             }
         }
 
-
+        public Table<PortfolioEntryModel> PortfolioEntries
+        {
+            get
+            {
+                return GetTable<PortfolioEntryModel>();
+            }
+        }
     }
 }
