@@ -22,6 +22,7 @@ namespace StockGames.CommunicationModule
 
         private const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
         private const string modelName = "TestUnit";
+        private const string serverOutFile = "results/simOut_134_117_53_66_8080.out";
         private const string userString = ""; //TODO create a way to create a testing framework unique us
 
         private const char SimulationNotStarted = 'n';
@@ -214,9 +215,8 @@ namespace StockGames.CommunicationModule
                         UnZipper un = new UnZipper(ISStream);
                         foreach (String filename in un.GetFileNamesInZip())
                         {
-                            Stream stream = un.GetFileStream(filename);
+                            Stream stream = un.GetFileStream(serverOutFile);
                             StreamReader reader = new StreamReader(stream);
-
                             string[] lines = reader.ReadToEnd().Split('\n');
                             foreach (string line in lines)
                             {
