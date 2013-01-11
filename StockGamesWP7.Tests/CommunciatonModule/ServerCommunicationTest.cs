@@ -57,18 +57,18 @@ namespace StockGames.Tests.CommunciatonModule
             request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
         }
 
-        //[TestMethod]
-        //[Asynchronous]
-        //public void PostNewFilesToServerTest()
-        //{
-        //    stream = Application.GetResourceStream(new Uri("update.zip", UriKind.Relative)).Stream;
-        //    HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "TestUnit"));
-        //    request.Method = "POST";
-        //    request.ContentType = "application/zip";
-        //    request.Credentials = new NetworkCredential("andrew", "andrew");
+        [TestMethod]
+        [Asynchronous]
+        public void PostNewFilesToServerTest()
+        {
+            stream = Application.GetResourceStream(new Uri("update.zip", UriKind.Relative)).Stream;
+            HttpWebRequest request = WebRequest.CreateHttp(new Uri(SERVERURI + "TestUnit"));
+            request.Method = "POST";
+            request.ContentType = "application/zip";
+            request.Credentials = new NetworkCredential("andrew", "andrew");
 
-        //    request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
-        //}
+            request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
+        }
 
         [TestMethod]
         [Asynchronous]

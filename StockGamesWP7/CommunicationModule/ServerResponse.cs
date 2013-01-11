@@ -13,25 +13,22 @@ namespace StockGames.CommunicationModule
 {
     public class ServerResponse
     {
-        private int time;
-        private int stockPrice;
-
-        public ServerResponse(int outTime, int outPrice)
-        {
-            time = outTime;
-            stockPrice = outPrice;
-        }
-
         public int Time
         {
-            get { return time; }
-            set { time = value; }
+            get;
+            set;
         }
 
         public int StockPrice
         {
-            get { return stockPrice; }
-            set { stockPrice = value; }
+            get;
+            set;
+        }
+
+        public ServerResponse(int outTime, int outPrice)
+        {
+            Time = outTime;
+            StockPrice = outPrice;
         }
     }
 }

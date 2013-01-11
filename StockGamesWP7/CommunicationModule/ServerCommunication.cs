@@ -33,13 +33,15 @@ namespace StockGames.CommunicationModule
 
         private readonly NetworkCredential serverCredentials = new NetworkCredential("andrew", "andrew");
 
-        private ServerCommunication() 
+        private ServerCommunication()
         {
-            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
-
-            if (!storage.DirectoryExists("StockGamesModel"))
+            using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                storage.CreateDirectory("StockGamesModel");
+
+                if (!storage.DirectoryExists("StockGamesModel"))
+                {
+                    storage.CreateDirectory("StockGamesModel");
+                }
             }
         }
 
@@ -59,7 +61,7 @@ namespace StockGames.CommunicationModule
             HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName + "?sim=status");
             request.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request);
         }
-         
+
         private void getStatusCodeCallback(IAsyncResult result)
         {
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
@@ -90,147 +92,156 @@ namespace StockGames.CommunicationModule
 
         private void beginGetSimulationCallback(IAsyncResult result)
         {
-            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
-            
-            HttpWebRequest request = result.AsyncState as HttpWebRequest;
-            Stream putStream = request.EndGetRequestStream(result);
-
-            if(storage.FileExists(@"StockGamesModel\simulation.txt"))
+            using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                IsolatedStorageFileStream ISStream = null;
-                using (ISStream = new IsolatedStorageFileStream(
-                        @"StockGamesModel\simulation.txt", FileMode.Open, storage))
+                HttpWebRequest request = result.AsyncState as HttpWebRequest;
+                using (Stream putStream = request.EndGetRequestStream(result))
                 {
-                    using (StreamReader reader = new StreamReader(ISStream))
+
+                    if (storage.FileExists(@"StockGamesModel\simulation.txt"))
                     {
-                        using (StreamWriter writer = new StreamWriter(putStream, Encoding.UTF8))
+                        IsolatedStorageFileStream ISStream = null;
+                        using (ISStream = new IsolatedStorageFileStream(
+                                @"StockGamesModel\simulation.txt", FileMode.Open, storage))
                         {
-                            writer.Write(reader.ReadToEnd());
+                            using (StreamReader reader = new StreamReader(ISStream))
+                            {
+                                using (StreamWriter writer = new StreamWriter(putStream, Encoding.UTF8))
+                                {
+                                    writer.Write(reader.ReadToEnd());
+                                }
+                            }
                         }
                     }
                 }
+                CommunicationState = SimulationStarted;
+                SimulationStatusRequest();
             }
-            putStream.Close();
-            CommunicationState = SimulationStarted;
-            SimulationStatusRequest();
         }
 
         private void beginGetSimulationStatusCallback(IAsyncResult result)
         {
-            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
-
-            HttpWebRequest request = result.AsyncState as HttpWebRequest;
-            if (request != null)
+            using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                WebResponse response = request.EndGetResponse(result);
-                using (var fileStream = new IsolatedStorageFileStream("StockGamesModel/SimStatus.xml",
-                    FileMode.OpenOrCreate, storage))
+                HttpWebRequest request = result.AsyncState as HttpWebRequest;
+                if (request != null)
                 {
-                    response.GetResponseStream().CopyTo(fileStream);
+                    WebResponse response = request.EndGetResponse(result);
+                    using (var fileStream = new IsolatedStorageFileStream("StockGamesModel/SimStatus.xml",
+                        FileMode.OpenOrCreate, storage))
+                    {
+                        response.GetResponseStream().CopyTo(fileStream);
+                    }
                 }
-            }
-            string s = ParseXMLFile();
-            switch (s)
-            {
-                case "DONE":
-                    CommunicationState = SimulationEnded;
-                    HttpWebRequest request2 = WebRequest.CreateHttp(serverURI + modelName);
-                    request2.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request2);
-                    break;
-                default:
-                    break;
+                string s = ParseXMLFile();
+                switch (s)
+                {
+                    case "DONE":
+                        CommunicationState = SimulationEnded;
+                        HttpWebRequest request2 = WebRequest.CreateHttp(serverURI + modelName);
+                        request2.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request2);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
         private void beginGetZipResponseStreamCallback(IAsyncResult result)
         {
-            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
-
-            HttpWebRequest request = result.AsyncState as HttpWebRequest;
-            if (request != null)
+            using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                WebResponse response = request.EndGetResponse(result);
 
-                using (IsolatedStorageFileStream fileStream = storage.CreateFile("StockGamesModel/SimulationResults.zip"))
+                HttpWebRequest request = result.AsyncState as HttpWebRequest;
+                if (request != null)
                 {
-                    if (fileStream != null)
+                    WebResponse response = request.EndGetResponse(result);
+
+                    using (IsolatedStorageFileStream fileStream = storage.CreateFile("StockGamesModel/SimulationResults.zip"))
                     {
-                        response.GetResponseStream().CopyTo(fileStream);
+                        if (fileStream != null)
+                        {
+                            response.GetResponseStream().CopyTo(fileStream);
+                        }
                     }
                 }
+                CommunicationState = SimulationResultsStored;
+                ReadSimulationOutput();
             }
-            CommunicationState = SimulationResultsStored;
-            ReadSimulationOutput();
         }
 
         public string ParseXMLFile()
         {
-            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
-            
-            if(storage.FileExists("StockGamesModel/SimStatus.xml"))
+            using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream(
-                        "StockGamesModel/SimStatus.xml", FileMode.Open, storage))
+
+                if (storage.FileExists("StockGamesModel/SimStatus.xml"))
                 {
-                    using (StreamReader reader = new StreamReader(ISStream))
+                    using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream(
+                            "StockGamesModel/SimStatus.xml", FileMode.Open, storage))
                     {
-                        string result;
-                        for(string test = reader.ReadLine(); test != null; test = reader.ReadLine())
+                        using (StreamReader reader = new StreamReader(ISStream))
                         {
-                            if (test.Contains("DONE")) { result = "DONE"; return result; }
-                            else if (test.Contains("IDLE")) { result = "IDLE"; return result; }
-                            else if (test.Contains("INIT")) { result = "INIT"; return result; }
-                            else if (test.Contains("RUNNING")) { result = "RUNN"; return result; }
-                            else if (test.Contains("STOPPING")) { result = "STOP"; return result; }
-                            else if (test.Contains("ABORTED"))  { result = "ABOR"; return result; }
-                            else if (test.Contains("ERROR")) { result = "ERR"; return result; }
+                            string result;
+                            for (string test = reader.ReadLine(); test != null; test = reader.ReadLine())
+                            {
+                                if (test.Contains("DONE")) { result = "DONE"; return result; }
+                                else if (test.Contains("IDLE")) { result = "IDLE"; return result; }
+                                else if (test.Contains("INIT")) { result = "INIT"; return result; }
+                                else if (test.Contains("RUNNING")) { result = "RUNN"; return result; }
+                                else if (test.Contains("STOPPING")) { result = "STOP"; return result; }
+                                else if (test.Contains("ABORTED")) { result = "ABOR"; return result; }
+                                else if (test.Contains("ERROR")) { result = "ERR"; return result; }
+                            }
                         }
                     }
                 }
+                return "ERR";
             }
-            return "ERR";
         }
 
         public ServerResponse ReadSimulationOutput()
         {
-            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
-            ServerResponse response = new ServerResponse(0, 0);
-
-            if (storage.FileExists("StockGamesModel/SimulationResults.zip"))
+            using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream(
-                        "StockGamesModel/SimulationResults.zip", FileMode.Open, storage))
+                ServerResponse response = new ServerResponse(0, 0);
+
+                if (storage.FileExists("StockGamesModel/SimulationResults.zip"))
                 {
-                    UnZipper un = new UnZipper(ISStream);
-                    foreach (String filename in un.GetFileNamesInZip())
+                    using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream(
+                            "StockGamesModel/SimulationResults.zip", FileMode.Open, storage))
                     {
-                        Stream stream = un.GetFileStream(filename);
-                        StreamReader reader = new StreamReader(stream);
-                        
-                        string[] lines = reader.ReadToEnd().Split('\n');
-                        foreach (string line in lines)
+                        UnZipper un = new UnZipper(ISStream);
+                        foreach (String filename in un.GetFileNamesInZip())
                         {
-                            string[] words = line.Split(' ');
-                            int arrayIndex = 0;
-                            foreach(string word in words)
+                            Stream stream = un.GetFileStream(filename);
+                            StreamReader reader = new StreamReader(stream);
+
+                            string[] lines = reader.ReadToEnd().Split('\n');
+                            foreach (string line in lines)
                             {
-                                if (word.Equals("outtime"))
+                                string[] words = line.Split(' ');
+                                int arrayIndex = 0;
+                                foreach (string word in words)
                                 {
-                                    response.Time = Int32.Parse(words[arrayIndex + 1]);
+                                    if (word.Equals("outtime"))
+                                    {
+                                        response.Time = Int32.Parse(words[arrayIndex + 1]);
+                                    }
+                                    if (word.Equals("outstockprice"))
+                                    {
+                                        response.StockPrice = Int32.Parse(words[arrayIndex + 1]);
+                                        //TODO: information for the update is here
+                                    }
+                                    arrayIndex += 1;
                                 }
-                                if (word.Equals("outstockprice"))
-                                {
-                                    response.StockPrice = Int32.Parse(words[arrayIndex + 1]);
-                                    //TODO: information for the update is here
-                                }
-                                arrayIndex += 1;
+                                arrayIndex = 0;
                             }
-                            arrayIndex = 0;
                         }
                     }
                 }
+                return response;
             }
-            return response;
         }
     }
 }
