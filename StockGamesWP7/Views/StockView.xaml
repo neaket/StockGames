@@ -12,7 +12,8 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True" d:DataContext="{d:DesignData /SampleData/StockViewModelSampleData.xaml}">
+    shell:SystemTray.IsVisible="True" d:DataContext="{d:DesignData /SampleData/StockViewModelSampleData.xaml}"
+    DataContext="{Binding Stock, Source={StaticResource Locator}}">
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <controls:Pivot Title="View Stock">
             <!--Pivot item one-->
@@ -28,7 +29,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock x:Name="StockIndex" Text="{Binding Path=Stock.StockIndex, Mode=OneTime}"  Margin="0" FontSize="50" Style="{StaticResource PhoneTextAccentStyle}" Grid.ColumnSpan="2"/>
+                        <TextBlock x:Name="StockIndex" Text="{Binding Path=Stock.StockIndex, Mode=OneTime}"  Margin="0" FontSize="50" Foreground="#1BA1E2" Grid.ColumnSpan="2"/>
                         <TextBlock Text="{Binding Path=Stock.CompanyName, Mode=OneTime}" Margin="0,0,0,15" Grid.Row="1" Grid.ColumnSpan="2" />
 
                         <Grid Grid.Row="2" Width="426" HorizontalAlignment="Left">
@@ -69,7 +70,7 @@
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/refresh.png" Text="Refresh"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/refresh.png" Text="Update" Click="Update_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

@@ -16,7 +16,6 @@ namespace StockGames.Controllers
     public class ClientController
     {
         //Private variables
-        private StocksManager _StockDataManager;
         private CommandInvoker _CmdInvoker;
         private MessageHandler _MsgHandler;
 
@@ -35,7 +34,6 @@ namespace StockGames.Controllers
 
         private ClientController()
         {
-            _StockDataManager = StocksManager.Instance;
             _MsgHandler = new MessageHandler(); // TODO
             _CmdInvoker = CommandInvoker.Instance;
         }

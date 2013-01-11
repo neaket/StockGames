@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using StockGames.Persistence.V1.Services;
 using StockGames.Stubs;
 using StockGames.Models;
 using StockGames.Controllers;
@@ -18,22 +19,30 @@ namespace StockGames.Commands
     {
         //Private Variables
         private MessageHandler _msgHandler;
-        private StocksManager _stocksMnger;
         private string _cmdName = CommandInvoker.REQUEST_UPDATE_STOCK;
         
-        public RequestStockUpdateCmd(MessageHandler msgHandler, StocksManager stocksMnger)
+        public RequestStockUpdateCmd(MessageHandler msgHandler)
         {
             _msgHandler = msgHandler;
-            _stocksMnger = stocksMnger;
         }
 
         //ICommand Interface implementation
         public void Execute(Object o)
         {
-            if (!(o is StockEntity))
+            var stockEntity = o as StockEntity;
+            if (stockEntity == null)
             {
                 throw new ArgumentException("Object is not a stock Entity");
             }
+
+            // TODO do some real updates :) instead of random numbers
+            var random = new Random();
+            stockEntity.PreviousPrice = stockEntity.CurrentPrice;
+            stockEntity.CurrentPrice += (decimal)(random.NextDouble() - .4) * stockEntity.CurrentPrice;
+            
+            
+            StockService.Instance.AddStockSnapshot(stockEntity);
+            // END TODO
         }
 
         public void Execute(StockEntity stock)

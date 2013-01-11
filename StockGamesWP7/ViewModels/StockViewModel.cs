@@ -1,25 +1,33 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
+﻿using System.Diagnostics;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Collections.Generic;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using StockGames.Controllers;
 using StockGames.Models;
 
 namespace StockGames.ViewModels
 {
-    public class StockViewModel
+    public class StockViewModel : ViewModelBase
     {
-        public StockEntity Stock { get; set; }
+        public ICommand UpdateCommand { get; private set; }
+        public ICommand LoadStockCommand { get; private set; }
 
-        public StockViewModel(string stockIndex)
+        public StockEntity Stock { get; private set; }
+
+        public StockViewModel()
         {
-            Stock = StocksManager.Instance.FindStock(stockIndex);
+            LoadStockCommand = new RelayCommand<string>(LoadStock);
+            UpdateCommand = new RelayCommand(Update);
+        }
+
+        private void Update()
+        {
+            CommandInvoker.Instance.FetchCommand(CommandInvoker.REQUEST_UPDATE_STOCK, Stock);
+        }
+
+        private void LoadStock(string stockIndex)
+        {
+            Stock = StockManager.Instance.GetStock(stockIndex);
         }
     }
 }

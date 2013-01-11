@@ -1,35 +1,45 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Collections;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using StockGames.Models;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using StockGames.Controllers;
 
 namespace StockGames.ViewModels
 {
-    public class ListStocksViewModel
+    public class ListStocksViewModel : ViewModelBase
     {
         public ObservableCollection<StockEntity> Stocks { get; set; }
 
-        public ListStocksViewModel()
-        {
-            Stocks = new ObservableCollection<StockEntity>();
-
-            foreach (StockEntity stock in StocksManager.Instance)
+        private StockEntity _selectedStock;
+        public StockEntity SelectedStock 
+        { 
+            get { return _selectedStock; } 
+            set
             {
-                Stocks.Add(stock);
-            }
-
+                _selectedStock = value;
+                if (_selectedStock != null) ViewStock();
+            } 
         }
 
+        public ListStocksViewModel()
+        {
+            
+            LoadStocks();
+        }
+
+        private void LoadStocks()
+        {
+            Stocks = new ObservableCollection<StockEntity>(StockManager.Instance.GetStocks());
+        }
+
+        private void ViewStock()
+        {
+            var uri = new Uri("/Views/StockView.xaml?StockIndex=" + SelectedStock.StockIndex, UriKind.Relative);
+            Messenger.Default.Send(uri, "Navigate");
+            SelectedStock = null;
+            RaisePropertyChanged("SelectedStock");
+        }
     }
 }

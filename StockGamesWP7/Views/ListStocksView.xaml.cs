@@ -1,51 +1,60 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+using System.Diagnostics;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+using System.Windows.Data;
 using Microsoft.Phone.Controls;
-using StockGames.ViewModels;
-using System.Windows.Navigation;
-using StockGames.Models;
 
 namespace StockGames.Views
 {
     public partial class ListStocksView : PhoneApplicationPage
     {
-        private ListStocksViewModel viewModel;
+
         public ListStocksView()
         {
             InitializeComponent();
-
-            viewModel = new ListStocksViewModel();
-            // temp
-            // TODO 
-          //  LayoutRoot.DataContext = new StockViewModel();
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            DataContext = viewModel;
-            StockListBox.SelectedItem = null; // clear the current selection
-        }
-
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count > 0)
-            {
-                StockEntity selected = e.AddedItems[0] as StockEntity;
-                
-                NavigationService.Navigate(new Uri("/Views/StockView.xaml?StockIndex=" + selected.StockIndex, UriKind.Relative));                
-            }
-            
-            
         }
     }
+
+    public class PositiveToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Debug.Assert(value is decimal);
+            decimal from = (decimal) value;
+
+            if (from > 0)
+            {
+                return Visibility.Visible;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
+    public class NegativeToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Debug.Assert(value is decimal);
+            decimal from = (decimal)value;
+
+            if (from < 0)
+            {
+                return Visibility.Visible;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
 }

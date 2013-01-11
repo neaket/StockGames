@@ -1,0 +1,34 @@
+﻿using System;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+
+namespace StockGames.Resources
+{
+    /// <summary>
+    /// This Converter class is extracted from the Presentation component of the full .Net framework.
+    /// http://msdn.microsoft.com/en-us/library/system.windows.controls.booleantovisibilityconverter.aspx
+    /// </summary>
+    public sealed class BooleanToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool flag = false;
+            if (value is bool)
+            {
+                flag = (bool)value;
+            }
+            else if (value is bool?)
+            {
+                bool? nullable = (bool?)value;
+                flag = nullable.HasValue ? nullable.Value : false;
+            }
+            return (flag ? Visibility.Visible : Visibility.Collapsed);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ((value is Visibility) && (((Visibility)value) == Visibility.Visible));
+        }
+    }
+}
