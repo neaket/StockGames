@@ -10,6 +10,10 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using System.Xml;
+using System.Text;
+using System.IO;
+using StockGames.CommunicationModule;
 
 namespace StockGames
 {
@@ -23,7 +27,7 @@ namespace StockGames
 
         private void ViewStocks_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Views/ListStocksView.xaml", UriKind.Relative));                
+            NavigationService.Navigate(new Uri("/Views/ListStocksView.xaml", UriKind.Relative));
         }
     }
 }

@@ -67,6 +67,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommunciatonModule\ServerCommunicationTest.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -83,6 +84,9 @@
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
+    <Content Include="Sawtooth.xml" />
+    <Content Include="Sawtooth.zip" />
+    <Content Include="simulation.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
