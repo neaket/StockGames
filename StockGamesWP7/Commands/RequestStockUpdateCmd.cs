@@ -35,7 +35,8 @@ namespace StockGames.Commands
             }
 
             ServerCommunication ServerComm = ServerCommunication.GetInstance;
-            ServerComm.StartSimulation(stockEntity);    
+            var clone = new StockEntity(stockEntity);
+            ServerComm.StartSimulation(clone);    
         }
 
         public bool CanExecute(object parameter)

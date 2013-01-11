@@ -48,8 +48,9 @@ namespace StockGames.Commands
             
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
-                    stock.PreviousPrice = stock.CurrentPrice;
-                    stock.CurrentPrice = stock.CurrentPrice;
+                    var guiStock = StockManager.Instance.GetStock(stock.StockIndex);
+                    guiStock.CurrentPrice = stock.CurrentPrice;
+                    guiStock.PreviousPrice = stock.PreviousPrice;
                     StockService.Instance.AddStockSnapshot(stock);
                 }
             );                        

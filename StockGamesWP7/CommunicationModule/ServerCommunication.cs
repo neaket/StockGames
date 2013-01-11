@@ -28,6 +28,7 @@ namespace StockGames.CommunicationModule
         private const string serverOutFile = "results/simOut_134_117_53_66_8080.out";
         private const string userString = ""; //TODO create a way to create a testing framework unique us
 
+
         private const char SimulationNotStarted = 'n';
         private const char SimulationStarted = 's';
         private const char SimulationEnded = 'e';
@@ -45,6 +46,14 @@ namespace StockGames.CommunicationModule
                 if (!storage.DirectoryExists("StockGamesModel"))
                 {
                     storage.CreateDirectory("StockGamesModel");
+
+                    using (var file = storage.CreateFile(@"StockGamesModel\simulation.txt"))
+                    {
+                        using (var writer = new StreamWriter(file))
+                        {
+                            writer.Write("some text;");
+                        }
+                    }
                 }
             }
         }
@@ -107,19 +116,15 @@ namespace StockGames.CommunicationModule
                     {
                         IsolatedStorageFileStream ISStream = null;
                         using (ISStream = new IsolatedStorageFileStream(
-                                @"StockGamesModel\simulation.txt", FileMode.Open, storage))
+                                @"StockGamesModel\simulation.txt", FileMode.OpenOrCreate, storage))
                         {
-                            using (StreamReader reader = new StreamReader(ISStream))
-                            {
-                                using (StreamWriter writer = new StreamWriter(putStream, Encoding.UTF8))
-                                {
-                                    writer.Write(reader.ReadToEnd());
-                                }
-                            }
+                            ISStream.CopyTo(putStream);
                         }
                     }
                 }
                 CommunicationState = SimulationStarted;
+
+                request.BeginGetResponse(new AsyncCallback((blah) => { }), request);
                 SimulationStatusRequest();
             }
         }
@@ -242,9 +247,13 @@ namespace StockGames.CommunicationModule
                                 arrayIndex = 0;
                             }
                         }
-                    }
+                    }                    
+
+                    _Stock.PreviousPrice = _Stock.CurrentPrice;
+                    _Stock.CurrentPrice = response.StockPrice;
                     CommandInvoker CmdInvoker = CommandInvoker.Instance;
                     CmdInvoker.FetchCommand(CommandInvoker.CHANGE_STOCK_DATA, _Stock);
+                    CommunicationState = SimulationNotStarted;
                 }
                 return response;
             }
