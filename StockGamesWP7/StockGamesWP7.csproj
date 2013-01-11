@@ -81,9 +81,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommunicationModule\ServerCommunication.cs" />
     <Compile Include="Commands\IStockCommand.cs" />
     <Compile Include="Commands\PushStockChangesCmd.cs" />
     <Compile Include="Commands\RequestStockUpdateCmd.cs" />
+    <Compile Include="CommunicationModule\ServerResponse.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandInvoker.cs" />
     <Compile Include="Models\TradeEntity.cs" />
@@ -114,6 +116,7 @@
       <DependentUpon>Common.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Resources.cs" />
+    <Compile Include="SharpGIS.UnZipper.cs" />
     <Compile Include="Stubs\MessageEvent.cs" />
     <Compile Include="Stubs\MessageHandler.cs" />
     <Compile Include="ViewModels\DashboardViewModel.cs" />
