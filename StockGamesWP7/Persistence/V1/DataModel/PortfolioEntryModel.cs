@@ -6,7 +6,6 @@ namespace StockGames.Persistence.V1.DataModel
 {
     [Table]
     [InheritanceMapping(Code = 1, Type = typeof(PortfolioTradeModel), IsDefault = true)]
-
     public class PortfolioEntryModel
     {
         private EntityRef<PortfolioModel> _portfolio;

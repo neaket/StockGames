@@ -19,7 +19,7 @@ namespace StockGames.Persistence.V1.DataModel
         [Column(
            DbType = "NVARCHAR(10) NOT NULL",    
            AutoSync = AutoSync.OnInsert)]
-        public string StockIndex { get; set; }
+        public string StockIndex { get; private set; }
 
         [Association(
             Name = "FK_StockSnapshots_Stock",

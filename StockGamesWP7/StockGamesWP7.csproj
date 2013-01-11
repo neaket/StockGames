@@ -86,9 +86,12 @@
     <Compile Include="Commands\RequestStockUpdateCmd.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandInvoker.cs" />
+    <Compile Include="Models\TradeEntity.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioEntryModel.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioTradeModel.cs" />
     <Compile Include="Resources\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Resources\NegativeToVisibilityConverter.cs" />
+    <Compile Include="Resources\PositiveToVisibilityConverter.cs" />
     <Compile Include="ViewModels\PortfolioViewModel.cs" />
     <Compile Include="Views\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
@@ -139,6 +142,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <DesignData Include="SampleData\PortfolioViewModelSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </DesignData>
     <Page Include="Views\MainMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

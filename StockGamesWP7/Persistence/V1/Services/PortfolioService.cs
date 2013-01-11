@@ -3,6 +3,7 @@ using StockGames.Persistence.V1.DataModel;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using StockGames.Models;
 
 namespace StockGames.Persistence.V1.Services
 {
@@ -60,13 +61,25 @@ namespace StockGames.Persistence.V1.Services
             }
         }
 
-        public IEnumerable<PortfolioEntryModel> GetEntries(int portfolioId)
+        public IEnumerable<TradeEntity> GetTrades(int portfolioId)
         {
             using (var context = StockGamesDataContext.GetReadOnly())
             {
+                IList<TradeEntity> trades = new List<TradeEntity>();
                 var portfolio = context.Portfolios.Single(p => p.PortfolioId == portfolioId);
-                
-                return portfolio.Entries.ToArray();
+
+                foreach (var entry in portfolio.Entries)
+                {
+                    var trade = entry as PortfolioTradeModel;
+
+                    var tradeEntity = new TradeEntity()
+                    {
+                        StockIndex = trade.StockSnapshot.StockIndex,
+                        Quantity = trade.Quantity
+                    };
+
+                }
+                return trades;
             }
         }
     }

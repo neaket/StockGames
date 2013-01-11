@@ -25,7 +25,7 @@ namespace StockGames.ViewModels
     {
         public PortfolioModel Portfolio { get; set; } // TODO avoid accessing the service layer
         
-        public ObservableCollection<PortfolioTradeModel> Trades { get; set; }
+        public ObservableCollection<TradeEntity> Trades { get; set; }
 
         private StockEntity _selectedTrade;
         public StockEntity SelectedTrade 
@@ -42,7 +42,7 @@ namespace StockGames.ViewModels
         {
             int portfolioId = GameState.Instance.MainPortfolioId;
             Portfolio = PortfolioService.Instance.GetPortfolio(portfolioId);
-            Trades = new ObservableCollection<PortfolioTradeModel>(PortfolioService.Instance.GetEntries(portfolioId).Cast<PortfolioTradeModel>());
+            Trades = new ObservableCollection<TradeEntity>(PortfolioService.Instance.GetTrades(portfolioId));
         }
 
         private void ViewStock()
