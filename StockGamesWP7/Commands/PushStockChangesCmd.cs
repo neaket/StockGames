@@ -17,12 +17,6 @@ namespace StockGames.Commands
     {
         //Private Variables
         private string _cmdname = CommandInvoker.CHANGE_STOCK_DATA;
-        private StocksManager _StockMnger;
-
-        public PushStockChangesCmd(StocksManager stockMnger)
-        {
-            _StockMnger = stockMnger;
-        }
 
         //IStockCommand Interface Implementation
         public string CommandName
@@ -52,7 +46,7 @@ namespace StockGames.Commands
             StockEntity targetStock;
             try
             {
-                targetStock = _StockMnger.FindStock(stock.StockIndex);
+                targetStock = StockManager.Instance.GetStock(stock.StockIndex);
             }
             catch (ArgumentException)
             {

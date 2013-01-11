@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+using System.Diagnostics;
 using Microsoft.Phone.Controls;
 using System.Windows.Navigation;
-using StockGames.Models;
 using StockGames.ViewModels;
 
 namespace StockGames.Views
@@ -26,11 +16,21 @@ namespace StockGames.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            IDictionary<string, string> parameters = this.NavigationContext.QueryString;
+            var parameters = NavigationContext.QueryString;
+            var stockIndex = parameters["StockIndex"];
 
-            StockViewModel viewModel = new StockViewModel(parameters["StockIndex"]);
+            var vm = DataContext as StockViewModel;
+            Debug.Assert(vm != null, "View Model Must Be Set");
 
-            DataContext = viewModel;
+            vm.LoadStockCommand.Execute(stockIndex);
+        }
+
+        private void Update_Click(object sender, EventArgs e)
+        {
+            var vm = DataContext as StockViewModel;
+            Debug.Assert(vm != null, "View Model Must Be Set");
+
+            vm.UpdateCommand.Execute(null);
         }
     }
 }

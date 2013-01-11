@@ -17,7 +17,6 @@ namespace StockGames.Controllers
     public class ClientController
     {
         //Private variables
-        private StocksManager _StockDataManager;
         private CommandInvoker _CmdInvoker;
         private ServerCommunication _ServerComm;
 

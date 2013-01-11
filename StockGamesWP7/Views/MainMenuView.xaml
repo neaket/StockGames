@@ -1,0 +1,59 @@
+﻿<phone:PhoneApplicationPage 
+	x:Class="StockGames.Views.MainMenuView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+	xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+	FontFamily="{StaticResource PhoneFontFamilyNormal}"
+	FontSize="{StaticResource PhoneFontSizeNormal}"
+	Foreground="{StaticResource PhoneForegroundBrush}"
+	SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+	shell:SystemTray.IsVisible="True" >
+    
+	<!--LayoutRoot is the root grid where all page content is placed-->
+	<Grid x:Name="LayoutRoot" Background="Transparent">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+        <ProgressBar x:Name="ProgressBar" Margin="0,-150,0,0" IsIndeterminate="{Binding Path=ShowProgressBar, Mode=TwoWay}" Visibility="{Binding Path=ShowProgressBar, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}"></ProgressBar>
+
+		<!--TitlePanel contains the name of the application and page title-->
+		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+			<TextBlock x:Name="ApplicationTitle" Text="{Binding Path=Common.AppName, Source={StaticResource Resources}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+			<TextBlock x:Name="PageTitle" Text="Main Menu" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+		</StackPanel>
+
+		<!--ContentPanel - place additional content here-->
+		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="14,0,10,0">
+			<Canvas Margin="8,-87,0,0" Opacity="0.3" Height="332" VerticalAlignment="Top">
+				<Path Data="M65.5,78.499191 L145.5,118.49973 L225.5,94.499443 L305.5,94.499443 L385.5,54.499031 C385.5,54.499031 391.08524,376.30402 391.08524,376.30402 C391.08524,376.30402 59.91478,376.30402 59.91478,376.30402" Fill="#FFA1A1A1" Height="715" Stretch="Fill" Stroke="Black" UseLayoutRounding="False" Canvas.Left="-30.5" Canvas.Top="3.5" Width="505" Opacity="0.6"/>
+				<Path Data="M61.732121,77.382332 L143.71715,122.43375 L225.5,94.499443 L305.50031,94.499321 C305.50031,94.499321 389.1048,50.50312 389.1048,50.50312" Height="156" Stretch="Fill" Stroke="Red" UseLayoutRounding="False" StrokeThickness="8" Width="504" Canvas.Left="-30" Canvas.Top="-4"/>
+            
+			</Canvas>
+            
+			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Content="Continue Game" Visibility="{Binding ContinueVisibility}" Width="250"  Padding="15" HorizontalAlignment="Center" Command="{Binding ContinueGameCommand}" />
+                <Button Content="New Game" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding NewGameCommand}" />
+                <Button Content="About" Padding="15" Width="250" Command="{Binding AboutCommand}" />
+			</StackPanel>
+            
+		</Grid>
+	</Grid>
+ 
+	<!--Sample code showing usage of ApplicationBar-->
+	<!--<phone:PhoneApplicationPage.ApplicationBar>
+		<shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+			<shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+			<shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+			<shell:ApplicationBar.MenuItems>
+				<shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+				<shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+			</shell:ApplicationBar.MenuItems>
+		</shell:ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>-->
+
+</phone:PhoneApplicationPage>
