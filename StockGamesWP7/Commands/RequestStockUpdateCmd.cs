@@ -11,19 +11,18 @@ using System.Windows.Shapes;
 using StockGames.Stubs;
 using StockGames.Models;
 using StockGames.Controllers;
+using StockGames.CommunicationModule;
 
 namespace StockGames.Commands
 {
     public class RequestStockUpdateCmd : IStockCommand
     {
         //Private Variables
-        private MessageHandler _msgHandler;
         private StocksManager _stocksMnger;
         private string _cmdName = CommandInvoker.REQUEST_UPDATE_STOCK;
         
         public RequestStockUpdateCmd(MessageHandler msgHandler, StocksManager stocksMnger)
         {
-            _msgHandler = msgHandler;
             _stocksMnger = stocksMnger;
         }
 
@@ -38,8 +37,8 @@ namespace StockGames.Commands
 
         public void Execute(StockEntity stock)
         {
-            MessageEvent msgEvent = new MessageEvent();
-            _msgHandler.AddEvent(msgEvent);            
+            ServerCommunication ServerComm = ServerCommunication.GetInstance;
+            ServerComm.StartSimulation(stock);
         }
 
         public bool CanExecute(object parameter)

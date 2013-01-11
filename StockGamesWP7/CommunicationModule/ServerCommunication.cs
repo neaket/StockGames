@@ -13,11 +13,14 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using SharpGIS;
 using System.Text;
+using StockGames.Models;
+using StockGames.Controllers;
 
 namespace StockGames.CommunicationModule
 {
     public sealed class ServerCommunication
     {
+        private StockEntity _Stock;
         private readonly static ServerCommunication instance = new ServerCommunication();
 
         private const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
@@ -51,10 +54,11 @@ namespace StockGames.CommunicationModule
             get { return instance; }
         }
 
-        public void StartSimulation()
+        public void StartSimulation(StockEntity stock)
         {
             HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName);
             request.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request);
+            _Stock = stock;
         }
 
         public void SimulationStatusRequest()
@@ -239,6 +243,8 @@ namespace StockGames.CommunicationModule
                             }
                         }
                     }
+                    CommandInvoker CmdInvoker = CommandInvoker.Instance;
+                    CmdInvoker.FetchCommand(CommandInvoker.CHANGE_STOCK_DATA, _Stock);
                 }
                 return response;
             }

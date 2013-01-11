@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using StockGames.Models;
 using StockGames.Stubs;
+using StockGames.CommunicationModule;
 
 namespace StockGames.Controllers
 {
@@ -18,7 +19,8 @@ namespace StockGames.Controllers
         //Private variables
         private StocksManager _StockDataManager;
         private CommandInvoker _CmdInvoker;
-        private MessageHandler _MsgHandler;
+        private ServerCommunication _ServerComm;
+
 
         private static ClientController _Instance;
         public static ClientController Instance
@@ -36,7 +38,7 @@ namespace StockGames.Controllers
         private ClientController()
         {
             _StockDataManager = StocksManager.Instance;
-            _MsgHandler = new MessageHandler(); // TODO
+            _ServerComm = ServerCommunication.GetInstance; // TODO
             _CmdInvoker = CommandInvoker.Instance;
         }
     }
