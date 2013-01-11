@@ -36,7 +36,6 @@ namespace StockGames.Controllers
 
         private ClientController()
         {
-            _StockDataManager = StocksManager.Instance;
             _ServerComm = ServerCommunication.GetInstance; // TODO
             _CmdInvoker = CommandInvoker.Instance;
         }

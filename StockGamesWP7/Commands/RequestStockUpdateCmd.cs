@@ -34,20 +34,8 @@ namespace StockGames.Commands
                 throw new ArgumentException("Object is not a stock Entity");
             }
 
-            // TODO do some real updates :) instead of random numbers
-            var random = new Random();
-            stockEntity.PreviousPrice = stockEntity.CurrentPrice;
-            stockEntity.CurrentPrice += (decimal)(random.NextDouble() - .4) * stockEntity.CurrentPrice;
-            
-            
-            StockService.Instance.AddStockSnapshot(stockEntity);
-            // END TODO
-        }
-
-        public void Execute(StockEntity stock)
-        {
             ServerCommunication ServerComm = ServerCommunication.GetInstance;
-            ServerComm.StartSimulation(stock);
+            ServerComm.StartSimulation(stockEntity);    
         }
 
         public bool CanExecute(object parameter)

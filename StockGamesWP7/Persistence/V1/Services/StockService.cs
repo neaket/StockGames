@@ -99,6 +99,7 @@ namespace StockGames.Persistence.V1.Services
                     Price = stockEntity.CurrentPrice
                 };
 
+
                 context.StockSnapshots.InsertOnSubmit(stockSnapshot);
                 context.SubmitChanges();
             }

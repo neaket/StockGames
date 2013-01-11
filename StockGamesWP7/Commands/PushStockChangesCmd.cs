@@ -10,6 +10,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using StockGames.Controllers;
 using StockGames.Models;
+using StockGames.Persistence.V1.Services;
+using System.Windows.Threading;
+using GalaSoft.MvvmLight.Threading;
 
 namespace StockGames.Commands
 {
@@ -37,25 +40,19 @@ namespace StockGames.Commands
 
         public void Execute(object parameter)
         {
-            throw new NotImplementedException();
-        }
-
-        //Override of the inherited Execute() method
-        public void Execute(StockEntity stock)
-        {
-            StockEntity targetStock;
-            try
+            var stock = parameter as StockEntity;
+            if (stock == null)
             {
-                targetStock = StockManager.Instance.GetStock(stock.StockIndex);
+                throw new ArgumentException("Object is not a stock Entity");
             }
-            catch (ArgumentException)
-            {
-                //stock not found, do not execture further
-                return;
-            }
-
-            targetStock.PreviousPrice = targetStock.CurrentPrice;
-            targetStock.CurrentPrice = stock.CurrentPrice;
+            
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                    stock.PreviousPrice = stock.CurrentPrice;
+                    stock.CurrentPrice = stock.CurrentPrice;
+                    StockService.Instance.AddStockSnapshot(stock);
+                }
+            );                        
         }
     }
 }

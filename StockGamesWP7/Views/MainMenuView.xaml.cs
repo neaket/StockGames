@@ -3,6 +3,7 @@ using System.Diagnostics;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Phone.Controls;
 using StockGames.ViewModels;
+using GalaSoft.MvvmLight.Threading;
 
 namespace StockGames.Views
 {
@@ -11,6 +12,7 @@ namespace StockGames.Views
         public MainMenuView()
         {
             InitializeComponent();
+            DispatcherHelper.Initialize();
 
             DataContext = new MainMenuViewModel();
 

@@ -104,6 +104,14 @@ namespace StockGames.Models
             CompanyName = companyName;
         }
 
+        public StockEntity(StockEntity other)
+        {
+            _stockIndex = other._stockIndex;
+            _companyName = other._companyName;
+            _currentPrice = other._currentPrice;
+            _previousPrice = other._previousPrice;
+        }
+
         //INotifyPropertyChanged Interface Implmentation
 
         public event PropertyChangedEventHandler PropertyChanged;
