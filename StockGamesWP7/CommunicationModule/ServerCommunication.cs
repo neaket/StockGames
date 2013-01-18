@@ -15,6 +15,7 @@ using SharpGIS;
 using System.Text;
 using StockGames.Models;
 using StockGames.Controllers;
+using Ionic.Zip;
 
 namespace StockGames.CommunicationModule
 {
@@ -37,6 +38,8 @@ namespace StockGames.CommunicationModule
         private static char CommunicationState = SimulationNotStarted;
 
         private readonly NetworkCredential serverCredentials = new NetworkCredential("andrew", "andrew");
+
+        private Stream stream;
 
         private ServerCommunication()
         {
@@ -65,9 +68,43 @@ namespace StockGames.CommunicationModule
 
         public void StartSimulation(StockEntity stock)
         {
+            //Create Model Zip File
+//            using (ZipFile zip = new ZipFile())
+//            {
+//                zip.AddFile("Sawtooth.ma");
+//                zip.AddFile("SawtoothType.cpp");
+//                zip.AddFile("SawtoothType.h");
+//                zip.AddFile("Sawtooth.ev");
+//                zip.Save("Sawtooth2.zip");
+//            }
             HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName);
-            request.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request);
-            _Stock = stock;
+
+            stream = Application.GetResourceStream(new Uri("Sawtooth2.zip", UriKind.Relative)).Stream;
+           
+            request.Method = "POST";
+            request.ContentType = "application/zip";
+            request.Credentials = new NetworkCredential("andrew", "andrew");
+            //Trigger POST command for the model
+            request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
+          
+           _Stock = stock;
+        }
+
+        private void postModelBeginGetRequestStreamCallback(IAsyncResult result)
+        {
+            HttpWebRequest request = result.AsyncState as HttpWebRequest;
+            Stream putStream = request.EndGetRequestStream(result);
+
+            stream.CopyTo(putStream);
+            putStream.Close();
+            stream.Close();
+
+            //Trigger PUT command for starting simulation
+            HttpWebRequest request2 = WebRequest.CreateHttp(serverURI + modelName);
+            request2.Method = "PUT";
+            request.ContentType = "text/xml";
+            request2.Credentials = new NetworkCredential("andrew", "andrew");
+            request2.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request2);
         }
 
         public void SimulationStatusRequest()

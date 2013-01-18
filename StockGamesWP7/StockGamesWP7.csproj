@@ -50,6 +50,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="GalaSoft.MvvmLight.Extras.WP71">
       <HintPath>..\packages\MvvmLight.4.1.23.0\lib\sl4-windowsphone71\GalaSoft.MvvmLight.Extras.WP71.dll</HintPath>
     </Reference>
@@ -164,6 +165,11 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Sawtooth.zip" />
+    <None Include="Sawtooth.ma" />
+    <None Include="SawtoothType.cpp" />
+    <None Include="SawtoothType.h" />
+    <None Include="trial.ev" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
