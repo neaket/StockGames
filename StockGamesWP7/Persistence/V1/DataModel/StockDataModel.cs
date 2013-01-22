@@ -4,7 +4,7 @@ using System.Data.Linq.Mapping;
 namespace StockGames.Persistence.V1.DataModel
 {
     [Table]
-    public class StockModel
+    public class StockDataModel
     {
         [Column(
             IsPrimaryKey = true,

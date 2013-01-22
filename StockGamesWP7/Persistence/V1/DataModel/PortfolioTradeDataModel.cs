@@ -12,9 +12,9 @@ namespace StockGames.Persistence.V1.DataModel
         Cover = 3,
     }
 
-    public class PortfolioTradeModel : PortfolioEntryModel
+    public class PortfolioTradeDataModel : PortfolioEntryDataModel
     {
-        private EntityRef<StockSnapshotModel> _stockSnapshot;
+        private EntityRef<StockSnapshotDataModel> _stockSnapshot;
         
         [Column(
           DbType = "int NOT NULL",
@@ -26,7 +26,7 @@ namespace StockGames.Persistence.V1.DataModel
             Storage = "_stockSnapshot",
             ThisKey = "StockSnapshotId",
             OtherKey = "StockSnapshotId")]
-        public StockSnapshotModel StockSnapshot
+        public StockSnapshotDataModel StockSnapshot
         {
             get
             {

@@ -6,9 +6,9 @@ using System.Data.Linq.Mapping;
 namespace StockGames.Persistence.V1.DataModel
 {
     [Table]
-    public class PortfolioModel
+    public class PortfolioDataModel
     {
-        private EntitySet<PortfolioEntryModel> _entries = new EntitySet<PortfolioEntryModel>();
+        private EntitySet<PortfolioEntryDataModel> _entries = new EntitySet<PortfolioEntryDataModel>();
         private decimal _balance;
 
         [Column(
@@ -27,7 +27,7 @@ namespace StockGames.Persistence.V1.DataModel
             Storage = "_entries",
             ThisKey = "PortfolioId",
             OtherKey = "PortfolioId")]
-        public IEnumerable<PortfolioEntryModel> Entries
+        public IEnumerable<PortfolioEntryDataModel> Entries
         {
             get
             {
@@ -55,7 +55,7 @@ namespace StockGames.Persistence.V1.DataModel
             }
         }
 
-        public void AddEntry(PortfolioEntryModel entry)
+        public void AddEntry(PortfolioEntryDataModel entry)
         {
             Balance += entry.Amount;
             entry.Portfolio = this;

@@ -23,7 +23,7 @@ namespace StockGames.ViewModels
 {
     public class PortfolioViewModel : ViewModelBase
     {
-        public PortfolioModel Portfolio { get; set; } // TODO avoid accessing the service layer
+        public PortfolioDataModel Portfolio { get; set; } // TODO avoid accessing the service layer
         
         public ObservableCollection<TradeEntity> Trades { get; set; }
 

@@ -5,9 +5,9 @@ using System.Data.Linq;
 namespace StockGames.Persistence.V1.DataModel
 {
     [Table]
-    public class StockSnapshotModel
+    public class StockSnapshotDataModel
     {
-        private EntityRef<StockModel> _stock;
+        private EntityRef<StockDataModel> _stock;
 
         [Column(
           IsPrimaryKey = true,
@@ -27,7 +27,7 @@ namespace StockGames.Persistence.V1.DataModel
             Storage = "_stock",
             ThisKey = "StockIndex",
             OtherKey = "StockIndex")]
-        public StockModel Stock {
+        public StockDataModel Stock {
             get
             {
                 return _stock.Entity;

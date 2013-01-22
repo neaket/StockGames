@@ -5,10 +5,10 @@ using System.Data.Linq.Mapping;
 namespace StockGames.Persistence.V1.DataModel
 {
     [Table]
-    [InheritanceMapping(Code = 1, Type = typeof(PortfolioTradeModel), IsDefault = true)]
-    public class PortfolioEntryModel
+    [InheritanceMapping(Code = 1, Type = typeof(PortfolioTradeDataModel), IsDefault = true)]
+    public class PortfolioEntryDataModel
     {
-        private EntityRef<PortfolioModel> _portfolio;
+        private EntityRef<PortfolioDataModel> _portfolio;
 
         [Column(
             IsPrimaryKey = true,
@@ -26,7 +26,7 @@ namespace StockGames.Persistence.V1.DataModel
             Storage = "_portfolio",
             ThisKey = "PortfolioId",
             OtherKey = "PortfolioId")]
-        public PortfolioModel Portfolio
+        public PortfolioDataModel Portfolio
         {
             get
             {

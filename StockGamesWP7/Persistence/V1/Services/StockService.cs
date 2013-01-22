@@ -62,10 +62,10 @@ namespace StockGames.Persistence.V1.Services
             using (var context = StockGamesDataContext.GetReadWrite())
             {
                 // TODO ensure no duplicates
-                var stock = new StockModel {StockIndex = stockEntity.StockIndex, CompanyName = stockEntity.CompanyName, CurrentPrice = stockEntity.CurrentPrice, PreviousPrice = stockEntity.PreviousPrice};
+                var stock = new StockDataModel {StockIndex = stockEntity.StockIndex, CompanyName = stockEntity.CompanyName, CurrentPrice = stockEntity.CurrentPrice, PreviousPrice = stockEntity.PreviousPrice};
                 var current = DateTime.Now; // TODO
                 var previous = new DateTime(current.Year, current.Month, current.Day); // TODO
-                var prevStockSnapshot = new StockSnapshotModel
+                var prevStockSnapshot = new StockSnapshotDataModel
                     {
                         Stock = stock,
                         Tombstone = previous,
@@ -73,7 +73,7 @@ namespace StockGames.Persistence.V1.Services
                     };
                 context.StockSnapshots.InsertOnSubmit(prevStockSnapshot);
 
-                var currentStockSnapshot = new StockSnapshotModel
+                var currentStockSnapshot = new StockSnapshotDataModel
                     {
                         Stock = stock,
                         Tombstone = current,
@@ -92,7 +92,7 @@ namespace StockGames.Persistence.V1.Services
             {
                 var current = DateTime.Now; // TODO
                 var stock = (from s in context.Stocks where s.StockIndex == stockEntity.StockIndex select s).Single();
-                var stockSnapshot = new StockSnapshotModel
+                var stockSnapshot = new StockSnapshotDataModel
                 {
                     Stock = stock,
                     Tombstone = current,

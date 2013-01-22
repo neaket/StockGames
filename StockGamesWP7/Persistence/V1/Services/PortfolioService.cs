@@ -19,11 +19,11 @@ namespace StockGames.Persistence.V1.Services
 
         private PortfolioService() { }
 
-        public PortfolioModel AddPortfolio(string name)
+        public PortfolioDataModel AddPortfolio(string name)
         {
             using (var context = StockGamesDataContext.GetReadWrite())
             {
-                var portfolio = new PortfolioModel { Name = name };
+                var portfolio = new PortfolioDataModel { Name = name };
                 context.Portfolios.InsertOnSubmit(portfolio);
                 context.SubmitChanges();
                 return portfolio;
@@ -36,7 +36,7 @@ namespace StockGames.Persistence.V1.Services
             {
                 var snapshot = (from s in context.StockSnapshots where s.StockIndex == stockIndex orderby s.Tombstone descending select s).First();
 
-                PortfolioTradeModel trade = new PortfolioTradeModel() { 
+                PortfolioTradeDataModel trade = new PortfolioTradeDataModel() { 
                     Amount = snapshot.Price, 
                     Quantity = 17, 
                     Tombstone = DateTime.Now, 
@@ -52,7 +52,7 @@ namespace StockGames.Persistence.V1.Services
             }
         }
 
-        public PortfolioModel GetPortfolio(int portfolioId)
+        public PortfolioDataModel GetPortfolio(int portfolioId)
         {
             using (var context = StockGamesDataContext.GetReadOnly())
             {
@@ -70,7 +70,7 @@ namespace StockGames.Persistence.V1.Services
 
                 foreach (var entry in portfolio.Entries)
                 {
-                    var trade = entry as PortfolioTradeModel;
+                    var trade = entry as PortfolioTradeDataModel;
 
                     var tradeEntity = new TradeEntity()
                     {
