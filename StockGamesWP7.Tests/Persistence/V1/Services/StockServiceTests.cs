@@ -1,9 +1,9 @@
 ﻿using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockGames.Models;
 using System.Linq;
 using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.Services;
+using StockGames.Entities;
 
 namespace StockGames.Tests.Persistence.V1.Services
 {

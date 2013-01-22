@@ -1,9 +1,9 @@
 ﻿using System;
-using StockGames.Models;
 using System.Linq;
 using System.Collections.Generic;
 using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.DataModel;
+using StockGames.Entities;
 
 namespace StockGames.Persistence.V1.Services
 {

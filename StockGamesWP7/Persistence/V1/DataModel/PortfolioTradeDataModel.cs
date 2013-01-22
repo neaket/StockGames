@@ -17,7 +17,8 @@ namespace StockGames.Persistence.V1.DataModel
         private EntityRef<StockSnapshotDataModel> _stockSnapshot;
         
         [Column(
-          DbType = "int NOT NULL",
+          DbType = "int",
+          CanBeNull = false,
           AutoSync = AutoSync.OnInsert)]
         private int StockSnapshotId { get; set; }
         
@@ -41,7 +42,8 @@ namespace StockGames.Persistence.V1.DataModel
         }
 
         [Column(
-           DbType = "int NOT NULL",
+           DbType = "int",
+           CanBeNull = false,
            AutoSync = AutoSync.OnInsert)]
         private int? _tradeType;
         public TradeType TradeType
@@ -55,7 +57,8 @@ namespace StockGames.Persistence.V1.DataModel
         }
 
         [Column(
-           DbType = "int NOT NULL",
+           DbType = "int",
+           CanBeNull=false,
            AutoSync = AutoSync.OnInsert)]
         public int Quantity { get; set; }
     }

@@ -1,10 +1,10 @@
 ﻿using System.Data.Linq;
 using Microsoft.Phone.Data.Linq;
-using StockGames.Models;
 using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.DataModel;
 using StockGames.Persistence.V1.Services;
 using System;
+using StockGames.Entities;
 
 namespace StockGames.Persistence.V1.Migrations
 {
@@ -94,9 +94,11 @@ namespace StockGames.Persistence.V1.Migrations
 
         private static void CreateFirstPortfolio()
         {
-            var portfolio = PortfolioService.Instance.AddPortfolio("Practice");            
-            
+            var portfolio = PortfolioService.Instance.AddPortfolio("Practice");
+
+            PortfolioService.Instance.AddTransaction(portfolio.PortfolioId, 10000);
             PortfolioService.Instance.AddTrade(portfolio.PortfolioId, "NINJ", TradeType.Buy, 17);
+            PortfolioService.Instance.AddTrade(portfolio.PortfolioId, "ABC", TradeType.Buy, 3);
 
             GameState.Instance.MainPortfolioId = portfolio.PortfolioId;
         }

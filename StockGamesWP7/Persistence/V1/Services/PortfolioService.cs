@@ -3,7 +3,7 @@ using StockGames.Persistence.V1.DataModel;
 using System.Linq;
 using System.Collections.Generic;
 using System;
-using StockGames.Models;
+using StockGames.Entities;
 
 namespace StockGames.Persistence.V1.Services
 {
@@ -30,6 +30,24 @@ namespace StockGames.Persistence.V1.Services
             }
         }
 
+        public void AddTransaction(int portfolioId, decimal amount)
+        {
+            using (var context = StockGamesDataContext.GetReadWrite())
+            {
+                PortfolioTransactionDataModel transaction = new PortfolioTransactionDataModel()
+                {
+                    Amount = amount,
+                    Tombstone = DateTime.Now
+                };
+
+                var portfolio = context.Portfolios.Single(p => p.PortfolioId == portfolioId);
+                context.PortfolioEntries.InsertOnSubmit(transaction);
+                portfolio.AddEntry(transaction);
+
+                context.SubmitChanges();
+            }
+        }
+
         public void AddTrade(int portfolioId, string stockIndex, TradeType tradeType, int quantity)
         {            
             using (var context = StockGamesDataContext.GetReadWrite())
@@ -38,7 +56,7 @@ namespace StockGames.Persistence.V1.Services
 
                 PortfolioTradeDataModel trade = new PortfolioTradeDataModel() { 
                     Amount = snapshot.Price, 
-                    Quantity = 17, 
+                    Quantity = quantity, 
                     Tombstone = DateTime.Now, 
                     TradeType = tradeType,
                     StockSnapshot = snapshot
@@ -56,7 +74,7 @@ namespace StockGames.Persistence.V1.Services
         {
             using (var context = StockGamesDataContext.GetReadOnly())
             {
-                var portfolio = context.Portfolios.Single(p => p.PortfolioId == portfolioId);
+                var portfolio = context.Portfolios.Single(p => p.PortfolioId == portfolioId);               
                 return portfolio;
             }
         }
@@ -71,13 +89,23 @@ namespace StockGames.Persistence.V1.Services
                 foreach (var entry in portfolio.Entries)
                 {
                     var trade = entry as PortfolioTradeDataModel;
+                    if (trade == null)
+                        continue;
+
+                    // Get latest snapshot
+                    // TODO optimize
+                    var latestSnapshotPriceQuery = from s in context.StockSnapshots where s.StockIndex == trade.StockSnapshot.StockIndex orderby s.Tombstone descending select s.Price;
+                    decimal latestSnapshotPrice = latestSnapshotPriceQuery.First();
 
                     var tradeEntity = new TradeEntity()
                     {
                         StockIndex = trade.StockSnapshot.StockIndex,
-                        Quantity = trade.Quantity
+                        Quantity = trade.Quantity,
+                        PurchasedPrice = trade.Amount,
+                        CurrentPrice = latestSnapshotPrice
                     };
 
+                    trades.Add(tradeEntity);
                 }
                 return trades;
             }

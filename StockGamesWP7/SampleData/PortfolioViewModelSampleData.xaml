@@ -1,8 +1,7 @@
-﻿<StockGames_ViewModels:PortfolioViewModel xmlns:StockGames_ViewModels="clr-namespace:StockGames.ViewModels" xmlns:StockGames_Persistence_Models="clr-namespace:StockGames.Persistence.V1.DataModel" xmlns:StockGames_Models="clr-namespace:StockGames.Models" xmlns:System="clr-namespace:System;assembly=mscorlib">
-    <StockGames_ViewModels:PortfolioViewModel.Portfolio>
-        <StockGames_Persistence_Models:PortfolioDataModel Name="Testing Portfolio" Balance="15" />
-    </StockGames_ViewModels:PortfolioViewModel.Portfolio>
+﻿<StockGames_ViewModels:PortfolioViewModel xmlns:StockGames_ViewModels="clr-namespace:StockGames.ViewModels" xmlns:StockGames_Persistence_Models="clr-namespace:StockGames.Persistence.V1.DataModel" xmlns:StockGames_Entities="clr-namespace:StockGames.Entities" xmlns:System="clr-namespace:System;assembly=mscorlib"
+    PortfolioName="Testing Portfolio" PortfolioBalance="15" >
     <StockGames_ViewModels:PortfolioViewModel.Trades>
-        <StockGames_Models:TradeEntity Quantity="17" Amount="25.21"  StockIndex="NINJ" Gain="55" />
+        <StockGames_Entities:TradeEntity Quantity="17" PurchasedPrice="25.21" CurrentPrice="30"  StockIndex="NINJ" Gain="55" GainPercentage="30" />
+        <StockGames_Entities:TradeEntity Quantity="5" PurchasedPrice="1.50" CurrentPrice="1.67"  StockIndex="ABC" Gain="2.30" GainPercentage="45"/>
     </StockGames_ViewModels:PortfolioViewModel.Trades>
 </StockGames_ViewModels:PortfolioViewModel>

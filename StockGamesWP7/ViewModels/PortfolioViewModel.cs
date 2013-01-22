@@ -11,24 +11,25 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
-using StockGames.Models;
 using StockGames.Persistence.V1.DataModel;
 using StockGames.Persistence.V1.Services;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using StockGames.Persistence.V1;
+using StockGames.Entities;
 
 namespace StockGames.ViewModels
 {
     public class PortfolioViewModel : ViewModelBase
     {
-        public PortfolioDataModel Portfolio { get; set; } // TODO avoid accessing the service layer
+        public string PortfolioName { get; private set; }
+        public decimal PortfolioBalance { get; private set; }
         
         public ObservableCollection<TradeEntity> Trades { get; set; }
 
-        private StockEntity _selectedTrade;
-        public StockEntity SelectedTrade 
+        private TradeEntity _selectedTrade;
+        public TradeEntity SelectedTrade 
         {
             get { return _selectedTrade; } 
             set
@@ -41,13 +42,17 @@ namespace StockGames.ViewModels
         public PortfolioViewModel()
         {
             int portfolioId = GameState.Instance.MainPortfolioId;
-            Portfolio = PortfolioService.Instance.GetPortfolio(portfolioId);
+            
+            var portfolio = PortfolioService.Instance.GetPortfolio(portfolioId);
+            PortfolioName = portfolio.Name;
+            PortfolioBalance = portfolio.Balance;
+
             Trades = new ObservableCollection<TradeEntity>(PortfolioService.Instance.GetTrades(portfolioId));
         }
 
         private void ViewStock()
         {
-            var uri = new Uri("/Views/StockView.xaml?EntryId=" + SelectedTrade.StockIndex, UriKind.Relative);
+            var uri = new Uri("/Views/StockView.xaml?StockIndex=" + SelectedTrade.StockIndex, UriKind.Relative);
             Messenger.Default.Send(uri, "Navigate");
             SelectedTrade = null;
             RaisePropertyChanged("SelectedTrade");

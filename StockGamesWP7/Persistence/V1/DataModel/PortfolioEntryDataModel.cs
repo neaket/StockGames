@@ -5,7 +5,8 @@ using System.Data.Linq.Mapping;
 namespace StockGames.Persistence.V1.DataModel
 {
     [Table]
-    [InheritanceMapping(Code = 1, Type = typeof(PortfolioTradeDataModel), IsDefault = true)]
+    [InheritanceMapping(Code = 1, Type = typeof(PortfolioTransactionDataModel), IsDefault = true)]
+    [InheritanceMapping(Code = 2, Type = typeof(PortfolioTradeDataModel))]
     public class PortfolioEntryDataModel
     {
         private EntityRef<PortfolioDataModel> _portfolio;
