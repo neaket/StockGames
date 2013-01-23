@@ -5,10 +5,16 @@ using System.Data.Linq.Mapping;
 namespace StockGames.Persistence.V1.DataModel
 {
     [Table]
-    [InheritanceMapping(Code = 1, Type = typeof(PortfolioTransactionDataModel), IsDefault = true)]
-    [InheritanceMapping(Code = 2, Type = typeof(PortfolioTradeDataModel))]
+    [InheritanceMapping(Code = EntryCode.Transaction, Type = typeof(PortfolioTransactionDataModel), IsDefault = true)]
+    [InheritanceMapping(Code = EntryCode.Trade, Type = typeof(PortfolioTradeDataModel))]
     public class PortfolioEntryDataModel
     {
+        public enum EntryCode
+        {
+            Transaction = 1,
+            Trade = 2
+        }
+
         private EntityRef<PortfolioDataModel> _portfolio;
 
         [Column(
@@ -41,7 +47,7 @@ namespace StockGames.Persistence.V1.DataModel
         }
 
         [Column(IsDiscriminator=true)]
-        private int Code { get; set; }
+        public EntryCode Code { get; private set; }
 
         [Column(
            DbType = "datetime NOT NULL",

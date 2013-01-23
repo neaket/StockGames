@@ -41,7 +41,7 @@ namespace StockGames.Commands
             stockEntity.CurrentPrice += (decimal)(random.NextDouble() - .4) * stockEntity.CurrentPrice;
             
             
-            StockService.Instance.AddStockSnapshot(stockEntity);
+            StockService.Instance.AddStockSnapshot(stockEntity.StockIndex, stockEntity.CurrentPrice);
             // END TODO
         }
 
