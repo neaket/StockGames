@@ -82,5 +82,11 @@ namespace StockGames.Persistence.V1
         /// </summary>
         [DataMember]
         public bool ExistingGame { get; set; }
+
+        /// <summary>
+        /// The id of the main portfolio.
+        /// </summary>
+        [DataMember]
+        public int MainPortfolioId { get; set; }
     }
 }

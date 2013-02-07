@@ -3,8 +3,8 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using StockGames.Models;
 using System.Collections.ObjectModel;
+using StockGames.Entities;
 
 namespace StockGames.ViewModels
 {

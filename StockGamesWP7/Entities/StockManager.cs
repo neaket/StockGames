@@ -3,7 +3,7 @@
 ﻿using System.Linq;
 ﻿using StockGames.Persistence.V1.Services;
 
-namespace StockGames.Models
+namespace StockGames.Entities
 {
     /// <summary>
     /// The StockManager is used to perform all Stock specific operations.  The StockManager also keeps a WeakReference to

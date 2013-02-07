@@ -1,14 +1,17 @@
 ﻿using System;
-using StockGames.Models;
 using System.Linq;
 using System.Collections.Generic;
 using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.DataModel;
+using StockGames.Entities;
+using System.Diagnostics;
 
 namespace StockGames.Persistence.V1.Services
 {
     public class StockService
     {
+        #region instance
+        
         private static readonly StockService instance = new StockService();
         public static StockService Instance {
             get 
@@ -19,6 +22,11 @@ namespace StockGames.Persistence.V1.Services
 
         private StockService() { }
 
+        #endregion
+
+        /// <summary> Gets a stock. </summary>
+        /// <param name="stockIndex">   Index of the stock. </param>
+        /// <returns> The stock. </returns>
         public StockEntity GetStock(string stockIndex)
         {
             using (var context = StockGamesDataContext.GetReadOnly())
@@ -35,6 +43,10 @@ namespace StockGames.Persistence.V1.Services
             }
         }
 
+        /// <summary> ReturnsaAll stocks that are persisted. </summary>
+        /// <returns>
+        /// An Enumerator of all stocks.
+        /// </returns>
         public IEnumerable<StockEntity> GetStocks()
         {
             
@@ -57,15 +69,20 @@ namespace StockGames.Persistence.V1.Services
             }
         }
 
+        /// <summary> Adds a stock. </summary>
+        /// <param name="stockEntity">  The stock entity. </param>
         public void AddStock(StockEntity stockEntity) 
         {
+            Debug.Assert(stockEntity.CurrentPrice > 0);
+            Debug.Assert(stockEntity.PreviousPrice > 0);
+
             using (var context = StockGamesDataContext.GetReadWrite())
             {
                 // TODO ensure no duplicates
-                var stock = new StockModel {StockIndex = stockEntity.StockIndex, CompanyName = stockEntity.CompanyName, CurrentPrice = stockEntity.CurrentPrice, PreviousPrice = stockEntity.PreviousPrice};
+                var stock = new StockDataModel {StockIndex = stockEntity.StockIndex, CompanyName = stockEntity.CompanyName, CurrentPrice = stockEntity.CurrentPrice, PreviousPrice = stockEntity.PreviousPrice};
                 var current = DateTime.Now; // TODO
                 var previous = new DateTime(current.Year, current.Month, current.Day); // TODO
-                var prevStockSnapshot = new StockSnapshotModel
+                var prevStockSnapshot = new StockSnapshotDataModel
                     {
                         Stock = stock,
                         Tombstone = previous,
@@ -73,7 +90,7 @@ namespace StockGames.Persistence.V1.Services
                     };
                 context.StockSnapshots.InsertOnSubmit(prevStockSnapshot);
 
-                var currentStockSnapshot = new StockSnapshotModel
+                var currentStockSnapshot = new StockSnapshotDataModel
                     {
                         Stock = stock,
                         Tombstone = current,
@@ -85,20 +102,25 @@ namespace StockGames.Persistence.V1.Services
             }
         }
 
-
-        public void AddStockSnapshot(StockEntity stockEntity)
+        /// <summary> Adds a stock snapshot to a specific stock. </summary>
+        /// <param name="stockIndex">   Index of the stock. </param>
+        /// <param name="price">        The snapshot price. </param>
+        public void AddStockSnapshot(string stockIndex, decimal price)
         {
+            Debug.Assert(price > 0);
             using (var context = StockGamesDataContext.GetReadWrite())
             {
                 var current = DateTime.Now; // TODO
-                var stock = (from s in context.Stocks where s.StockIndex == stockEntity.StockIndex select s).Single();
-                var stockSnapshot = new StockSnapshotModel
+                var stock = (from s in context.Stocks where s.StockIndex == stockIndex select s).Single();
+                var stockSnapshot = new StockSnapshotDataModel
                 {
                     Stock = stock,
                     Tombstone = current,
-                    Price = stockEntity.CurrentPrice
+                    Price = price
                 };
-
+                stock.PreviousPrice = stock.CurrentPrice;
+                stock.CurrentPrice = price;
+                
                 context.StockSnapshots.InsertOnSubmit(stockSnapshot);
                 context.SubmitChanges();
             }

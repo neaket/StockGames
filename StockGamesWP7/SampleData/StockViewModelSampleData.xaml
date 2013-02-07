@@ -1,5 +1,6 @@
-﻿<StockGames_ViewModels:StockViewModel xmlns:StockGames_ViewModels="clr-namespace:StockGames.ViewModels" xmlns:StockGames_Models="clr-namespace:StockGames.Models" xmlns:System="clr-namespace:System;assembly=mscorlib">
+﻿<StockGames_ViewModels:StockViewModel xmlns:StockGames_ViewModels="clr-namespace:StockGames.ViewModels" xmlns:System="clr-namespace:System;assembly=mscorlib"
+                                      xmlns:Entities="clr-namespace:StockGames.Entities">
 	<StockGames_ViewModels:StockViewModel.Stock>
-		<StockGames_Models:StockEntity CompanyName="ABC Company" StockIndex="ABC1" CurrentPrice="53" PreviousPrice="47.50" />
+		<Entities:StockEntity CompanyName="ABC Company" StockIndex="ABC1" CurrentPrice="53" PreviousPrice="47.50" />
 	</StockGames_ViewModels:StockViewModel.Stock>
 </StockGames_ViewModels:StockViewModel>

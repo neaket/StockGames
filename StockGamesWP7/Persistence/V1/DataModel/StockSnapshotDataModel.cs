@@ -5,17 +5,21 @@ using System.Data.Linq;
 namespace StockGames.Persistence.V1.DataModel
 {
     [Table]
-    public class StockSnapshotModel
+    public class StockSnapshotDataModel
     {
-        private EntityRef<StockModel> _stock;
-        
+        private EntityRef<StockDataModel> _stock;
+
         [Column(
-           IsPrimaryKey = true,
-           IsDbGenerated = false,
-           DbType = "NVARCHAR(10) NOT NULL",
-           CanBeNull = false,           
+          IsPrimaryKey = true,
+          IsDbGenerated = true,
+          DbType = "int NOT NULL IDENTITY",
+          AutoSync = AutoSync.OnInsert)]
+        public int StockSnapshotId { get; set; }
+
+        [Column(
+           DbType = "NVARCHAR(10) NOT NULL",    
            AutoSync = AutoSync.OnInsert)]
-        private string StockIndex { get; set; }
+        public string StockIndex { get; private set; }
 
         [Association(
             Name = "FK_StockSnapshots_Stock",
@@ -23,7 +27,7 @@ namespace StockGames.Persistence.V1.DataModel
             Storage = "_stock",
             ThisKey = "StockIndex",
             OtherKey = "StockIndex")]
-        public StockModel Stock {
+        public StockDataModel Stock {
             get
             {
                 return _stock.Entity;
@@ -36,16 +40,12 @@ namespace StockGames.Persistence.V1.DataModel
         }
 
         [Column(
-           IsPrimaryKey = true,
-           IsDbGenerated = false,
            DbType = "datetime NOT NULL",
-           CanBeNull = false,
            AutoSync = AutoSync.OnInsert)]
         public DateTime Tombstone { get; set; }
 
         [Column(
             DbType = "money NOT NULL",
-            CanBeNull = false,
             AutoSync = AutoSync.OnInsert)]
         public Decimal Price { get; set; }
     }

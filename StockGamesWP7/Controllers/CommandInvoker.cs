@@ -10,7 +10,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 using StockGames.Commands;
-using StockGames.Models;
 using StockGames.Stubs;
 
 namespace StockGames.Controllers

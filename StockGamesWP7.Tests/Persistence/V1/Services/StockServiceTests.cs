@@ -1,20 +1,20 @@
 ﻿using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockGames.Models;
 using System.Linq;
 using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.Services;
+using StockGames.Entities;
 
 namespace StockGames.Tests.Persistence.V1.Services
 {
     [TestClass]
-    [Tag("Persistance")]
+    [Tag("Persistence")]
     public class StockServiceTests
     {
         [TestInitialize]
         public void Initialize()
         {
-            using (StockGamesDataContext context = StockGamesDataContext.GetReadWrite())
+            using (var context = StockGamesDataContext.GetReadWrite())
             {
                 
                 if (!context.DatabaseExists())
@@ -41,7 +41,7 @@ namespace StockGames.Tests.Persistence.V1.Services
         [TestCleanup]
         public void Cleanup()
         {
-            using (StockGamesDataContext context = StockGamesDataContext.GetReadWrite())
+            using (var context = StockGamesDataContext.GetReadWrite())
             {
                 context.DeleteDatabase();
             }

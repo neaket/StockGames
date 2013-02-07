@@ -31,6 +31,7 @@
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 
                 <Button Content="View Market" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=ViewMarketCommand}" />
+                <Button Content="View Portfolio" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=ViewPortfolioCommand}" />
                 
             </StackPanel>
         </Grid>

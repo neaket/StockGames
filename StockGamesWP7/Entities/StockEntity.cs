@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Data.Linq.Mapping;
 
-namespace StockGames.Models
+namespace StockGames.Entities
 {
     public class StockEntity :INotifyPropertyChanged
     {
