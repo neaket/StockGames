@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace StockGames.Persistence.V1.DataModel
 {
-    public enum TradeType
+    public enum TradeType : int
     {
         Buy = 0,
         Sell = 1,

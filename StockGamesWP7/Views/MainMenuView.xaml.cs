@@ -17,6 +17,10 @@ namespace StockGames.Views
             // Necessary for Page Navigation from the ViewModel.
             Messenger.Default.Register<Uri>(this, "Navigate",
                 (uri) => NavigationService.Navigate(uri));
+
+            // TODO
+            Messenger.Default.Register<object>(this, "NavigateBack",
+                (obj) => NavigationService.GoBack());
         }
     }
 }

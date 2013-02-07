@@ -127,13 +127,58 @@ namespace StockGames.Persistence.V1.Services
                     {
                         StockIndex = trade.StockSnapshot.StockIndex,
                         Quantity = trade.Quantity,
-                        PurchasedPrice = trade.Amount,
+                        AveragePurchasedPrice = trade.Amount,
                         CurrentPrice = latestSnapshotPrice
                     };
 
                     trades.Add(tradeEntity);
                 }
                 return trades;
+            }
+        }
+
+        public IEnumerable<TradeEntity> GetGroupedTrades(int portfolioId)
+        {
+            using (var context = StockGamesDataContext.GetReadOnly())
+            {
+                var groupedTrades = new List<TradeEntity>();
+
+                
+                var portfolio = context.Portfolios.Single(p => p.PortfolioId == portfolioId);
+
+                var trades = from t in from e in portfolio.Entries
+                             where e is PortfolioTradeDataModel
+                             select e as PortfolioTradeDataModel
+                             group t by t.StockSnapshot.StockIndex into g
+                             select new 
+                                 {
+                                     Quantity = g.Sum(x => x.Quantity),
+                                     Average = g.Average(x => x.Amount * x.Quantity) / g.Sum(x => x.Quantity), // TODO optimize
+                                     StockIndex = g.Key
+
+                                 };
+                foreach (var trade in trades.ToArray())
+                {
+                    var blah = trade.StockIndex;
+                    // Get latest snapshot
+                    // TODO optimize
+                    var latestSnapshotPriceQuery = from s in context.StockSnapshots 
+                                                   where s.StockIndex == trade.StockIndex 
+                                                   orderby s.Tombstone descending select s.Price;
+                    decimal latestSnapshotPrice = latestSnapshotPriceQuery.First();
+
+                    var tradeEntity = new TradeEntity()
+                    {
+                        StockIndex = trade.StockIndex,
+                        Quantity = trade.Quantity,
+                        AveragePurchasedPrice = trade.Average,
+                        CurrentPrice = latestSnapshotPrice
+                    };
+
+                    groupedTrades.Add(tradeEntity);
+                }
+
+                return groupedTrades;
             }
         }
     }

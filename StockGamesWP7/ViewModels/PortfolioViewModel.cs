@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using StockGames.Persistence.V1.Services;
 using StockGames.Persistence.V1;
 using StockGames.Entities;
+using System.Windows.Input;
 
 namespace StockGames.ViewModels
 {
     public class PortfolioViewModel : ViewModelBase
     {
+        public ICommand ViewPortfolioCommand { get; private set; }
         public string PortfolioName { get; private set; }
         public decimal PortfolioBalance { get; private set; }
         
@@ -26,15 +29,27 @@ namespace StockGames.ViewModels
             } 
         }
 
+        
         public PortfolioViewModel()
         {
-            int portfolioId = GameState.Instance.MainPortfolioId;
+            ViewPortfolioCommand = new RelayCommand(LoadPortfolio);
+            Trades = new ObservableCollection<TradeEntity>();
             
+            
+        }
+
+        private void LoadPortfolio()
+        {
+            int portfolioId = GameState.Instance.MainPortfolioId;
             var portfolio = PortfolioService.Instance.GetPortfolio(portfolioId);
             PortfolioName = portfolio.Name;
             PortfolioBalance = portfolio.Balance;
 
-            Trades = new ObservableCollection<TradeEntity>(PortfolioService.Instance.GetTrades(portfolioId));
+            Trades.Clear();
+            foreach (var trade in PortfolioService.Instance.GetGroupedTrades(portfolioId))
+            {
+                Trades.Add(trade);
+            }
         }
 
         private void ViewStock()

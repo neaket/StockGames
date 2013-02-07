@@ -6,21 +6,21 @@ namespace StockGames.Entities
     {
         public string StockIndex { get; set; }
         public int Quantity { get; set; }
-        public decimal PurchasedPrice { get; set; }
+        public decimal AveragePurchasedPrice { get; set; }
         public decimal CurrentPrice { get; set; }
         public decimal Gain
         {
             get
             {
-                return CurrentPrice - PurchasedPrice;
+                return CurrentPrice - AveragePurchasedPrice;
             }
         }
         public decimal GainPercentage {
             get
             {
-                Debug.Assert(PurchasedPrice > 0);
+                Debug.Assert(AveragePurchasedPrice > 0);
                 
-                return Gain / PurchasedPrice;
+                return Gain / AveragePurchasedPrice;
             }
         }
     }

@@ -96,6 +96,7 @@
     <Compile Include="Resources\NegativeToVisibilityConverter.cs" />
     <Compile Include="Resources\PositiveToVisibilityConverter.cs" />
     <Compile Include="ViewModels\PortfolioViewModel.cs" />
+    <Compile Include="ViewModels\PortfolioTradeViewModel.cs" />
     <Compile Include="Views\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
@@ -134,6 +135,9 @@
     <Compile Include="Views\ListStocksView.xaml.cs">
       <DependentUpon>ListStocksView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PortfolioTradeView.xaml.cs">
+      <DependentUpon>PortfolioTradeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PortfolioView.xaml.cs">
       <DependentUpon>PortfolioView.xaml</DependentUpon>
     </Compile>
@@ -166,6 +170,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PortfolioTradeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PortfolioView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -190,6 +198,7 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\plus.png" />
     <Content Include="Images\refresh.png" />
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
