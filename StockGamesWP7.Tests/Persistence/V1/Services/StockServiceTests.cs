@@ -25,17 +25,19 @@ namespace StockGames.Tests.Persistence.V1.Services
         }
         
         [TestMethod]
-        public void TestAddAndGetStockEntity()
+        public void TestAddAndGetStock()
         {
-            StockEntity stockEntity = new StockEntity("ABC", "ABC Company Test");
+            int prevCount = StockService.Instance.GetStocks().Count();
+            StockService.Instance.AddStock("TEST", "Test Company Test");
 
-            StockService.Instance.AddStock(stockEntity);
+            Assert.AreEqual(prevCount + 1, StockService.Instance.GetStocks().Count());
 
-            Assert.AreEqual(1, StockService.Instance.GetStocks().Count());
+            StockEntity persisted = StockService.Instance.GetStock("TEST");
 
-            StockEntity persisted = StockService.Instance.GetStock("ABC");
-
-            Assert.AreEqual(stockEntity, persisted);
+            Assert.AreEqual("TEST", persisted.StockIndex);
+            Assert.AreEqual("Test Company Test", persisted.CompanyName);
+            Assert.AreEqual(0, persisted.CurrentPrice);
+            Assert.AreEqual(0, persisted.PreviousPrice);
         }
 
         [TestCleanup]

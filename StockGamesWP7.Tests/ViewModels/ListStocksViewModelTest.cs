@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockGames;
 using StockGames.Persistence.V1.DataContexts;
+using StockGames.Persistence.V1.Migrations;
 using StockGames.ViewModels;
 
 namespace StockGames.Tests.ViewModels
@@ -22,13 +13,8 @@ namespace StockGames.Tests.ViewModels
         [TestInitialize]
         public void Initialize()
         {
-            using (StockGamesDataContext context = StockGamesDataContext.GetReadWrite())
-            {
-                if (!context.DatabaseExists())
-                {
-                    context.CreateDatabase();
-                }
-            }
+            MigrationManager.IfExistsRemoveDataContext();
+            MigrationManager.InitializeDataContext();
         }
 
         [TestMethod]

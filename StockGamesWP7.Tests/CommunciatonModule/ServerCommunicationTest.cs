@@ -19,6 +19,9 @@ using System.IO.IsolatedStorage;
 namespace StockGames.Tests.CommunciatonModule
 {
     [TestClass]
+#if !TEST_COMMUNICATION
+    [Ignore]
+#endif
     public class ServerCommunicationTests : SilverlightTest
     {
         private const string SERVERURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";

@@ -57,6 +57,10 @@ namespace StockGames.Entities
                         if (stockEntity != null)
                         {
                             var weakStock = new WeakReference(stockEntity);
+                            if (_stocks.ContainsKey(stocks[i].StockIndex))
+                            {
+                                _stocks.Remove(stocks[i].StockIndex);
+                            }
                             _stocks.Add(stocks[i].StockIndex, weakStock);
                         }
                     }
