@@ -1,10 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Phone.Testing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockGames.Persistence.V1.DataContexts;
 using StockGames.Views;
 
 namespace StockGames.Tests.Views
 {
     [TestClass]
+    [Tag("Views")]
     public class ListStocksViewTest
     {
         [TestInitialize]
