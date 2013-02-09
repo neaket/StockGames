@@ -1,4 +1,4 @@
-﻿using Microsoft.Silverlight.Testing;
+﻿using Microsoft.Phone.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using StockGames.Persistence.V1.DataContexts;

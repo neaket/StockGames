@@ -1,12 +1,13 @@
 ﻿using System;
+using Microsoft.Phone.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.Migrations;
 using StockGames.ViewModels;
 
 namespace StockGames.Tests.ViewModels
 {
     [TestClass]
+    [Tag("ViewModels")]
     public class ListStocksViewModelTest
     {
 

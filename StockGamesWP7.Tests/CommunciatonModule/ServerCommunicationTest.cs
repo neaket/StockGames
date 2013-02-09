@@ -1,28 +1,17 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
-using System.Threading;
-using Microsoft.Silverlight.Testing;
-using System.Text;
-using SharpGIS;
 using System.IO.IsolatedStorage;
+using System.Net;
+using System.Text;
+using System.Windows;
+using Microsoft.Phone.Testing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace StockGames.Tests.CommunciatonModule
 {
     [TestClass]
-#if !TEST_COMMUNICATION
-    [Ignore]
-#endif
-    public class ServerCommunicationTests : SilverlightTest
+    [Tag("Communication")]
+    public class ServerCommunicationTests : WorkItemTest
     {
         private const string SERVERURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
         private Stream stream;
@@ -137,12 +126,12 @@ namespace StockGames.Tests.CommunciatonModule
             EnqueueCallback(() =>
             {
                 HttpWebRequest request = (HttpWebRequest)result.AsyncState;
-                
+
                 HttpWebResponse response = request.EndGetResponse(result) as HttpWebResponse;
                 System.Diagnostics.Debug.WriteLine(response.StatusDescription);
-                Assert.Equals(HttpStatusCode.OK, response.StatusCode); 
+                Assert.Equals(HttpStatusCode.OK, response.StatusCode);
             });
-            
+
             EnqueueTestComplete();
         }
 
@@ -150,7 +139,7 @@ namespace StockGames.Tests.CommunciatonModule
         {
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
             Stream putStream = request.EndGetRequestStream(result);
-            
+
             using (StreamReader sr = new StreamReader(stream))
             {
                 using (StreamWriter writer = new StreamWriter(putStream, Encoding.UTF8))
