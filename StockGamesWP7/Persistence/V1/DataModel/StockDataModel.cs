@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
 
 namespace StockGames.Persistence.V1.DataModel
@@ -6,6 +8,8 @@ namespace StockGames.Persistence.V1.DataModel
     [Table]
     public class StockDataModel
     {
+        private EntitySet<StockSnapshotDataModel> _snapshots = new EntitySet<StockSnapshotDataModel>();
+
         [Column(
             IsPrimaryKey = true,
             DbType = "NVARCHAR(10) NOT NULL",
@@ -17,14 +21,16 @@ namespace StockGames.Persistence.V1.DataModel
             AutoSync = AutoSync.OnInsert)]
         public string CompanyName { get; set; }
 
-        [Column(
-            DbType = "money NOT NULL",
-            AutoSync = AutoSync.OnUpdate)]
-        public Decimal CurrentPrice { get; set; }
-        
-        [Column(
-            DbType = "money NOT NULL",
-            AutoSync = AutoSync.OnUpdate)]
-        public Decimal PreviousPrice { get; set; }
+        [Association(
+            Storage = "_snapshots",
+            ThisKey = "StockIndex",
+            OtherKey = "StockIndex")]
+        public IEnumerable<StockSnapshotDataModel> Snapshots
+        {
+            get
+            {
+                return _snapshots;
+            }
+        }
     }
 }

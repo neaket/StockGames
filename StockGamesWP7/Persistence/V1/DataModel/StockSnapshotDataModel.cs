@@ -48,5 +48,10 @@ namespace StockGames.Persistence.V1.DataModel
             DbType = "money NOT NULL",
             AutoSync = AutoSync.OnInsert)]
         public Decimal Price { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("Id: {0}, StockIndex: {1}, Price: {2}, Tombstone: {3}", StockSnapshotId, StockIndex, Price, Tombstone);
+        }
     }
 }

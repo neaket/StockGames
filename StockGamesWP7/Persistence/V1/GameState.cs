@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.IsolatedStorage;
 using System.Runtime.Serialization;
 
@@ -32,6 +33,8 @@ namespace StockGames.Persistence.V1
 
         private GameState()
         {
+            //TODO
+            GameTime = DateTime.Now.AddHours(1);
         }
 
         #endregion
@@ -88,5 +91,9 @@ namespace StockGames.Persistence.V1
         /// </summary>
         [DataMember]
         public int MainPortfolioId { get; set; }
+
+        /// <summary> Gets the current game time. </summary>
+        [DataMember]
+        public DateTime GameTime { get; private set; }
     }
 }

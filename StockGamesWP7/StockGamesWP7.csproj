@@ -88,6 +88,7 @@
     <Compile Include="CommunicationModule\ServerResponse.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandInvoker.cs" />
+    <Compile Include="Controllers\TimeController.cs" />
     <Compile Include="Entities\TradeEntity.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioEntryDataModel.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioTradeDataModel.cs" />

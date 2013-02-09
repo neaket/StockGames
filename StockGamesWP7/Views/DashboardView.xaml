@@ -32,7 +32,7 @@
                 
                 <Button Content="View Market" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=ViewMarketCommand}" />
                 <Button Content="View Portfolio" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=ViewPortfolioCommand}" />
-                
+                <Button Content="+1 Hour" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=AdvanceTimeByHourCommand}" />
             </StackPanel>
         </Grid>
     </Grid>
