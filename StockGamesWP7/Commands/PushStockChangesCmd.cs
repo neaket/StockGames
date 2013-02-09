@@ -54,8 +54,8 @@ namespace StockGames.Commands
                 return;
             }
 
-            targetStock.PreviousPrice = targetStock.CurrentPrice;
-            targetStock.CurrentPrice = stock.CurrentPrice;
+            //targetStock.PreviousPrice = targetStock.CurrentPrice;
+            //targetStock.CurrentPrice = stock.CurrentPrice;
         }
     }
 }

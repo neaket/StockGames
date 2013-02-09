@@ -37,8 +37,8 @@ namespace StockGames.Commands
 
             // TODO do some real updates :) instead of random numbers
             var random = new Random();
-            stockEntity.PreviousPrice = stockEntity.CurrentPrice;
-            stockEntity.CurrentPrice += (decimal)(random.NextDouble() - .4) * stockEntity.CurrentPrice;
+            //stockEntity.PreviousPrice = stockEntity.CurrentPrice;
+            //stockEntity.CurrentPrice += (decimal)(random.NextDouble() - .4) * stockEntity.CurrentPrice;
             
             
             StockService.Instance.AddStockSnapshot(stockEntity.StockIndex, stockEntity.CurrentPrice, DateTime.Now);
