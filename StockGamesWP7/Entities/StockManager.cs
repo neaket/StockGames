@@ -10,6 +10,7 @@ namespace StockGames.Entities
     /// all currently used StockEntities.  Which allows multiple ViewModel's to share the same data.  If a StockEntity is not
     /// referenced by other code, then it will be properly garbage collected.   
     /// </summary>
+    [Obsolete]
     public class StockManager
     {
         private readonly Dictionary<string, WeakReference> _stocks = new Dictionary<string, WeakReference>();

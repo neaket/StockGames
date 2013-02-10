@@ -94,6 +94,6 @@ namespace StockGames.Persistence.V1
 
         /// <summary> Gets the current game time. </summary>
         [DataMember]
-        public DateTime GameTime { get; private set; }
+        public DateTime GameTime { get; set; }
     }
 }
