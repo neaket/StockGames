@@ -12,19 +12,19 @@ namespace StockGames.Tests
         {
             InitializeComponent();
 
-            UnitTestHarness harness = new UnitTestHarness();
             // Add or comment out tags below as necessary.
             var tags = new TagList
                 {
+                    "ALL",
+                    "Communication",
                     "Persistence",
-                    "Views",
                     "ViewModels",
-                    //"Communication"
+                    "Views",
                 };
 
             UnitTestSettings settings = UnitTestSystem.CreateDefaultSettings();
             settings.SampleTags = tags;
-            //settings.TagExpression = tags.ToString();
+            settings.TagExpression = tags.ToString();
 
             this.Content = UnitTestSystem.CreateTestPage(settings);
         }

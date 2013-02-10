@@ -50,7 +50,7 @@ namespace StockGames.Persistence.V1.Services
         /// <returns>
         /// An Enumerator of all stocks.
         /// </returns>
-        public IEnumerable<StockEntity> GetStocks()
+        public StockEntity[] GetStocks()
         {
             using (var context = StockGamesDataContext.GetReadOnly())
             {
