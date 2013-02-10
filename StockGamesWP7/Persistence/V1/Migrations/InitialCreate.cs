@@ -72,13 +72,13 @@ namespace StockGames.Persistence.V1.Migrations
 
         private static void CreateFirstPortfolio()
         {
-            var portfolio = PortfolioService.Instance.AddPortfolio("Practice");
+            var portfolioId = PortfolioService.Instance.AddPortfolio("Practice");
 
-            PortfolioService.Instance.AddTransaction(portfolio.PortfolioId, 10000);
-            PortfolioService.Instance.AddTrade(portfolio.PortfolioId, "NINJ", TradeType.Buy, 17);
-            PortfolioService.Instance.AddTrade(portfolio.PortfolioId, "ABC", TradeType.Buy, 3);
+            PortfolioService.Instance.AddTransaction(portfolioId, 10000, DateTime.Today);
+            PortfolioService.Instance.AddTrade(portfolioId, "NINJ", TradeType.Buy, 17, DateTime.Today);
+            PortfolioService.Instance.AddTrade(portfolioId, "ABC", TradeType.Buy, 3, DateTime.Today);
 
-            GameState.Instance.MainPortfolioId = portfolio.PortfolioId;
+            GameState.Instance.MainPortfolioId = portfolioId;
         }
     }
 }

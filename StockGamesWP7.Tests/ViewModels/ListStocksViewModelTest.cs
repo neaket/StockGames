@@ -21,7 +21,7 @@ namespace StockGames.Tests.ViewModels
         [TestMethod]
         public void TestViewModelSetup()
         {
-            ListStocksViewModel viewModel = new ListStocksViewModel();
+            var viewModel = new ListStocksViewModel();
             Assert.IsTrue(viewModel.Stocks != null);
 
             foreach (var stock in viewModel.Stocks)
