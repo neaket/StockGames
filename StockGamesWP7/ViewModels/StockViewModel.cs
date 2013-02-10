@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using StockGames.Controllers;
 using StockGames.Entities;
+using StockGames.Messaging;
 using StockGames.Persistence.V1.Services;
 
 namespace StockGames.ViewModels
@@ -19,7 +20,7 @@ namespace StockGames.ViewModels
 
         public StockEntity Stock { get; private set; }
 
-        private Geometry _stockChartData;
+        private PathGeometry _stockChartData;
         public Geometry StockChartData
         {
             get { return _stockChartData; }
@@ -38,6 +39,8 @@ namespace StockGames.ViewModels
             LoadStockCommand = new RelayCommand<string>(LoadStock);
             UpdateCommand = new RelayCommand(Update);
             NewTradeCommand = new RelayCommand(NewTrade);
+
+            Messenger.Default.Register<StockUpdatedMessageType>(this, StockUpdated);
         }
 
         private void Update()
@@ -51,12 +54,21 @@ namespace StockGames.ViewModels
             Messenger.Default.Send(uri, "Navigate");
         }
 
+        private void StockUpdated(StockUpdatedMessageType message)
+        {
+            if (Stock == null) return;
+            if (message.StockIndex == Stock.StockIndex)
+            {
+                LoadStock(Stock.StockIndex);
+            }
+        }
+
         private void LoadStock(string stockIndex)
         {
             Stock = StockService.Instance.GetStock(stockIndex);
 
 
-            var stockChartData = new PathGeometry();
+            
             var figure = new PathFigure();
 
             // TODO use the tombstone...
@@ -80,9 +92,16 @@ namespace StockGames.ViewModels
             }
 
             _stockChartMiddle = (_stockChartMax + _stockChartMin) / 2;
-               
-            stockChartData.Figures.Add(figure);
-            _stockChartData = stockChartData;
+
+            _stockChartData = new PathGeometry();
+            _stockChartData.Figures.Add(figure);
+
+            RaisePropertyChanged("Stock");
+            RaisePropertyChanged("StockChartMax");
+            RaisePropertyChanged("StockChartMiddle");
+            RaisePropertyChanged("StockChartMin");
+            RaisePropertyChanged("StockChartData");
+
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using GalaSoft.MvvmLight.Messaging;
+using StockGames.Messaging;
 using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.DataModel;
 using StockGames.Entities;
@@ -86,6 +88,8 @@ namespace StockGames.Persistence.V1.Services
         public void AddStockSnapshot(string stockIndex, decimal price, DateTime tombstone)
         {
             Debug.Assert(price > 0);
+            
+
             using (var context = StockGamesDataContext.GetReadWrite())
             { 
                 var stock = (from s in context.Stocks where s.StockIndex == stockIndex select s).Single();
@@ -99,6 +103,8 @@ namespace StockGames.Persistence.V1.Services
                 context.StockSnapshots.InsertOnSubmit(stockSnapshot);
                 context.SubmitChanges();
             }
+
+            Messenger.Default.Send(new StockUpdatedMessageType(stockIndex));
         }
     }
 }
