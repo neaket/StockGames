@@ -26,7 +26,6 @@ namespace StockGames.ViewModels
 
         public ListStocksViewModel()
         {
-            
             LoadStocks();
         }
 

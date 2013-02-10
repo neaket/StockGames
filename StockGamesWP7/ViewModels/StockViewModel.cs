@@ -20,7 +20,7 @@ namespace StockGames.ViewModels
 
         public StockEntity Stock { get; private set; }
 
-        private PathGeometry _stockChartData;
+        private PathGeometry _stockChartData = new PathGeometry();
         public Geometry StockChartData
         {
             get { return _stockChartData; }
@@ -66,12 +66,10 @@ namespace StockGames.ViewModels
         private void LoadStock(string stockIndex)
         {
             Stock = StockService.Instance.GetStock(stockIndex);
-
-
             
             var figure = new PathFigure();
 
-            // TODO use the tombstone...
+            // TODO display the tombstone on the horizontal axis
             var startPrice = Stock.Snapshots[Stock.Snapshots.Count - 1].Price;
             Point start = new Point(0, -(double)startPrice);
             figure.StartPoint = start;
@@ -94,14 +92,14 @@ namespace StockGames.ViewModels
             _stockChartMiddle = (_stockChartMax + _stockChartMin) / 2;
 
             _stockChartData = new PathGeometry();
+            _stockChartData.Figures.Clear();
             _stockChartData.Figures.Add(figure);
 
             RaisePropertyChanged("Stock");
             RaisePropertyChanged("StockChartMax");
             RaisePropertyChanged("StockChartMiddle");
             RaisePropertyChanged("StockChartMin");
-            RaisePropertyChanged("StockChartData");
-
+            RaisePropertyChanged("StockChartData"); // NOTE: this property is throwing exceptions for multiple views, see TODO in ViewModelLocator.Stock
         }
     }
 }

@@ -167,8 +167,6 @@ namespace StockGames.Tests.Persistence.V1.Services
             decimal initialAmount = 5000;
             int quantity0 = 5;
 
-            PortfolioDataModel portfolio;
-
             // Add a transaction to give the portfolio a positive balance
             PortfolioService.Instance.AddTransaction(portfolioId, initialAmount, tombstone0);
 
