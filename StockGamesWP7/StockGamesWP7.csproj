@@ -90,6 +90,7 @@
     <Compile Include="Controllers\CommandInvoker.cs" />
     <Compile Include="Controllers\TimeController.cs" />
     <Compile Include="Entities\TradeEntity.cs" />
+    <Compile Include="Messaging\PortfolioUpdatedMessageType.cs" />
     <Compile Include="Messaging\StockUpdatedMessageType.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioEntryDataModel.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioTradeDataModel.cs" />
@@ -103,7 +104,6 @@
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Entities\StockEntity.cs" />
-    <Compile Include="Entities\StockManager.cs" />
     <Compile Include="Persistence\V1\DataContexts\StockGamesDataContext.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioDataModel.cs" />
     <Compile Include="Persistence\V1\DataModel\StockSnapshotDataModel.cs" />

@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using StockGames.Controllers;
 using StockGames.Entities;
+using StockGames.Persistence.V1.Services;
 
 namespace StockGames.Commands
 {
@@ -46,7 +47,7 @@ namespace StockGames.Commands
             StockEntity targetStock;
             try
             {
-                targetStock = StockManager.Instance.GetStock(stock.StockIndex);
+                targetStock = StockService.Instance.GetStock(stock.StockIndex);
             }
             catch (ArgumentException)
             {

@@ -1,4 +1,6 @@
-﻿using StockGames.Persistence.V1.DataContexts;
+﻿using GalaSoft.MvvmLight.Messaging;
+using StockGames.Messaging;
+using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.DataModel;
 using System.Linq;
 using System.Collections.Generic;
@@ -44,7 +46,7 @@ namespace StockGames.Persistence.V1.Services
         {
             using (var context = StockGamesDataContext.GetReadWrite())
             {
-                var transaction = new PortfolioTransactionDataModel()
+                var transaction = new PortfolioTransactionDataModel
                 {
                     Amount = amount,
                     Tombstone = DateTime.Now
@@ -56,6 +58,8 @@ namespace StockGames.Persistence.V1.Services
 
                 context.SubmitChanges();
             }
+
+            Messenger.Default.Send(new PortfolioUpdatedMessageType(portfolioId));
         }
 
         /// <summary> Adds a trade. </summary>
@@ -69,7 +73,8 @@ namespace StockGames.Persistence.V1.Services
             {
                 var snapshot = (from s in context.StockSnapshots where s.StockIndex == stockIndex orderby s.Tombstone descending select s).First();
 
-                var trade = new PortfolioTradeDataModel() { 
+                var trade = new PortfolioTradeDataModel
+                { 
                     Amount = snapshot.Price, 
                     Quantity = quantity, 
                     Tombstone = DateTime.Now, 
@@ -83,6 +88,8 @@ namespace StockGames.Persistence.V1.Services
 
                 context.SubmitChanges();
             }
+
+            Messenger.Default.Send(new PortfolioUpdatedMessageType(portfolioId));
         }
 
         /// <summary> Gets a portfolio. </summary>
@@ -109,9 +116,6 @@ namespace StockGames.Persistence.V1.Services
                 var trades = new List<TradeEntity>();
                 var portfolio = context.Portfolios.Single(p => p.PortfolioId == portfolioId);
                 
-                    //            var tradesArray = from trade in context.PortfolioEntries where trade.Portfolio.PortfolioId == portfolioId && trade.Code == PortfolioEntryDataModel.EntryCode.Trade group 
-                    //context.PortfolioEntries.Select(
-                    //    e => e.Portfolio.PortfolioId == portfolioId && e.Code == PortfolioEntryDataModel.EntryCode.Trade).ToArray();
                 foreach (var entry in portfolio.Entries)
                 {
                     var trade = entry as PortfolioTradeDataModel;
@@ -123,7 +127,7 @@ namespace StockGames.Persistence.V1.Services
                     var latestSnapshotPriceQuery = from s in context.StockSnapshots where s.StockIndex == trade.StockSnapshot.StockIndex orderby s.Tombstone descending select s.Price;
                     decimal latestSnapshotPrice = latestSnapshotPriceQuery.First();
 
-                    var tradeEntity = new TradeEntity()
+                    var tradeEntity = new TradeEntity
                     {
                         StockIndex = trade.StockSnapshot.StockIndex,
                         Quantity = trade.Quantity,
@@ -159,7 +163,6 @@ namespace StockGames.Persistence.V1.Services
                                  };
                 foreach (var trade in trades.ToArray())
                 {
-                    var blah = trade.StockIndex;
                     // Get latest snapshot
                     // TODO optimize
                     var latestSnapshotPriceQuery = from s in context.StockSnapshots 
@@ -167,7 +170,7 @@ namespace StockGames.Persistence.V1.Services
                                                    orderby s.Tombstone descending select s.Price;
                     decimal latestSnapshotPrice = latestSnapshotPriceQuery.First();
 
-                    var tradeEntity = new TradeEntity()
+                    var tradeEntity = new TradeEntity
                     {
                         StockIndex = trade.StockIndex,
                         Quantity = trade.Quantity,

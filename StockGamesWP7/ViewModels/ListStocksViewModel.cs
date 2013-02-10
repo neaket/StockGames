@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System.Collections.ObjectModel;
 using StockGames.Entities;
+using StockGames.Persistence.V1.Services;
 
 namespace StockGames.ViewModels
 {
@@ -31,7 +32,7 @@ namespace StockGames.ViewModels
 
         private void LoadStocks()
         {
-            Stocks = new ObservableCollection<StockEntity>(StockManager.Instance.GetStocks());
+            Stocks = new ObservableCollection<StockEntity>(StockService.Instance.GetStocks());
         }
 
         private void ViewStock()

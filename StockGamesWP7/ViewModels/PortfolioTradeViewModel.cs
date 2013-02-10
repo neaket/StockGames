@@ -88,7 +88,7 @@ namespace StockGames.ViewModels
 
         private void LoadStock(string stockIndex)
         {
-            var stock = StockManager.Instance.GetStock(stockIndex);
+            var stock = StockService.Instance.GetStock(stockIndex);
             StockIndex = stockIndex;
             CurrentPrice = stock.CurrentPrice;
 
