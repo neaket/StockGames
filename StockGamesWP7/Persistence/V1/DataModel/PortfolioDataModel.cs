@@ -27,7 +27,7 @@ namespace StockGames.Persistence.V1.DataModel
             Storage = "_entries",
             ThisKey = "PortfolioId",
             OtherKey = "PortfolioId")]
-        public IEnumerable<PortfolioEntryDataModel> Entries
+        public EntitySet<PortfolioEntryDataModel> Entries
         {
             get
             {
@@ -45,7 +45,7 @@ namespace StockGames.Persistence.V1.DataModel
             {
                 return _balance;
             }
-            private set
+            set
             {
                 if (value < 0)
                 {
@@ -55,21 +55,6 @@ namespace StockGames.Persistence.V1.DataModel
             }
         }
 
-        public void AddEntry(PortfolioEntryDataModel entry)
-        {
-            // TODO re factor this
-            if (entry is PortfolioTradeDataModel)
-            {
-                var tradeEntry = entry as PortfolioTradeDataModel;
-                Balance -= tradeEntry.Amount * tradeEntry.Quantity;
-            }
-            else
-            {
-                Balance += entry.Amount;
-            }
-            
-            entry.Portfolio = this;
-            _entries.Add(entry);
-        }
+        
     }
 }

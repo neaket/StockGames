@@ -1,4 +1,6 @@
-﻿using StockGames.Persistence.V1.DataContexts;
+﻿using GalaSoft.MvvmLight.Messaging;
+using StockGames.Messaging;
+using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.DataModel;
 using System.Linq;
 using System.Collections.Generic;
@@ -25,37 +27,40 @@ namespace StockGames.Persistence.V1.Services
 
         /// <summary> Adds a portfolio. </summary>
         /// <param name="name"> The name of the portfolio. </param>
-        /// <returns> The portfolio. </returns>
-        public PortfolioDataModel AddPortfolio(string name)
+        /// <returns> The portfolio Id. </returns>
+        public int AddPortfolio(string name)
         {
             using (var context = StockGamesDataContext.GetReadWrite())
             {
                 var portfolio = new PortfolioDataModel { Name = name };
                 context.Portfolios.InsertOnSubmit(portfolio);
                 context.SubmitChanges();
-                return portfolio;
+                return portfolio.PortfolioId;
             }
         }
 
         /// <summary> Adds a transaction to a portfolio. </summary>
         /// <param name="portfolioId">  Identifier for the portfolio. </param>
         /// <param name="amount">       The amount. </param>
-        public void AddTransaction(int portfolioId, decimal amount)
+        /// <param name="tombstone">    The (Date/Time) tombstone. </param>
+        public void AddTransaction(int portfolioId, decimal amount, DateTime tombstone)
         {
             using (var context = StockGamesDataContext.GetReadWrite())
             {
-                var transaction = new PortfolioTransactionDataModel()
+                var transaction = new PortfolioTransactionDataModel
                 {
                     Amount = amount,
-                    Tombstone = DateTime.Now
+                    Tombstone = tombstone
                 };
 
                 var portfolio = context.Portfolios.Single(p => p.PortfolioId == portfolioId);
                 context.PortfolioEntries.InsertOnSubmit(transaction);
-                portfolio.AddEntry(transaction);
+                AddEntryHelper(portfolio, transaction);
 
                 context.SubmitChanges();
             }
+
+            Messenger.Default.Send(new PortfolioUpdatedMessageType(portfolioId));
         }
 
         /// <summary> Adds a trade. </summary>
@@ -63,26 +68,42 @@ namespace StockGames.Persistence.V1.Services
         /// <param name="stockIndex">   Index of the stock. </param>
         /// <param name="tradeType">    Type of the trade. </param>
         /// <param name="quantity">     The quantity. </param>
-        public void AddTrade(int portfolioId, string stockIndex, TradeType tradeType, int quantity)
+        /// <param name="tombstone">    The (Date/Time) tombstone. </param>
+        public void AddTrade(int portfolioId, string stockIndex, TradeType tradeType, int quantity, DateTime tombstone)
         {            
             using (var context = StockGamesDataContext.GetReadWrite())
             {
-                var snapshot = (from s in context.StockSnapshots where s.StockIndex == stockIndex orderby s.Tombstone descending select s).First();
+                var snapshot = (from s in context.StockSnapshots where s.StockIndex == stockIndex && s.Tombstone <= GameState.Instance.GameTime orderby s.Tombstone descending select s).FirstOrDefault();
 
-                var trade = new PortfolioTradeDataModel() { 
-                    Amount = snapshot.Price, 
+                if (snapshot == null)
+                {
+                    throw new ArgumentException(String.Format("A snapshot with stockIndex '{0}' and before GameTime does not exist.", stockIndex));
+                }
+
+                var trade = new PortfolioTradeDataModel
+                { 
+                    Amount = -snapshot.Price * quantity, 
                     Quantity = quantity, 
-                    Tombstone = DateTime.Now, 
+                    Tombstone = tombstone, 
                     TradeType = tradeType,
                     StockSnapshot = snapshot
                 };
 
                 var portfolio = context.Portfolios.Single(p => p.PortfolioId == portfolioId);
                 context.PortfolioEntries.InsertOnSubmit(trade);
-                portfolio.AddEntry(trade);
+                AddEntryHelper(portfolio, trade);
 
                 context.SubmitChanges();
             }
+
+            Messenger.Default.Send(new PortfolioUpdatedMessageType(portfolioId));
+        }
+
+        private void AddEntryHelper(PortfolioDataModel portfolio, PortfolioEntryDataModel entry)
+        {
+            portfolio.Balance += entry.Amount;
+            entry.Portfolio = portfolio;
+            portfolio.Entries.Add(entry);
         }
 
         /// <summary> Gets a portfolio. </summary>
@@ -97,43 +118,19 @@ namespace StockGames.Persistence.V1.Services
             }
         }
 
-        /// <summary> Gets the trades of a specific portfolio. </summary>
+
+        /// <summary> Gets the entries of a specific portfolio. </summary>
         /// <param name="portfolioId">  Identifier for the portfolio. </param>
         /// <returns>
-        /// The Trades.
+        /// The Entries.
         /// </returns>
-        public IEnumerable<TradeEntity> GetTrades(int portfolioId)
+        public PortfolioEntryDataModel[] GetEntries(int portfolioId)
         {
             using (var context = StockGamesDataContext.GetReadOnly())
             {
-                var trades = new List<TradeEntity>();
                 var portfolio = context.Portfolios.Single(p => p.PortfolioId == portfolioId);
-                
-                    //            var tradesArray = from trade in context.PortfolioEntries where trade.Portfolio.PortfolioId == portfolioId && trade.Code == PortfolioEntryDataModel.EntryCode.Trade group 
-                    //context.PortfolioEntries.Select(
-                    //    e => e.Portfolio.PortfolioId == portfolioId && e.Code == PortfolioEntryDataModel.EntryCode.Trade).ToArray();
-                foreach (var entry in portfolio.Entries)
-                {
-                    var trade = entry as PortfolioTradeDataModel;
-                    if (trade == null)
-                        continue;
 
-                    // Get latest snapshot
-                    // TODO optimize
-                    var latestSnapshotPriceQuery = from s in context.StockSnapshots where s.StockIndex == trade.StockSnapshot.StockIndex orderby s.Tombstone descending select s.Price;
-                    decimal latestSnapshotPrice = latestSnapshotPriceQuery.First();
-
-                    var tradeEntity = new TradeEntity()
-                    {
-                        StockIndex = trade.StockSnapshot.StockIndex,
-                        Quantity = trade.Quantity,
-                        AveragePurchasedPrice = trade.Amount,
-                        CurrentPrice = latestSnapshotPrice
-                    };
-
-                    trades.Add(tradeEntity);
-                }
-                return trades;
+                return portfolio.Entries.ToArray();
             }
         }
 
@@ -153,13 +150,12 @@ namespace StockGames.Persistence.V1.Services
                              select new 
                                  {
                                      Quantity = g.Sum(x => x.Quantity),
-                                     Average = g.Average(x => x.Amount * x.Quantity) / g.Sum(x => x.Quantity), // TODO optimize
+                                     Average = Math.Round(g.Sum(x => x.StockSnapshot.Price * x.Quantity) / g.Sum(x => x.Quantity), 2),
                                      StockIndex = g.Key
 
                                  };
                 foreach (var trade in trades.ToArray())
                 {
-                    var blah = trade.StockIndex;
                     // Get latest snapshot
                     // TODO optimize
                     var latestSnapshotPriceQuery = from s in context.StockSnapshots 
@@ -167,7 +163,7 @@ namespace StockGames.Persistence.V1.Services
                                                    orderby s.Tombstone descending select s.Price;
                     decimal latestSnapshotPrice = latestSnapshotPriceQuery.First();
 
-                    var tradeEntity = new TradeEntity()
+                    var tradeEntity = new TradeEntity
                     {
                         StockIndex = trade.StockIndex,
                         Quantity = trade.Quantity,

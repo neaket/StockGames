@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
+using StockGames.Controllers;
 using StockGames.Persistence.V1;
 using StockGames.Persistence.V1.DataModel;
 using GalaSoft.MvvmLight;
@@ -88,7 +90,7 @@ namespace StockGames.ViewModels
 
         private void LoadStock(string stockIndex)
         {
-            var stock = StockManager.Instance.GetStock(stockIndex);
+            var stock = StockService.Instance.GetStock(stockIndex);
             StockIndex = stockIndex;
             CurrentPrice = stock.CurrentPrice;
 
@@ -96,7 +98,7 @@ namespace StockGames.ViewModels
 
         private void MakeTrade()
         {
-            PortfolioService.Instance.AddTrade(GameState.Instance.MainPortfolioId, StockIndex, SelectedTradeType.TradeType, Quantity);
+            PortfolioService.Instance.AddTrade(GameState.Instance.MainPortfolioId, StockIndex, SelectedTradeType.TradeType, Quantity, GameState.Instance.GameTime);
             MessengerInstance.Send<object>(null, "NavigateBack");
         }
 

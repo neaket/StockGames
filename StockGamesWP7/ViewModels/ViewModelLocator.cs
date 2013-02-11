@@ -60,7 +60,10 @@ namespace StockGames.ViewModels
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<StockViewModel>();
+                // Temporary fix for RaisePropertyChanged("StockChartData"); not working for two separate views
+                // TODO revert back
+                //return ServiceLocator.Current.GetInstance<StockViewModel>();
+                return new StockViewModel();
             }
         }
 

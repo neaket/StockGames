@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Testing;
 using Microsoft.Phone.Testing.Harness;
+using StockGames.Persistence.V1;
 
 
 namespace StockGames.Tests
@@ -12,19 +14,21 @@ namespace StockGames.Tests
         {
             InitializeComponent();
 
-            UnitTestHarness harness = new UnitTestHarness();
+            GameState.Instance.GameTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0);
+
             // Add or comment out tags below as necessary.
             var tags = new TagList
                 {
+                    "ALL",
+                    "Communication",
                     "Persistence",
-                    "Views",
                     "ViewModels",
-                    //"Communication"
+                    "Views",
                 };
 
             UnitTestSettings settings = UnitTestSystem.CreateDefaultSettings();
             settings.SampleTags = tags;
-            //settings.TagExpression = tags.ToString();
+            settings.TagExpression = tags.ToString();
 
             this.Content = UnitTestSystem.CreateTestPage(settings);
         }

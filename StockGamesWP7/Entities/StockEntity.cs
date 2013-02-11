@@ -1,6 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿ using System;
+ using System.Collections.Generic;
+ using System.ComponentModel;
 using System.Data.Linq.Mapping;
+using System.Collections.ObjectModel;
 
 namespace StockGames.Entities
 {
@@ -10,8 +12,8 @@ namespace StockGames.Entities
        
         private string _stockIndex;
         private string _companyName;
-        private decimal _currentPrice;
-        private decimal _previousPrice;
+        /// <summary> The snapshots, sorted in reverse order by tombstone. </summary>
+        private IList<StockSnapshotEntity> _snapshots;
 
         #endregion
 
@@ -47,12 +49,9 @@ namespace StockGames.Entities
         {
             get
             {
-                return _currentPrice;
-            }
-            set
-            {
-                _currentPrice = value;
-                NotifyPropertyChanged(CurrentPricePropertyName);
+                if (_snapshots.Count < 1)
+                    return 0;
+                return _snapshots[0].Price;
             }
             
         }
@@ -60,12 +59,9 @@ namespace StockGames.Entities
         {
             get
             {
-                return _previousPrice;
-            }
-            set
-            {
-                _previousPrice = value;
-                NotifyPropertyChanged(PreviousPricePropertyName);
+                if (_snapshots.Count < 2)
+                    return 0;
+                return _snapshots[1].Price;
             }
         }
  		public decimal DailyChange
@@ -87,21 +83,24 @@ namespace StockGames.Entities
                 return DailyChange / PreviousPrice; 
             }
         }
+
+        /// <summary> Gets the snapshots sorted in reverse order by tombstone. </summary>
+        /// <value> The snapshots. </value>
+        public ReadOnlyCollection<StockSnapshotEntity> Snapshots
+        {
+            get { return new ReadOnlyCollection<StockSnapshotEntity>(_snapshots); }
+        }
         #endregion
 
-        /// <summary>
-        /// Constructor for Class, creates a stock with a name and index
-        /// </summary>
-        /// <param name="stockIndex">
-        /// Index or symbol that represents the stock
-        /// </param>
-        /// <param name="companyName">
-        /// The full Name of the company
-        /// </param>
-        public StockEntity(string stockIndex, string companyName)
+        /// <summary> Constructor for Class, creates a stock with a name and index. </summary>
+        /// <param name="stockIndex">   Index or symbol that represents the stock. </param>
+        /// <param name="companyName">  The full Name of the company. </param>
+        /// <param name="snapshots">    The Stock Snapshots. </param>
+        public StockEntity(string stockIndex, string companyName, IList<StockSnapshotEntity> snapshots)
         {
             StockIndex = stockIndex;
             CompanyName = companyName;
+            _snapshots = snapshots;
         }
 
         //INotifyPropertyChanged Interface Implmentation
@@ -127,6 +126,18 @@ namespace StockGames.Entities
         public override int GetHashCode()
         {
             return StockIndex.GetHashCode();  
+        }
+    }
+
+    public class StockSnapshotEntity
+    {
+        public decimal Price { get; private set; }
+        public DateTime Tombstone { get; private set; }
+
+        public StockSnapshotEntity(decimal price, DateTime tombstone)
+        {
+            Price = price;
+            Tombstone = tombstone;
         }
     }
 }

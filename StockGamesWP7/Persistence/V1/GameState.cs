@@ -1,12 +1,16 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.IsolatedStorage;
 using System.Runtime.Serialization;
+using GalaSoft.MvvmLight.Messaging;
+using StockGames.Messaging;
 
 namespace StockGames.Persistence.V1
 {
     /// <summary>
     /// This class is used to store common state information about the current game.
     /// </summary>
+    // TODO this class should not be singleton, and viewmodels should not be able to access it
     [DataContract]
     public class GameState
     {
@@ -88,5 +92,21 @@ namespace StockGames.Persistence.V1
         /// </summary>
         [DataMember]
         public int MainPortfolioId { get; set; }
+
+
+        private DateTime _GameTime;
+        /// <summary> Gets the current game time. </summary>
+        [DataMember]
+        public DateTime GameTime 
+        { 
+            get
+            {
+                return _GameTime;
+            } 
+            set { 
+                _GameTime = value;
+                Messenger.Default.Send(new GameTimeUpdatedMessageType(_GameTime));
+            }
+        }
     }
 }

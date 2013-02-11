@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Phone.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockGames.Persistence.V1.DataContexts;
+using StockGames.Persistence.V1.Migrations;
 using StockGames.ViewModels;
 
 namespace StockGames.Tests.ViewModels
@@ -14,19 +14,14 @@ namespace StockGames.Tests.ViewModels
         [TestInitialize]
         public void Initialize()
         {
-            using (StockGamesDataContext context = StockGamesDataContext.GetReadWrite())
-            {
-                if (!context.DatabaseExists())
-                {
-                    context.CreateDatabase();
-                }
-            }
+            MigrationManager.IfExistsRemoveDataContext();
+            MigrationManager.InitializeDataContext();
         }
 
         [TestMethod]
         public void TestViewModelSetup()
         {
-            ListStocksViewModel viewModel = new ListStocksViewModel();
+            var viewModel = new ListStocksViewModel();
             Assert.IsTrue(viewModel.Stocks != null);
 
             foreach (var stock in viewModel.Stocks)
@@ -34,8 +29,8 @@ namespace StockGames.Tests.ViewModels
                 Assert.IsTrue(!String.IsNullOrWhiteSpace(stock.StockIndex));
                 
                 Assert.IsTrue(!String.IsNullOrWhiteSpace(stock.CompanyName));
-                Assert.IsTrue(stock.CurrentPrice > 0);
-                Assert.IsTrue(stock.PreviousPrice > 0);
+                Assert.IsTrue(stock.CurrentPrice >= 0);
+                Assert.IsTrue(stock.PreviousPrice >= 0);
             }
         }
     }
