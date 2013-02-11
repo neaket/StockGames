@@ -198,7 +198,7 @@ namespace StockGames.Tests.Persistence.V1.Services
 
         [TestMethod]
         [Asynchronous]
-        [Timeout(2000)]
+        [Timeout(10000)]
         public void PortfolioUpdateMessageTest()
         {
             
