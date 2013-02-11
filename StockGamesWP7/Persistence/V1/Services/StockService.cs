@@ -85,6 +85,7 @@ namespace StockGames.Persistence.V1.Services
         /// <param name="stockIndex">   Index of the stock. </param>
         /// <param name="price">        The snapshot price. </param>
         /// <param name="tombstone">    Date/Time tombstone of the snapshot. </param>
+        /// <remarks>Not to be used for adding multiple snapshots.</remarks>
         public void AddStockSnapshot(string stockIndex, decimal price, DateTime tombstone)
         {
             Debug.Assert(price > 0);

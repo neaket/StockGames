@@ -29,8 +29,8 @@ namespace StockGames.Tests.ViewModels
                 Assert.IsTrue(!String.IsNullOrWhiteSpace(stock.StockIndex));
                 
                 Assert.IsTrue(!String.IsNullOrWhiteSpace(stock.CompanyName));
-                Assert.IsTrue(stock.CurrentPrice > 0);
-                Assert.IsTrue(stock.PreviousPrice > 0);
+                Assert.IsTrue(stock.CurrentPrice >= 0);
+                Assert.IsTrue(stock.PreviousPrice >= 0);
             }
         }
     }

@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System.Collections.ObjectModel;
 using StockGames.Entities;
+using StockGames.Messaging;
 using StockGames.Persistence.V1.Services;
 
 namespace StockGames.ViewModels
@@ -26,12 +27,32 @@ namespace StockGames.ViewModels
 
         public ListStocksViewModel()
         {
+            Messenger.Default.Register<GameTimeUpdatedMessageType>(this, GameTimeUpdated);
+            Messenger.Default.Register<StockUpdatedMessageType>(this, StockUpdated);
+            
+            Stocks = new ObservableCollection<StockEntity>();
+            LoadStocks();
+        }
+
+        private void GameTimeUpdated(GameTimeUpdatedMessageType message)
+        {
+            LoadStocks();
+        }
+
+        private void StockUpdated(StockUpdatedMessageType message)
+        {
+            // TODO check the message.StockIndex for optimizations
             LoadStocks();
         }
 
         private void LoadStocks()
         {
-            Stocks = new ObservableCollection<StockEntity>(StockService.Instance.GetStocks());
+            Stocks.Clear();
+            foreach (var stock in StockService.Instance.GetStocks())
+            {
+                Stocks.Add(stock);
+            }
+           
         }
 
         private void ViewStock()

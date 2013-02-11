@@ -22,7 +22,7 @@ namespace StockGames.Controllers
 
         public void AdvanceTimeByHour()
         {
-            GameState.Instance.GameTime.AddHours(1);
+            GameState.Instance.GameTime = GameState.Instance.GameTime.AddHours(1);
         }
     }
 }
