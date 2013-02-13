@@ -91,14 +91,20 @@
     <Compile Include="Controllers\TimeController.cs" />
     <Compile Include="Entities\TradeEntity.cs" />
     <Compile Include="Messaging\GameTimeUpdatedMessageType.cs" />
+    <Compile Include="Messaging\MissionUpdatedMessageType.cs" />
     <Compile Include="Messaging\PortfolioUpdatedMessageType.cs" />
     <Compile Include="Messaging\StockUpdatedMessageType.cs" />
+    <Compile Include="Missions\Mission.cs" />
+    <Compile Include="Controllers\MissionController.cs" />
+    <Compile Include="Missions\MissionBuyStocks.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioEntryDataModel.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioTradeDataModel.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioTransactionDataModel.cs" />
     <Compile Include="Resources\BooleanToVisibilityConverter.cs" />
     <Compile Include="Resources\NegativeToVisibilityConverter.cs" />
     <Compile Include="Resources\PositiveToVisibilityConverter.cs" />
+    <Compile Include="ViewModels\ListMissionsViewModel.cs" />
+    <Compile Include="ViewModels\MissionViewModel.cs" />
     <Compile Include="ViewModels\PortfolioViewModel.cs" />
     <Compile Include="ViewModels\PortfolioTradeViewModel.cs" />
     <Compile Include="Views\MainMenuView.xaml.cs">
@@ -138,6 +144,12 @@
     <Compile Include="Views\ListStocksView.xaml.cs">
       <DependentUpon>ListStocksView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ListMissionsView.xaml.cs">
+      <DependentUpon>ListMissionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MissionView.xaml.cs">
+      <DependentUpon>MissionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PortfolioTradeView.xaml.cs">
       <DependentUpon>PortfolioTradeView.xaml</DependentUpon>
     </Compile>
@@ -170,6 +182,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ListStocksView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ListMissionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MissionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
