@@ -41,6 +41,7 @@ namespace StockGames.ViewModels
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
+            SimpleIoc.Default.Register<MainMenuViewModel>();
             SimpleIoc.Default.Register<DashboardViewModel>();
             SimpleIoc.Default.Register<StockViewModel>();
             SimpleIoc.Default.Register<ListStocksViewModel>();
@@ -48,6 +49,14 @@ namespace StockGames.ViewModels
             SimpleIoc.Default.Register<PortfolioTradeViewModel>();
             SimpleIoc.Default.Register<ListMissionsViewModel>();
             SimpleIoc.Default.Register<MissionViewModel>();
+        }
+
+        public MainMenuViewModel MainMenu
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<MainMenuViewModel>();
+            }
         }
 
         public DashboardViewModel Dashboard
