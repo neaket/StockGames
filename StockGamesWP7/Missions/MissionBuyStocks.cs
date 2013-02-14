@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 using GalaSoft.MvvmLight.Messaging;
 using StockGames.Messaging;
 using StockGames.Persistence.V1.DataModel;
 
 namespace StockGames.Missions
 {
+    [DataContract]
     public class MissionBuyStocks : Mission
     {
-        private readonly List<string> _newTradeStockIndexes = new List<string>();
+        // public to support serialization
+        [DataMember]  
+        public List<string> NewTradeStockIndexes { get; set; } 
 
         public override long MissionId
         {
@@ -22,6 +26,19 @@ namespace StockGames.Missions
         public override string MissionDescription
         {
             get { return "Buy two stocks on your portfolio"; }
+        }
+
+        public MissionBuyStocks()
+        {
+            NewTradeStockIndexes = new List<string>();
+        }
+
+        public override void ResumeFromLoad()
+        {
+            if (MissionStatus == MissionStatus.InProgress)
+            {
+                Messenger.Default.Register<PortfolioTradeAddedMessageType>(this, PortfolioTradeAdded);
+            }
         }
 
         public override void StartMission()
@@ -45,16 +62,17 @@ namespace StockGames.Missions
             if (message.TradeType != TradeType.Buy)
                 return;
 
-            if (!_newTradeStockIndexes.Contains(message.StockIndex))
+            if (!NewTradeStockIndexes.Contains(message.StockIndex))
             {
-                _newTradeStockIndexes.Add(message.StockIndex);
+                NewTradeStockIndexes.Add(message.StockIndex);
             }
 
-            if (_newTradeStockIndexes.Count == 1)
+            if (NewTradeStockIndexes.Count == 1)
             {
                 ShowMissionToast("50% Completed");
+                Messenger.Default.Send(new MissionUpdatedMessageType(MissionId, MissionStatus));
             }
-            if (_newTradeStockIndexes.Count == 2)
+            if (NewTradeStockIndexes.Count == 2)
             {
                 MissionCompleted();
             }

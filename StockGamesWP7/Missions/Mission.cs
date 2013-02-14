@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using Coding4Fun.Toolkit.Controls;
@@ -8,9 +9,12 @@ using StockGames.Messaging;
 
 namespace StockGames.Missions
 {
+    [DataContract]
     public abstract class Mission
     {
-        public MissionStatus MissionStatus { get; protected set; }
+        // public setter to use the default serialization
+        [DataMember]
+        public MissionStatus MissionStatus { get;  set; }
 
         public abstract long MissionId { get; }
         public abstract string MissionTitle { get; }
@@ -20,6 +24,8 @@ namespace StockGames.Missions
         {
             MissionStatus = MissionStatus.NotStarted;
         }
+
+        public abstract void ResumeFromLoad();
 
         public virtual void StartMission()
         {
