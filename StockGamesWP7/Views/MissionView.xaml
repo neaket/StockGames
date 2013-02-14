@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage 
-    x:Class="StockGames.Views.DashboardView"
+    x:Class="StockGames.Views.MissionView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -11,7 +11,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True" DataContext="{Binding Dashboard, Source={StaticResource Locator}}">
+    shell:SystemTray.IsVisible="True" DataContext="{Binding Mission, Source={StaticResource Locator}}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -22,20 +22,20 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="{Binding Path=Common.AppName, Source={StaticResource Resources}}" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="dashboard" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="mission view" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="{Binding MissionTitle}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock HorizontalAlignment="Center" FontSize="30" Text="{Binding GameTime, StringFormat=\{0:MM\/dd\/yy hh tt\}}" />
-                <Button Content="+1 Hour" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=AdvanceTimeByHourCommand}" />
-                <Button Content="View Market" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=ViewMarketCommand}" />
-                <Button Content="View Portfolio" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=ViewPortfolioCommand}" />
-                <Button Content="View Missions" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=ViewMissionsCommand}" />
+            <StackPanel>
+                <TextBlock Text="{Binding MissionDesciption}" />
+                <StackPanel Orientation="Horizontal" Margin="0 20">
+                    <TextBlock Text="Mission Status"/>
+                    <TextBlock Margin="20 0 0 0" Text="{Binding MissionStatus}" />
+                </StackPanel>
+                <Button Content="Start Mission" Visibility="{Binding MissionStartVisible}"  Command="{Binding StartMissionCommand}" />
             </StackPanel>
         </Grid>
     </Grid>
-
 </phone:PhoneApplicationPage>

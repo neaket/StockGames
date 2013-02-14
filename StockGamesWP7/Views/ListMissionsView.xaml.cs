@@ -2,9 +2,9 @@
 
 namespace StockGames.Views
 {
-    public partial class DashboardView : PhoneApplicationPage
+    public partial class ListMissionsView : PhoneApplicationPage
     {
-        public DashboardView()
+        public ListMissionsView()
         {
             InitializeComponent();
         }
