@@ -14,6 +14,7 @@ namespace StockGames.ViewModels
         public ICommand ViewMarketCommand { get; private set; }
         public ICommand ViewPortfolioCommand { get; private set; }
         public ICommand AdvanceTimeByHourCommand { get; private set; }
+        public ICommand ViewMissionsCommand { get; private set; }
         public DateTime GameTime { get; private set; }
 
         public DashboardViewModel()
@@ -21,6 +22,7 @@ namespace StockGames.ViewModels
             ViewMarketCommand = new RelayCommand(ViewMarket);
             ViewPortfolioCommand = new RelayCommand(ViewPortfolio);
             AdvanceTimeByHourCommand = new RelayCommand(AdvanceTimeByHour);
+            ViewMissionsCommand = new RelayCommand(ViewMissions);
             GameTime = GameState.Instance.GameTime;
 
             Messenger.Default.Register<GameTimeUpdatedMessageType>(this, (message) =>
@@ -43,6 +45,11 @@ namespace StockGames.ViewModels
         private void AdvanceTimeByHour()
         {
             TimeController.Instance.AdvanceTimeByHour();
+        }
+
+        private void ViewMissions()
+        {
+            Messenger.Default.Send(new Uri("/Views/ListMissionsView.xaml", UriKind.Relative), "Navigate");
         }
     }
 }

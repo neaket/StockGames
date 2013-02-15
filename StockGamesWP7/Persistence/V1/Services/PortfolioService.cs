@@ -96,7 +96,7 @@ namespace StockGames.Persistence.V1.Services
                 context.SubmitChanges();
             }
 
-            Messenger.Default.Send(new PortfolioUpdatedMessageType(portfolioId));
+            Messenger.Default.Send(new PortfolioTradeAddedMessageType(portfolioId, stockIndex, tradeType));
         }
 
         private void AddEntryHelper(PortfolioDataModel portfolio, PortfolioEntryDataModel entry)
