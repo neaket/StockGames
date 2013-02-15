@@ -199,7 +199,31 @@ namespace StockGames.Tests.Persistence.V1.Services
         [TestMethod]
         [Asynchronous]
         [Timeout(10000)]
-        public void PortfolioUpdateMessageTest()
+        public void PortfolioUpdatedMessageTransaction()
+        {
+
+            int portfolioId = PortfolioService.Instance.AddPortfolio("UnitTestPortfolio");
+
+            decimal amount = 100;
+            DateTime tombstone = now;
+
+            Messenger.Default.Register<PortfolioUpdatedMessageType>(this,
+                message => EnqueueCallback(() =>
+                {
+                    Assert.AreEqual(portfolioId, message.PortfolioId);
+
+                    Messenger.Default.Unregister<PortfolioUpdatedMessageType>(this);
+                    TestComplete();
+                }
+            ));
+
+            PortfolioService.Instance.AddTransaction(portfolioId, amount, tombstone);
+        }
+
+        [TestMethod]
+        [Asynchronous]
+        [Timeout(10000)]
+        public void PortfolioTradeAddedMessage()
         {
             
             // Create stock with one snapshot
@@ -217,24 +241,22 @@ namespace StockGames.Tests.Persistence.V1.Services
 
             decimal amount = 100;
             DateTime tombstone = now;
+            TradeType type = TradeType.Buy;
 
-            int count = 0;
-            Messenger.Default.Register<PortfolioUpdatedMessageType>(this,
-                message => EnqueueCallback(() =>
-                    {
-                        count++;
-                        Assert.AreEqual(portfolioId, message.PortfolioId);
+            Messenger.Default.Register<PortfolioTradeAddedMessageType>(this,
+               message => EnqueueCallback(() =>
+               {
+                   Assert.AreEqual(portfolioId, message.PortfolioId);
+                   Assert.AreEqual(type, message.TradeType);
+                   Assert.AreEqual(index, message.StockIndex);
 
-                        Messenger.Default.Unregister<StockUpdatedMessageType>(this);
-                        if (count == 2)
-                        {
-                            TestComplete();
-                        }
-                    }
+                   Messenger.Default.Unregister<PortfolioTradeAddedMessageType>(this);
+                   TestComplete();
+               }
             ));
 
             PortfolioService.Instance.AddTransaction(portfolioId, amount, tombstone);
-            PortfolioService.Instance.AddTrade(portfolioId, index, TradeType.Buy, 5, tombstone);
+            PortfolioService.Instance.AddTrade(portfolioId, index, type, 5, tombstone);
         }
 
         [TestCleanup]
