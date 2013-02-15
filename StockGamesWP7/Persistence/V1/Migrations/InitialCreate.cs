@@ -75,8 +75,6 @@ namespace StockGames.Persistence.V1.Migrations
             var portfolioId = PortfolioService.Instance.AddPortfolio("Practice");
 
             PortfolioService.Instance.AddTransaction(portfolioId, 10000, DateTime.Today);
-            PortfolioService.Instance.AddTrade(portfolioId, "NINJ", TradeType.Buy, 17, DateTime.Today);
-            PortfolioService.Instance.AddTrade(portfolioId, "ABC", TradeType.Buy, 3, DateTime.Today);
 
             GameState.Instance.MainPortfolioId = portfolioId;
         }

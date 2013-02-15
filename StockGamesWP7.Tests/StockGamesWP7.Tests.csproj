@@ -76,6 +76,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Persistence\V1\DataContexts\StockGamesDataContextTests.cs" />
     <Compile Include="Persistence\V1\Services\PortfolioServiceTests.cs" />
     <Compile Include="Persistence\V1\Services\StockServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
