@@ -15,7 +15,6 @@ using SharpGIS;
 using System.Text;
 using StockGames.Models;
 using StockGames.Controllers;
-using Ionic.Zip;
 
 namespace StockGames.CommunicationModule
 {
@@ -69,17 +68,12 @@ namespace StockGames.CommunicationModule
         public void StartSimulation(StockEntity stock)
         {
             //Create Model Zip File
-//            using (ZipFile zip = new ZipFile())
-//            {
-//                zip.AddFile("Sawtooth.ma");
-//                zip.AddFile("SawtoothType.cpp");
-//                zip.AddFile("SawtoothType.h");
-//                zip.AddFile("Sawtooth.ev");
-//                zip.Save("Sawtooth2.zip");
-//            }
+            ZipModule zipEngine = new ZipModule();
+            zipEngine.CreateZip("Sawtooth2.zip", null, "StockGamesModel/CD++Models/Sawtooth");
+
             HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName);
 
-            stream = Application.GetResourceStream(new Uri("Sawtooth2.zip", UriKind.Relative)).Stream;
+            stream = Application.GetResourceStream(new Uri("Sawtooth.zip", UriKind.Relative)).Stream;
            
             request.Method = "POST";
             request.ContentType = "application/zip";
@@ -100,10 +94,10 @@ namespace StockGames.CommunicationModule
             stream.Close();
 
             //Trigger PUT command for starting simulation
-            HttpWebRequest request2 = WebRequest.CreateHttp(serverURI + modelName);
+            HttpWebRequest request2 = WebRequest.CreateHttp(serverURI + modelName + "/simulation");
             request2.Method = "PUT";
             request.ContentType = "text/xml";
-            request2.Credentials = new NetworkCredential("andrew", "andrew");
+            request2.Credentials = serverCredentials;
             request2.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request2);
         }
 
@@ -153,7 +147,7 @@ namespace StockGames.CommunicationModule
                     {
                         IsolatedStorageFileStream ISStream = null;
                         using (ISStream = new IsolatedStorageFileStream(
-                                @"StockGamesModel\simulation.txt", FileMode.OpenOrCreate, storage))
+                                @"C\simulation.txt", FileMode.OpenOrCreate, storage))
                         {
                             ISStream.CopyTo(putStream);
                         }

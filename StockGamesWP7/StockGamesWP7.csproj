@@ -50,7 +50,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetZip, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="GalaSoft.MvvmLight.Extras.WP71">
       <HintPath>..\packages\MvvmLight.4.1.23.0\lib\sl4-windowsphone71\GalaSoft.MvvmLight.Extras.WP71.dll</HintPath>
     </Reference>
@@ -67,6 +66,9 @@
       <HintPath>..\packages\MvvmLight.4.1.23.0\lib\sl4-windowsphone71\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib.Extensions" />
+    <Reference Include="SharpZipLib.WindowsPhone7">
+      <HintPath>..\..\..\..\..\..\SharpZipLib\Release\SharpZipLib.WindowsPhone7.dll</HintPath>
+    </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
@@ -87,6 +89,7 @@
     <Compile Include="Commands\PushStockChangesCmd.cs" />
     <Compile Include="Commands\RequestStockUpdateCmd.cs" />
     <Compile Include="CommunicationModule\ServerResponse.cs" />
+    <Compile Include="CommunicationModule\ZipModule.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandInvoker.cs" />
     <Compile Include="Resources\BooleanToVisibilityConverter.cs" />
@@ -166,10 +169,10 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Sawtooth.zip" />
-    <None Include="Sawtooth.ma" />
-    <None Include="SawtoothType.cpp" />
-    <None Include="SawtoothType.h" />
-    <None Include="trial.ev" />
+    <None Include="CD++Models\Sawtooth\Sawtooth.ma" />
+    <None Include="CD++Models\Sawtooth\SawtoothType.cpp" />
+    <None Include="CD++Models\Sawtooth\SawtoothType.h" />
+    <None Include="CD++Models\Sawtooth\Sawtooth.ev" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
@@ -199,6 +202,7 @@
       <LastGenOutput>Common.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
