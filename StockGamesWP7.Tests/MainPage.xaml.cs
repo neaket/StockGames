@@ -24,6 +24,7 @@ namespace StockGames.Tests
                     "Persistence",
                     "ViewModels",
                     "Views",
+                    "Zip"
                 };
 
             UnitTestSettings settings = UnitTestSystem.CreateDefaultSettings();
