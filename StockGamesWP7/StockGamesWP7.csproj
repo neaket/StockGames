@@ -66,9 +66,7 @@
       <HintPath>..\packages\MvvmLight.4.1.23.0\lib\sl4-windowsphone71\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib.Extensions" />
-    <Reference Include="SharpZipLib.WindowsPhone7">
-      <HintPath>..\..\..\..\..\..\SharpZipLib\Release\SharpZipLib.WindowsPhone7.dll</HintPath>
-    </Reference>
+    <Reference Include="SharpZipLib.WindowsPhone7, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="system.data.linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
@@ -90,6 +88,7 @@
     <Compile Include="Commands\PushStockChangesCmd.cs" />
     <Compile Include="Commands\RequestStockUpdateCmd.cs" />
     <Compile Include="CommunicationModule\ServerResponse.cs" />
+    <Compile Include="CommunicationModule\ZipModule.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandInvoker.cs" />
     <Compile Include="Resources\BooleanToVisibilityConverter.cs" />
@@ -168,11 +167,13 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
+    <Resource Include="CommunicationModule\SharpZipLib.WindowsPhone7.dll" />
+    <None Include="CommunicationModule\SharpZipLib.WindowsPhone7.pdb" />
     <Content Include="Sawtooth.zip" />
-    <None Include="CD++Models\Sawtooth\Sawtooth.ma" />
-    <None Include="CD++Models\Sawtooth\SawtoothType.cpp" />
-    <None Include="CD++Models\Sawtooth\SawtoothType.h" />
-    <None Include="CD++Models\Sawtooth\Sawtooth.ev" />
+    <Content Include="CD++Models\Sawtooth\Sawtooth.ma" />
+    <Content Include="CD++Models\Sawtooth\SawtoothType.cpp" />
+    <Content Include="CD++Models\Sawtooth\SawtoothType.h" />
+    <Content Include="CD++Models\Sawtooth\Sawtooth.ev" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">

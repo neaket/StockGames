@@ -59,7 +59,7 @@ namespace StockGames.CommunicationModule
                 }
             }
             ModelWriter modelconstructor = new ModelWriter();
-            modelconstructor.writeModeltoStorage("Sawtooth", @"StockGamesModel\ServerModels");
+            modelconstructor.writeModeltoStorage("Sawtooth", "CD++Models/Sawtooth", @"StockGamesModel\ServerModels\Sawtooth");
         }
 
         public static ServerCommunication GetInstance
@@ -70,8 +70,8 @@ namespace StockGames.CommunicationModule
         public void StartSimulation(StockEntity stock)
         {
             //Create Model Zip File
-//            ZipModule zipEngine = new ZipModule();
-//            zipEngine.CreateZip("Sawtooth2.zip", null, "StockGamesModel/CD++Models/Sawtooth");
+           ZipModule zipEngine = new ZipModule();
+           zipEngine.CreateZip("Sawtooth2.zip", null, @"StockGamesModel\ServerModels\Sawtooth");
 
             HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName);
 

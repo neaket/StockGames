@@ -16,27 +16,35 @@ namespace StockGames.CommunicationModule
     public class ModelWriter
     {
 
-        public void writeFiletoStorage(string filename, string writePath)
+        public void writeFiletoStorage(string filename, string sourcePath, string targetPath)
         {
             using (IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                if (!isolatedStorage.FileExists(System.IO.Path.Combine(writePath, filename)))
+                if (!isolatedStorage.FileExists(System.IO.Path.Combine(targetPath, filename)))
                 {
-                    Stream stream = Application.GetResourceStream(new Uri(filename, UriKind.Relative)).Stream;
-                    using (IsolatedStorageFileStream filestream = isolatedStorage.CreateFile(System.IO.Path.Combine(writePath, filename)))
+                    var resourceStream = Application.GetResourceStream(new Uri(System.IO.Path.Combine(sourcePath,filename), UriKind.Relative));
+                    if (resourceStream != null)
                     {
-                        stream.CopyTo(filestream);
+                        //Check for Null path or Directory exists already, if not create it
+                        if (!string.IsNullOrEmpty(targetPath) && !isolatedStorage.DirectoryExists(targetPath))
+                            isolatedStorage.CreateDirectory(targetPath);
+
+                        Stream stream = resourceStream.Stream;
+                        using (IsolatedStorageFileStream filestream = isolatedStorage.CreateFile(System.IO.Path.Combine(targetPath, filename)))
+                        {
+                            stream.CopyTo(filestream);
+                        }
                     }
                 }
             }
         }
 
-        public void writeModeltoStorage(string modelName, string writePath)
+        public void writeModeltoStorage(string modelName, string sourcePath, string targetPath)
         {
-            writeFiletoStorage(modelName + ".ev", writePath);
-            writeFiletoStorage(modelName + ".ma", writePath);
-            writeFiletoStorage(modelName + "Type.cpp", writePath);
-            writeFiletoStorage(modelName + "Type.h", writePath);
+            writeFiletoStorage(modelName + ".ev", sourcePath, targetPath);
+            writeFiletoStorage(modelName + ".ma", sourcePath, targetPath);
+            writeFiletoStorage(modelName + "Type.cpp", sourcePath, targetPath);
+            writeFiletoStorage(modelName + "Type.h", sourcePath, targetPath);
         }
 
     }
