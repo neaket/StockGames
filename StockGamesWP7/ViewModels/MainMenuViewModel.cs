@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using StockGames.Persistence.V1;
 using StockGames.Persistence.V1.Migrations;
+using StockGames.Controllers;
 
 namespace StockGames.ViewModels
 {
@@ -87,6 +88,9 @@ namespace StockGames.ViewModels
         {
             ShowProgressBar = false;
             ContinueVisibility = Visibility.Visible;
+
+            MissionController mc = MissionController.Instance;
+
             ViewDashboard();
         }
     }

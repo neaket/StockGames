@@ -60,7 +60,6 @@ namespace StockGames.ViewModels
         public MissionViewModel()
         {
             LoadMissionCommand = new RelayCommand<long>(LoadMission);
-            StartMissionCommand = new RelayCommand(StartMission);
 
             Messenger.Default.Register<MissionUpdatedMessageType>(this, MissionUpdated);
         }
@@ -75,12 +74,6 @@ namespace StockGames.ViewModels
             MissionTitle = mission.MissionTitle;
             MissionDesciption = mission.MissionDescription;
             MissionStatus = mission.MissionStatus;
-        }
-
-        private void StartMission()
-        {
-            // TODO refactor 
-            MissionController.Instance.GetMission(_missionId).StartMission();
         }
 
         private void MissionUpdated(MissionUpdatedMessageType message)
