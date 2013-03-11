@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using StockGames.Controllers;
@@ -17,7 +18,7 @@ namespace StockGames.ViewModels
         public ICommand MakeTradeCommand { get; private set; }
         public IEnumerable<TradeTypeWrapper> TradeTypes { get; private set; }
         public decimal CurrentPrice { private set; get; }
-        public decimal Cost
+        public decimal Amount
         {
             get { return CurrentPrice*_quantity; }
         }
@@ -30,7 +31,7 @@ namespace StockGames.ViewModels
             {
                 _quantity = value;
                 RaisePropertyChanged("Quantity");
-                RaisePropertyChanged("Cost");
+                RaisePropertyChanged("Amount");
             }
         }
 
@@ -60,14 +61,12 @@ namespace StockGames.ViewModels
                 {
                     MaximumQuantity = 10;
                 }
-                else
+                else if (_selectedTradeType.TradeType == TradeType.Sell)
                 {
-                    MaximumQuantity = 8;
+                    MaximumQuantity = PortfolioService.Instance.GetTradeQuantity(GameState.Instance.MainPortfolioId, StockIndex);
                 }
             }
         }
-
-        
 
         public PortfolioTradeViewModel()
         {
@@ -79,7 +78,7 @@ namespace StockGames.ViewModels
             var tradeTypes = new List<TradeTypeWrapper>
                 {
                     new TradeTypeWrapper(TradeType.Buy, "Buy"),
-                    //new TradeTypeWrapper(TradeType.Sell, "Sell"),
+                    new TradeTypeWrapper(TradeType.Sell, "Sell"),
                     //new TradeTypeWrapper(TradeType.Short, "Short"),
                     //new TradeTypeWrapper(TradeType.Cover, "Cover")
                 };
@@ -98,6 +97,11 @@ namespace StockGames.ViewModels
 
         private void MakeTrade()
         {
+            if (Quantity <= 0)
+            {
+                MessageBox.Show("You must trade at least 1 stock.", "Error", MessageBoxButton.OK);
+                return;
+            }
             PortfolioService.Instance.AddTrade(GameState.Instance.MainPortfolioId, StockIndex, SelectedTradeType.TradeType, Quantity, GameState.Instance.GameTime);
             MessengerInstance.Send<object>(null, "NavigateBack");
         }
