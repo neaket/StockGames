@@ -10,8 +10,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using StockGames.Persistence.V1.Services;
 using StockGames.Stubs;
-using StockGames.Models;
 using StockGames.Controllers;
+using StockGames.Entities;
 using StockGames.CommunicationModule;
 
 namespace StockGames.Commands

@@ -1,14 +1,19 @@
 ﻿using System;
-using StockGames.Models;
 using System.Linq;
 using System.Collections.Generic;
+using GalaSoft.MvvmLight.Messaging;
+using StockGames.Messaging;
 using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.DataModel;
+using StockGames.Entities;
+using System.Diagnostics;
 
 namespace StockGames.Persistence.V1.Services
 {
     public class StockService
     {
+        #region instance
+        
         private static readonly StockService instance = new StockService();
         public static StockService Instance {
             get 
@@ -19,17 +24,23 @@ namespace StockGames.Persistence.V1.Services
 
         private StockService() { }
 
+        #endregion
+
+        /// <summary> Gets a stock. </summary>
+        /// <param name="stockIndex">   Index of the stock. </param>
+        /// <returns> The stock. </returns>
         public StockEntity GetStock(string stockIndex)
         {
             using (var context = StockGamesDataContext.GetReadOnly())
             {
                 var stock = context.Stocks.Single(s => s.StockIndex == stockIndex);
-
-                var stockEntity = new StockEntity(stock.StockIndex, stock.CompanyName)
-                    {
-                        CurrentPrice = stock.CurrentPrice,
-                        PreviousPrice = stock.PreviousPrice
-                    };
+                var snapshots = (from snapshot in context.StockSnapshots
+                                        where snapshot.StockIndex == stockIndex &&
+                                        snapshot.Tombstone <= GameState.Instance.GameTime
+                                        orderby snapshot.Tombstone descending
+                                        select new StockSnapshotEntity(snapshot.Price, snapshot.Tombstone)).ToArray();  // TODO limit amount of snapshots loaded .Take(...)
+                
+                var stockEntity = new StockEntity(stock.StockIndex, stock.CompanyName, snapshots);
 
                 return stockEntity;
             }
@@ -98,7 +109,6 @@ namespace StockGames.Persistence.V1.Services
                     Tombstone = current,
                     Price = stockEntity.CurrentPrice
                 };
-
 
                 context.StockSnapshots.InsertOnSubmit(stockSnapshot);
                 context.SubmitChanges();

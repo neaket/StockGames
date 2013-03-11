@@ -51,6 +51,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Coding4Fun.Toolkit.Controls">
+      <HintPath>..\packages\Coding4Fun.Toolkit.Controls.2.0.1\lib\wp71\Coding4Fun.Toolkit.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras.WP71">
       <HintPath>..\packages\MvvmLight.4.1.23.0\lib\sl4-windowsphone71\GalaSoft.MvvmLight.Extras.WP71.dll</HintPath>
     </Reference>
@@ -59,8 +62,8 @@
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit">
-      <HintPath>..\packages\SilverlightToolkitWP.4.2012.10.9\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPtoolkit.4.2012.10.30\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Microsoft.Practices.ServiceLocation">
@@ -89,21 +92,39 @@
     <Compile Include="CommunicationModule\ServerResponse.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandInvoker.cs" />
+    <Compile Include="Controllers\TimeController.cs" />
+    <Compile Include="Entities\TradeEntity.cs" />
+    <Compile Include="Messaging\GameTimeUpdatedMessageType.cs" />
+    <Compile Include="Messaging\MessengerWrapper.cs" />
+    <Compile Include="Messaging\MissionUpdatedMessageType.cs" />
+    <Compile Include="Messaging\PortfolioUpdatedMessageType.cs" />
+    <Compile Include="Messaging\StockUpdatedMessageType.cs" />
+    <Compile Include="Missions\Mission.cs" />
+    <Compile Include="Controllers\MissionController.cs" />
+    <Compile Include="Missions\MissionBuyStocks.cs" />
+    <Compile Include="Persistence\V1\DataModel\PortfolioEntryDataModel.cs" />
+    <Compile Include="Persistence\V1\DataModel\PortfolioTradeDataModel.cs" />
+    <Compile Include="Persistence\V1\DataModel\PortfolioTransactionDataModel.cs" />
     <Compile Include="Resources\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Resources\NegativeToVisibilityConverter.cs" />
+    <Compile Include="Resources\PositiveToVisibilityConverter.cs" />
+    <Compile Include="ViewModels\ListMissionsViewModel.cs" />
+    <Compile Include="ViewModels\MissionViewModel.cs" />
+    <Compile Include="ViewModels\PortfolioViewModel.cs" />
+    <Compile Include="ViewModels\PortfolioTradeViewModel.cs" />
     <Compile Include="Views\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\StockEntity.cs" />
-    <Compile Include="Models\StockManager.cs" />
+    <Compile Include="Entities\StockEntity.cs" />
     <Compile Include="Persistence\V1\DataContexts\StockGamesDataContext.cs" />
-    <Compile Include="Persistence\V1\DataModel\PortfolioModel.cs" />
-    <Compile Include="Persistence\V1\DataModel\StockSnapshotModel.cs" />
+    <Compile Include="Persistence\V1\DataModel\PortfolioDataModel.cs" />
+    <Compile Include="Persistence\V1\DataModel\StockSnapshotDataModel.cs" />
     <Compile Include="Persistence\V1\GameState.cs" />
     <Compile Include="Persistence\V1\Migrations\InitialCreate.cs" />
     <Compile Include="Persistence\V1\Migrations\MigrationManager.cs" />
     <Compile Include="Persistence\V1\Services\PortfolioService.cs" />
     <Compile Include="Persistence\V1\Services\StockService.cs" />
-    <Compile Include="Persistence\V1\DataModel\StockModel.cs" />
+    <Compile Include="Persistence\V1\DataModel\StockDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Common.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -128,6 +149,18 @@
     <Compile Include="Views\ListStocksView.xaml.cs">
       <DependentUpon>ListStocksView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ListMissionsView.xaml.cs">
+      <DependentUpon>ListMissionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MissionView.xaml.cs">
+      <DependentUpon>MissionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PortfolioTradeView.xaml.cs">
+      <DependentUpon>PortfolioTradeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PortfolioView.xaml.cs">
+      <DependentUpon>PortfolioView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StockView.xaml.cs">
       <DependentUpon>StockView.xaml</DependentUpon>
     </Compile>
@@ -137,6 +170,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <DesignData Include="SampleData\PortfolioViewModelSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </DesignData>
     <Page Include="Views\MainMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -150,6 +187,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ListStocksView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ListMissionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MissionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PortfolioTradeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PortfolioView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -178,6 +231,7 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\plus.png" />
     <Content Include="Images\refresh.png" />
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
@@ -197,6 +251,7 @@
     <EmbeddedResource Include="Resources\Common.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Common.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

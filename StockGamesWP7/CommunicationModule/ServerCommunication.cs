@@ -13,7 +13,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using SharpGIS;
 using System.Text;
-using StockGames.Models;
+using StockGames.Entities;
 using StockGames.Controllers;
 using Ionic.Zip;
 

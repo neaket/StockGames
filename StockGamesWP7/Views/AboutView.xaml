@@ -30,11 +30,12 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             
             <StackPanel HorizontalAlignment="Center">
-                <TextBlock Text="This App was designed and created by three awesome Undergraduate Software Engineers at Carleton University." TextWrapping="Wrap" Margin="10" />
-                <TextBlock Text="Andrew Jeffery" Margin="4" HorizontalAlignment="Center" />
-                <TextBlock Text="Jonathon Panke" Margin="4" HorizontalAlignment="Center"/>
-                <TextBlock Text="Nick Eaket" Margin="4" HorizontalAlignment="Center" />
-                <TextBlock Text="We could not of completed it without the help of our mentor Gabriel A. Wainer." TextWrapping="Wrap" Margin="10" />
+                <TextBlock Text="Stock Market Tycoon is a WP7 Mobile App created for the SYSC-4907 Engineering Project at Carleton University." TextWrapping="Wrap" Margin="10" />
+                <TextBlock Text="By" Margin=" 0 30 0 20" HorizontalAlignment="Center" />
+                <TextBlock Text="Nick Eaket" Margin="0" HorizontalAlignment="Center" />
+                <TextBlock Text="Andrew Jeffery" Margin="0" HorizontalAlignment="Center" />
+                <TextBlock Text="Jonathon Panke" Margin="0" HorizontalAlignment="Center" />
+                <TextBlock Text="Supervisor: Professor Wainer" Margin="0 50 0 0"  HorizontalAlignment="Center"  TextWrapping="Wrap" />
             </StackPanel>
         </Grid>
     </Grid>

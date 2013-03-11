@@ -29,23 +29,13 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                
+                <TextBlock HorizontalAlignment="Center" FontSize="30" Text="{Binding GameTime, StringFormat=\{0:MM\/dd\/yy hh tt\}}" />
+                <Button Content="+1 Hour" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=AdvanceTimeByHourCommand}" />
                 <Button Content="View Market" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=ViewMarketCommand}" />
-                
+                <Button Content="View Portfolio" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=ViewPortfolioCommand}" />
+                <Button Content="View Missions" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=ViewMissionsCommand}" />
             </StackPanel>
         </Grid>
     </Grid>
- 
-    <!--Sample code showing usage of ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
 
 </phone:PhoneApplicationPage>

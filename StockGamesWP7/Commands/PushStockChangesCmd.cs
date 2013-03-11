@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using StockGames.Controllers;
-using StockGames.Models;
+using StockGames.Entities;
 using StockGames.Persistence.V1.Services;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Threading;

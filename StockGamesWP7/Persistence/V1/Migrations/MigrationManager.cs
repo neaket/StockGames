@@ -1,4 +1,6 @@
-﻿using StockGames.Persistence.V1.DataContexts;
+﻿using StockGames.Messaging;
+using StockGames.Persistence.V1.DataContexts;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace StockGames.Persistence.V1.Migrations
 {
@@ -13,6 +15,7 @@ namespace StockGames.Persistence.V1.Migrations
         {
             lock (Lock)
             {
+                MessengerWrapper.MessengerEnabled = false;
                 using (var context = StockGamesDataContext.GetReadWrite())
                 {
                     if (!context.DatabaseExists())
@@ -23,6 +26,8 @@ namespace StockGames.Persistence.V1.Migrations
 
                 // TODO optimize this code with versions.
                 InitialCreate.Update();
+
+                MessengerWrapper.MessengerEnabled = true;
             }
         }
 

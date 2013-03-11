@@ -15,10 +15,6 @@
 	mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
 	shell:SystemTray.IsVisible="True" d:DataContext="{d:DesignData /SampleData/ListStocksViewModelSampleData.xaml}" DataContext="{Binding ListStocks, Source={StaticResource Locator}}"   
 	>
-    <phone:PhoneApplicationPage.Resources>
-        <local:PositiveToVisibilityConverter x:Key="PositiveToVisibility" />
-        <local:NegativeToVisibilityConverter x:Key="NegativeToVisibility" />
-    </phone:PhoneApplicationPage.Resources>
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot" Background="Transparent" >
 		<Grid.Resources>
@@ -45,8 +41,8 @@
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Orientation="Horizontal">
-                                        <Path Data="M14,2 L6,18 L22,18 z" Fill="#FF55D600" Margin="5,2,0,0" Stretch="Fill" UseLayoutRounding="False" VerticalAlignment="Center" Visibility="{Binding Path=DailyChange, Converter={StaticResource PositiveToVisibility}}"  />
-                                        <Path Data="M14,18 L6,2 L22,2 z"  Fill="#FFFF0000" Margin="5,2,0,0" Stretch="Fill" UseLayoutRounding="False" VerticalAlignment="Center" Visibility="{Binding Path=DailyChange, Converter={StaticResource NegativeToVisibility}}"  />
+                                        <Path Data="M14,2 L6,18 L22,18 z" Fill="#FF55D600" Margin="5,2,0,0" Stretch="Fill" UseLayoutRounding="False" VerticalAlignment="Center" Visibility="{Binding Path=DailyChange, Converter={StaticResource PositiveToVisibilityConverter}}"  />
+                                        <Path Data="M14,18 L6,2 L22,2 z"  Fill="#FFFF0000" Margin="5,2,0,0" Stretch="Fill" UseLayoutRounding="False" VerticalAlignment="Center" Visibility="{Binding Path=DailyChange, Converter={StaticResource NegativeToVisibilityConverter}}"  />
                                         <TextBlock Text="{Binding CurrentPrice, StringFormat=\{0:c\}}"   FontSize="24" Style="{StaticResource PhoneTextSubtleStyle}" Margin="2,0,12,0" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Grid.Column="1">
@@ -92,11 +88,7 @@
 
 		<!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >
-            <ListBox x:Name="StockListBox" ItemsSource="{Binding Stocks}" SelectedItem="{Binding Path=SelectedStock, Mode=TwoWay}" SelectionMode="Single" ItemContainerStyle="{StaticResource SelectedItemContainer}">
-
-                
-			</ListBox>
-			
+            <ListBox x:Name="StockListBox" ItemsSource="{Binding Stocks}" SelectedItem="{Binding Path=SelectedStock, Mode=TwoWay}" SelectionMode="Single" ItemContainerStyle="{StaticResource SelectedItemContainer}" />
 		</Grid>
 	</Grid>
  
