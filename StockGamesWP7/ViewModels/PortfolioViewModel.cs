@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using StockGames.Messaging;
 using StockGames.Persistence.V1.Services;
 using StockGames.Persistence.V1;
 using StockGames.Entities;
@@ -34,8 +35,8 @@ namespace StockGames.ViewModels
         {
             ViewPortfolioCommand = new RelayCommand(LoadPortfolio);
             Trades = new ObservableCollection<TradeEntity>();
-            
-            
+
+            Messenger.Default.Register <PortfolioUpdatedMessageType>(this, (message) => LoadPortfolio());
         }
 
         private void LoadPortfolio()
@@ -44,12 +45,14 @@ namespace StockGames.ViewModels
             var portfolio = PortfolioService.Instance.GetPortfolio(portfolioId);
             PortfolioName = portfolio.Name;
             PortfolioBalance = portfolio.Balance;
+            RaisePropertyChanged("PortfolioBalance");
 
             Trades.Clear();
             foreach (var trade in PortfolioService.Instance.GetGroupedTrades(portfolioId))
             {
                 Trades.Add(trade);
             }
+            
         }
 
         private void ViewStock()
