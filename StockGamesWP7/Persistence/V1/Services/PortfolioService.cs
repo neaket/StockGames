@@ -60,7 +60,7 @@ namespace StockGames.Persistence.V1.Services
                 context.SubmitChanges();
             }
 
-            Messenger.Default.Send(new PortfolioUpdatedMessageType(portfolioId));
+            MessengerWrapper.Send(new PortfolioUpdatedMessageType(portfolioId));
         }
 
         /// <summary> Adds a trade. </summary>
@@ -80,10 +80,22 @@ namespace StockGames.Persistence.V1.Services
                     throw new ArgumentException(String.Format("A snapshot with stockIndex '{0}' and before GameTime does not exist.", stockIndex));
                 }
 
+                decimal amount;
+                int relativeQuanity;
+
+                if (tradeType == TradeType.Buy)
+                {
+                    amount = -snapshot.Price*quantity;
+                    relativeQuanity = quantity;
+                } else
+                {
+                    amount = snapshot.Price*quantity;
+                    relativeQuanity = -quantity;
+                }
                 var trade = new PortfolioTradeDataModel
                 { 
-                    Amount = -snapshot.Price * quantity, 
-                    Quantity = quantity, 
+                    Amount = amount,
+                    Quantity = relativeQuanity, 
                     Tombstone = tombstone, 
                     TradeType = tradeType,
                     StockSnapshot = snapshot
@@ -96,7 +108,7 @@ namespace StockGames.Persistence.V1.Services
                 context.SubmitChanges();
             }
 
-            Messenger.Default.Send(new PortfolioTradeAddedMessageType(portfolioId, stockIndex, tradeType));
+            MessengerWrapper.Send(new PortfolioTradeAddedMessageType(portfolioId, stockIndex, tradeType));
         }
 
         private void AddEntryHelper(PortfolioDataModel portfolio, PortfolioEntryDataModel entry)
@@ -147,6 +159,7 @@ namespace StockGames.Persistence.V1.Services
                              where e is PortfolioTradeDataModel
                              select e as PortfolioTradeDataModel
                              group t by t.StockSnapshot.StockIndex into g
+                             where g.Sum(x => x.Quantity) > 0
                              select new 
                                  {
                                      Quantity = g.Sum(x => x.Quantity),
@@ -175,6 +188,34 @@ namespace StockGames.Persistence.V1.Services
                 }
 
                 return groupedTrades;
+            }
+        }
+
+        public int GetTradeQuantity(int portfolioId, string stockIndex)
+        {
+            using (var context = StockGamesDataContext.GetReadOnly())
+            {
+                var portfolio = context.Portfolios.Single(p => p.PortfolioId == portfolioId);
+
+                // return the sum of all trade quantities for the given stockIndex
+                var quantities =  (from t in
+                       from e in portfolio.Entries
+                       where e is PortfolioTradeDataModel
+                       select e as PortfolioTradeDataModel
+                       where t.StockSnapshot.StockIndex == stockIndex
+                       group t by t.StockSnapshot.StockIndex into g
+                       select g.Sum(x => x.Quantity)).ToArray();
+
+                if (quantities.Length == 0)
+                {
+                    return 0;
+                }
+                else if (quantities.Length == 1)
+                {
+                    return quantities[0];
+                }
+
+                throw new Exception("The length of quanities should never exceed 1.");
             }
         }
     }

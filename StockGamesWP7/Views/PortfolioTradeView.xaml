@@ -43,8 +43,8 @@
                 <Slider Value="{Binding Quantity, Mode=TwoWay}" Minimum="1" Maximum="{Binding Path=MaximumQuantity}" />
                 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Cost" />
-                    <TextBlock Text="{Binding Cost, Mode=OneWay}" Margin="15 0 0 0" />
+                    <TextBlock Text="Amount" />
+                    <TextBlock Text="{Binding Amount, Mode=OneWay}" Margin="15 0 0 0" />
                 </StackPanel>
                 <Button Content="Confirm" Command="{Binding MakeTradeCommand}" />
             	

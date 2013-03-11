@@ -105,7 +105,7 @@ namespace StockGames.Persistence.V1.Services
                 context.SubmitChanges();
             }
 
-            Messenger.Default.Send(new StockUpdatedMessageType(stockIndex));
+            MessengerWrapper.Send(new StockUpdatedMessageType(stockIndex));
         }
     }
 }
