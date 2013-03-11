@@ -172,8 +172,10 @@ namespace StockGames.Persistence.V1.Services
                     // Get latest snapshot
                     // TODO optimize
                     var latestSnapshotPriceQuery = from s in context.StockSnapshots 
-                                                   where s.StockIndex == trade.StockIndex 
-                                                   orderby s.Tombstone descending select s.Price;
+                                                   where s.StockIndex == trade.StockIndex
+                                                   && s.Tombstone <= GameState.Instance.GameTime
+                                                   orderby s.Tombstone descending
+                                                   select s.Price;
                     decimal latestSnapshotPrice = latestSnapshotPriceQuery.First();
 
                     var tradeEntity = new TradeEntity
