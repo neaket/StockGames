@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Messaging;
 using StockGames.Messaging;
 using StockGames.Persistence.V1.DataModel;
+using StockGames.Controllers;
 
 namespace StockGames.Missions
 {
@@ -11,7 +12,7 @@ namespace StockGames.Missions
 
         public override long MissionId
         {
-            get { return 0x7f6ae6b1; }
+            get { return 0x0001; }
         }
 
         public override string MissionTitle
@@ -34,9 +35,8 @@ namespace StockGames.Missions
         protected override void MissionCompleted()
         {
             base.MissionCompleted();
-
+            MissionController.Instance.UpdateGameEngine(this.MissionId);
             ShowMissionToast("100% Completed");
-
             Messenger.Default.Unregister<PortfolioTradeAddedMessageType>(this);
         }
 

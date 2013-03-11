@@ -19,8 +19,39 @@ namespace StockGames.Controllers
 
         private MissionController()
         {
-            var mission = new MissionBuyStocks();
-            _missions.Add(mission.MissionId, mission);
+            StartGameEngine();
+        }
+
+        private void StartGameEngine()
+        {
+            Mission mission = null;
+            if(mission == null){
+                mission = new MissionBuyStocks();
+                _missions.Add(mission.MissionId, mission);
+                mission.StartMission();
+            }         
+        }
+
+        public void UpdateGameEngine(long id)
+        {
+            Mission mission;
+            if (id == 0x0001)
+            {
+                mission = new MakeMoneyMission();
+                _missions.Add(mission.MissionId, mission);
+                mission.StartMission();
+            }
+            else if (id == 0x0002)
+            {
+                //TODO Sell Stock Mission
+                mission = new PortfolioProfitMission();
+                _missions.Add(mission.MissionId, mission);
+                mission.StartMission();
+            }
+            else if (id == 0x0003)
+            {
+                //TODO Portfolio gain of 100$
+            }
         }
 
         public IEnumerable<Mission> GetMissions()

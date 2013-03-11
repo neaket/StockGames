@@ -40,7 +40,7 @@
                     <TextBlock Text="Quantity"  />
                     <TextBlock Text="{Binding Quantity, Mode=OneWay}" Margin="15 0 0 0" />
                 </StackPanel>
-                <Slider Value="{Binding Quantity, Mode=TwoWay}" Maximum="{Binding Path=MaximumQuantity}" />
+                <Slider Value="{Binding Quantity, Mode=TwoWay}" Minimum="1" Maximum="{Binding Path=MaximumQuantity}" />
                 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Cost" />

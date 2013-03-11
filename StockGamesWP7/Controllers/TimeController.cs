@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using StockGames.Persistence.V1;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace StockGames.Controllers
 {

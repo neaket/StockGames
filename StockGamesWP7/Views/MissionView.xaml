@@ -34,7 +34,6 @@
                     <TextBlock Text="Mission Status"/>
                     <TextBlock Margin="20 0 0 0" Text="{Binding MissionStatus}" />
                 </StackPanel>
-                <Button Content="Start Mission" Visibility="{Binding MissionStartVisible}"  Command="{Binding StartMissionCommand}" />
             </StackPanel>
         </Grid>
     </Grid>

@@ -22,7 +22,7 @@ namespace StockGames.ViewModels
             get { return CurrentPrice*_quantity; }
         }
 
-        private int _quantity;
+        private int _quantity = 1;
         public int Quantity
         {
             get { return _quantity; }
