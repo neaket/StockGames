@@ -50,7 +50,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetZip, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Coding4Fun.Toolkit.Controls">
       <HintPath>..\packages\Coding4Fun.Toolkit.Controls.2.0.1\lib\wp71\Coding4Fun.Toolkit.Controls.dll</HintPath>
     </Reference>
@@ -70,7 +69,9 @@
       <HintPath>..\packages\MvvmLight.4.1.23.0\lib\sl4-windowsphone71\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib.Extensions" />
-    <Reference Include="SharpZipLib.WindowsPhone7, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="SharpZipLib.WindowsPhone7">
+      <HintPath>..\lib\SharpZipLib.WindowsPhone7.dll</HintPath>
+    </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
@@ -89,7 +90,6 @@
     <Compile Include="CommunicationModule\ModelWriter.cs" />
     <Compile Include="CommunicationModule\ServerCommunication.cs" />
     <Compile Include="Commands\IStockCommand.cs" />
-    <Compile Include="Commands\PushStockChangesCmd.cs" />
     <Compile Include="Commands\RequestStockUpdateCmd.cs" />
     <Compile Include="CommunicationModule\ServerResponse.cs" />
     <Compile Include="CommunicationModule\ZipModule.cs" />
@@ -221,8 +221,6 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
-    <Resource Include="CommunicationModule\SharpZipLib.WindowsPhone7.dll" />
-    <None Include="CommunicationModule\SharpZipLib.WindowsPhone7.pdb" />
     <Content Include="Sawtooth.zip" />
     <Content Include="CD++Models\Sawtooth\Sawtooth.ma" />
     <Content Include="CD++Models\Sawtooth\SawtoothType.cpp" />

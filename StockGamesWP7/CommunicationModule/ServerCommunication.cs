@@ -15,6 +15,7 @@ using SharpGIS;
 using System.Text;
 using StockGames.Entities;
 using StockGames.Controllers;
+using StockGames.Persistence.V1.Services;
 
 namespace StockGames.CommunicationModule
 {
@@ -282,10 +283,10 @@ namespace StockGames.CommunicationModule
                         }
                     }                    
 
-                    _Stock.PreviousPrice = _Stock.CurrentPrice;
-                    _Stock.CurrentPrice = response.StockPrice;
-                    CommandInvoker CmdInvoker = CommandInvoker.Instance;
-                    CmdInvoker.FetchCommand(CommandInvoker.CHANGE_STOCK_DATA, _Stock);
+                    //TODO update time to reflect hours better
+                    var now = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day,
+                                           DateTime.UtcNow.Hour, 0, 0);
+                    StockService.Instance.AddStockSnapshot(_Stock.StockIndex, response.StockPrice, now.AddHours(response.Time));
                     CommunicationState = SimulationNotStarted;
                 }
                 return response;

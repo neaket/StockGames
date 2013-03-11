@@ -35,8 +35,7 @@ namespace StockGames.Commands
             }
 
             ServerCommunication ServerComm = ServerCommunication.GetInstance;
-            var clone = new StockEntity(stockEntity);
-            ServerComm.StartSimulation(clone);    
+            ServerComm.StartSimulation(stockEntity);   // TODO refactor to use stockIndex?
         }
 
         public bool CanExecute(object parameter)
