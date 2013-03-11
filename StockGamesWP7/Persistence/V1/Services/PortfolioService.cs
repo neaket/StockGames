@@ -60,7 +60,7 @@ namespace StockGames.Persistence.V1.Services
                 context.SubmitChanges();
             }
 
-            Messenger.Default.Send(new PortfolioUpdatedMessageType(portfolioId));
+            MessengerWrapper.Send(new PortfolioUpdatedMessageType(portfolioId));
         }
 
         /// <summary> Adds a trade. </summary>
@@ -96,7 +96,7 @@ namespace StockGames.Persistence.V1.Services
                 context.SubmitChanges();
             }
 
-            Messenger.Default.Send(new PortfolioTradeAddedMessageType(portfolioId, stockIndex, tradeType));
+            MessengerWrapper.Send(new PortfolioTradeAddedMessageType(portfolioId, stockIndex, tradeType));
         }
 
         private void AddEntryHelper(PortfolioDataModel portfolio, PortfolioEntryDataModel entry)
