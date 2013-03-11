@@ -8,51 +8,49 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using GalaSoft.MvvmLight.Messaging;
+using System.Collections.Generic;
 using StockGames.Messaging;
-using StockGames.Controllers;
-using StockGames.Persistence.V1.Services;
-using StockGames.Persistence.V1;
+using GalaSoft.MvvmLight.Messaging;
 using StockGames.Persistence.V1.DataModel;
-
 
 namespace StockGames.Missions
 {
-    public class PortfolioProfitMission : Mission
+    public class SellStockMission : Mission
     {
+        private readonly List<string> _newTradeStockIndexes = new List<string>();
+
         public override long MissionId
         {
-            get { return 0x0004; }
+            get { return 0x0003; }
         }
 
         public override string MissionTitle
         {
-            get { return "Net gain 100$ in portfolio"; }
+            get { return "Sell a stock"; }
         }
 
         public override string MissionDescription
         {
-            get { return "Net gain 100$ in portfolio by buying and selling stocks"; }
+            get { return "Sell a Stock in yourportfolio"; }
         }
 
         public override void StartMission()
         {
             base.StartMission();
-            Messenger.Default.Register<PortfolioTradeAddedMessageType>(this, CheckPortfolioValue);
+            Messenger.Default.Register<PortfolioTradeAddedMessageType>(this, PortfolioTradeMade);
         }
 
         protected override void MissionCompleted()
         {
             base.MissionCompleted();
-            Messenger.Default.Unregister<PortfolioTradeAddedMessageType>(this, CheckPortfolioValue);
+            Messenger.Default.Unregister<PortfolioTradeAddedMessageType>(this, PortfolioTradeMade);
         }
 
-        private void CheckPortfolioValue(PortfolioTradeAddedMessageType message)
+        private void PortfolioTradeMade(PortfolioTradeAddedMessageType message)
         {
-            var balance = PortfolioService.Instance.GetPortfolio(GameState.Instance.MainPortfolioId);
-            if (balance.Balance > 10000)
+            if (message.TradeType == TradeType.Sell)
                 MissionCompleted();
             return;
         }
-    }   
+    }
 }

@@ -13,7 +13,6 @@ using StockGames.Messaging;
 using StockGames.Persistence.V1.Services;
 using StockGames.Persistence.V1;
 using System.Linq;
-using StockGames.Controllers;
 using System.Collections.Generic;
 using StockGames.Persistence.V1.DataModel;
 using StockGames.Entities;
@@ -58,8 +57,6 @@ namespace StockGames.Missions
         protected override void MissionCompleted()
         {
             base.MissionCompleted();
-            MissionController.Instance.UpdateGameEngine(this.MissionId);
-            ShowMissionToast("100% Completed");
             Messenger.Default.Unregister<GameTimeUpdatedMessageType>(this, CheckStockValues);
         }
 
@@ -80,6 +77,7 @@ namespace StockGames.Missions
                 if (NewStockValues.ElementAt(i) > StockValueList.ElementAt(i))
                 {
                     MissionCompleted();
+                    return;
                 }
                 else
                 {

@@ -43,14 +43,15 @@ namespace StockGames.Controllers
             }
             else if (id == 0x0002)
             {
-                //TODO Sell Stock Mission
-                mission = new PortfolioProfitMission();
+                mission = new SellStockMission();
                 _missions.Add(mission.MissionId, mission);
-                mission.StartMission();
+                mission.StartMission();                
             }
             else if (id == 0x0003)
             {
-                //TODO Portfolio gain of 100$
+                mission = new PortfolioProfitMission();
+                _missions.Add(mission.MissionId, mission);
+                mission.StartMission();
             }
         }
 
