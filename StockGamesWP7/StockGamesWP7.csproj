@@ -94,6 +94,7 @@
     <Compile Include="Controllers\TimeController.cs" />
     <Compile Include="Entities\TradeEntity.cs" />
     <Compile Include="Messaging\GameTimeUpdatedMessageType.cs" />
+    <Compile Include="Messaging\MessengerWrapper.cs" />
     <Compile Include="Messaging\MissionUpdatedMessageType.cs" />
     <Compile Include="Messaging\PortfolioUpdatedMessageType.cs" />
     <Compile Include="Messaging\StockUpdatedMessageType.cs" />
