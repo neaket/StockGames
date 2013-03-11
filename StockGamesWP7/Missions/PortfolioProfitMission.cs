@@ -27,12 +27,12 @@ namespace StockGames.Missions
 
         public override string MissionTitle
         {
-            get { return "Net gain 100$ in portfolio"; }
+            get { return "Net gain in portfolio"; }
         }
 
         public override string MissionDescription
         {
-            get { return "Net gain 100$ in portfolio by buying and selling stocks"; }
+            get { return "Make a net gain in your portfolio by buying and selling stocks"; }
         }
 
         public override void StartMission()

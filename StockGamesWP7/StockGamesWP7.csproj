@@ -98,7 +98,6 @@
     <Compile Include="Messaging\MissionUpdatedMessageType.cs" />
     <Compile Include="Messaging\PortfolioUpdatedMessageType.cs" />
     <Compile Include="Messaging\StockUpdatedMessageType.cs" />
-    <Compile Include="Missions\List.cs" />
     <Compile Include="Missions\MakeMoneyMission.cs" />
     <Compile Include="Missions\Mission.cs" />
     <Compile Include="Controllers\MissionController.cs" />
