@@ -98,9 +98,12 @@
     <Compile Include="Messaging\MissionUpdatedMessageType.cs" />
     <Compile Include="Messaging\PortfolioUpdatedMessageType.cs" />
     <Compile Include="Messaging\StockUpdatedMessageType.cs" />
+    <Compile Include="Missions\MakeMoneyMission.cs" />
     <Compile Include="Missions\Mission.cs" />
     <Compile Include="Controllers\MissionController.cs" />
     <Compile Include="Missions\MissionBuyStocks.cs" />
+    <Compile Include="Missions\PortfolioProfitMission.cs" />
+    <Compile Include="Missions\SellStockMission.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioEntryDataModel.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioTradeDataModel.cs" />
     <Compile Include="Persistence\V1\DataModel\PortfolioTransactionDataModel.cs" />

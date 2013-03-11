@@ -5,6 +5,7 @@ using System.Windows.Threading;
 using Coding4Fun.Toolkit.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using StockGames.Messaging;
+using StockGames.Controllers;
 
 namespace StockGames.Missions
 {
@@ -35,6 +36,9 @@ namespace StockGames.Missions
 
             MissionStatus = MissionStatus.Completed;
             Messenger.Default.Send(new MissionUpdatedMessageType(MissionId, MissionStatus));
+
+            MissionController.Instance.UpdateGameEngine(this.MissionId);
+            ShowMissionToast("100% Complete");
         }
 
 

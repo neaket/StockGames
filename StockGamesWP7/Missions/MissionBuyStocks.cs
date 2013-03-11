@@ -11,7 +11,7 @@ namespace StockGames.Missions
 
         public override long MissionId
         {
-            get { return 0x7f6ae6b1; }
+            get { return 0x0001; }
         }
 
         public override string MissionTitle
@@ -34,9 +34,6 @@ namespace StockGames.Missions
         protected override void MissionCompleted()
         {
             base.MissionCompleted();
-
-            ShowMissionToast("100% Completed");
-
             Messenger.Default.Unregister<PortfolioTradeAddedMessageType>(this);
         }
 
