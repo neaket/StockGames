@@ -29,19 +29,22 @@ namespace StockGames.Messaging
         {
             if (!MessengerEnabled) return;
 
-            Messenger.Default.Send<TMessage, TTarget>(message);
+            // Only send messages on the UI Thread
+            Deployment.Current.Dispatcher.BeginInvoke(() => Messenger.Default.Send<TMessage, TTarget>(message));
         }
         public static void Send<TMessage>(TMessage message)
         {
             if (!MessengerEnabled) return;
 
-            Messenger.Default.Send(message);
+            // Only send messages on the UI Thread
+            Deployment.Current.Dispatcher.BeginInvoke(() => Messenger.Default.Send(message));
         }
         public static void Send<TMessage>(TMessage message, object token)
         {
             if (!MessengerEnabled) return;
 
-            Messenger.Default.Send(message, token);
+            // Only send messages on the UI Thread
+            Deployment.Current.Dispatcher.BeginInvoke(() => Messenger.Default.Send(message, token));
         }
     }
 }
