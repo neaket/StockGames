@@ -13,10 +13,11 @@ namespace StockGames.Persistence.V1.Services
     public class StockService
     {
         #region instance
-        
+
         private static readonly StockService instance = new StockService();
-        public static StockService Instance {
-            get 
+        public static StockService Instance
+        {
+            get
             {
                 return instance;
             }
@@ -35,11 +36,11 @@ namespace StockGames.Persistence.V1.Services
             {
                 var stock = context.Stocks.Single(s => s.StockIndex == stockIndex);
                 var snapshots = (from snapshot in context.StockSnapshots
-                                        where snapshot.StockIndex == stockIndex &&
-                                        snapshot.Tombstone <= GameState.Instance.GameTime
-                                        orderby snapshot.Tombstone descending
-                                        select new StockSnapshotEntity(snapshot.Price, snapshot.Tombstone)).ToArray();  // TODO limit amount of snapshots loaded .Take(...)
-                
+                                 where snapshot.StockIndex == stockIndex &&
+                                 snapshot.Tombstone <= GameState.Instance.GameTime
+                                 orderby snapshot.Tombstone descending
+                                 select new StockSnapshotEntity(snapshot.Price, snapshot.Tombstone)).ToArray();  // TODO limit amount of snapshots loaded .Take(...)
+
                 var stockEntity = new StockEntity(stock.StockIndex, stock.CompanyName, snapshots);
 
                 return stockEntity;
@@ -55,10 +56,10 @@ namespace StockGames.Persistence.V1.Services
             using (var context = StockGamesDataContext.GetReadOnly())
             {
                 var stocks = (from stock in context.Stocks
-                             orderby stock.StockIndex ascending
+                              orderby stock.StockIndex ascending
                               select new StockEntity(
-                                  stock.StockIndex, 
-                                  stock.CompanyName, 
+                                  stock.StockIndex,
+                                  stock.CompanyName,
                                   (from ss in stock.Snapshots where ss.Tombstone <= GameState.Instance.GameTime orderby ss.Tombstone descending select new StockSnapshotEntity(ss.Price, ss.Tombstone)).Take(2).ToList())
                              ).ToArray();
                 return stocks;
@@ -68,15 +69,15 @@ namespace StockGames.Persistence.V1.Services
         /// <summary> Adds a stock. </summary>
         /// <param name="stockIndex">       Index of the stock. </param>
         /// <param name="companyName">      Name of the company. </param>
-        public void AddStock(string stockIndex, string companyName) 
+        public void AddStock(string stockIndex, string companyName)
         {
 
             using (var context = StockGamesDataContext.GetReadWrite())
             {
                 // TODO ensure no duplicates
-                var stock = new StockDataModel {StockIndex = stockIndex, CompanyName = companyName};
+                var stock = new StockDataModel { StockIndex = stockIndex, CompanyName = companyName };
                 context.Stocks.InsertOnSubmit(stock);
-                
+
                 context.SubmitChanges();
             }
         }
@@ -89,10 +90,10 @@ namespace StockGames.Persistence.V1.Services
         public void AddStockSnapshot(string stockIndex, decimal price, DateTime tombstone)
         {
             Debug.Assert(price > 0);
-            
+
 
             using (var context = StockGamesDataContext.GetReadWrite())
-            { 
+            {
                 var stock = (from s in context.Stocks where s.StockIndex == stockIndex select s).Single();
                 var stockSnapshot = new StockSnapshotDataModel
                 {
@@ -100,7 +101,7 @@ namespace StockGames.Persistence.V1.Services
                     Tombstone = tombstone,
                     Price = price
                 };
-                
+
                 context.StockSnapshots.InsertOnSubmit(stockSnapshot);
                 context.SubmitChanges();
             }

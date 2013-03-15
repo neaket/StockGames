@@ -1,15 +1,15 @@
-﻿ using System;
- using System.Collections.Generic;
- using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Linq.Mapping;
 using System.Collections.ObjectModel;
 
 namespace StockGames.Entities
 {
-    public class StockEntity :INotifyPropertyChanged
+    public class StockEntity : INotifyPropertyChanged
     {
         #region Private Variables
-       
+
         private string _stockIndex;
         private string _companyName;
         /// <summary> The snapshots, sorted in reverse order by tombstone. </summary>
@@ -28,7 +28,7 @@ namespace StockGames.Entities
             {
                 return _stockIndex;
             }
-            private set 
+            private set
             {
                 _stockIndex = value;
             }
@@ -53,7 +53,7 @@ namespace StockGames.Entities
                     return 0;
                 return _snapshots[0].Price;
             }
-            
+
         }
         public decimal PreviousPrice
         {
@@ -64,7 +64,7 @@ namespace StockGames.Entities
                 return _snapshots[1].Price;
             }
         }
- 		public decimal DailyChange
+        public decimal DailyChange
         {
             get
             {
@@ -80,7 +80,7 @@ namespace StockGames.Entities
                 {
                     return 0;
                 }
-                return DailyChange / PreviousPrice; 
+                return DailyChange / PreviousPrice;
             }
         }
 
@@ -125,7 +125,7 @@ namespace StockGames.Entities
 
         public override int GetHashCode()
         {
-            return StockIndex.GetHashCode();  
+            return StockIndex.GetHashCode();
         }
     }
 

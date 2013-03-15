@@ -20,7 +20,6 @@ namespace StockGames.Controllers
 
         //Command String representations
         public static string REQUEST_UPDATE_STOCK = "REQUEST_UPDATE";
-        public static string CHANGE_STOCK_DATA = "CHANGE_STOCK_DATA";
 
         private static CommandInvoker _Instance = null;
         public static CommandInvoker Instance
@@ -42,7 +41,6 @@ namespace StockGames.Controllers
 
             //Populate List with Commands
             _commands.Add( new RequestStockUpdateCmd(msgHandler) );
-            _commands.Add( new PushStockChangesCmd());
         }
 
         /// <summary>

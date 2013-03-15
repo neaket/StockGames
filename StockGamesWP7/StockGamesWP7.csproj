@@ -69,6 +69,9 @@
       <HintPath>..\packages\MvvmLight.4.1.23.0\lib\sl4-windowsphone71\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib.Extensions" />
+    <Reference Include="SharpZipLib.WindowsPhone7">
+      <HintPath>..\lib\SharpZipLib.WindowsPhone7.dll</HintPath>
+    </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
@@ -84,11 +87,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommunicationModule\ModelWriter.cs" />
     <Compile Include="CommunicationModule\ServerCommunication.cs" />
     <Compile Include="Commands\IStockCommand.cs" />
-    <Compile Include="Commands\PushStockChangesCmd.cs" />
     <Compile Include="Commands\RequestStockUpdateCmd.cs" />
     <Compile Include="CommunicationModule\ServerResponse.cs" />
+    <Compile Include="CommunicationModule\ZipModule.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandInvoker.cs" />
     <Compile Include="Controllers\TimeController.cs" />
@@ -220,6 +224,11 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Sawtooth.zip" />
+    <Content Include="CD++Models\Sawtooth\Sawtooth.ma" />
+    <Content Include="CD++Models\Sawtooth\SawtoothType.cpp" />
+    <Content Include="CD++Models\Sawtooth\SawtoothType.h" />
+    <Content Include="CD++Models\Sawtooth\Sawtooth.ev" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
@@ -251,6 +260,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

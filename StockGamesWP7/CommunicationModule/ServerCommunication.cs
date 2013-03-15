@@ -13,17 +13,22 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using SharpGIS;
 using System.Text;
+using StockGames.Entities;
+using StockGames.Controllers;
+using StockGames.Persistence.V1.Services;
 
 namespace StockGames.CommunicationModule
 {
     public sealed class ServerCommunication
     {
+        private StockEntity _Stock;
         private readonly static ServerCommunication instance = new ServerCommunication();
 
         private const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
         private const string modelName = "TestUnit";
         private const string serverOutFile = "results/simOut_134_117_53_66_8080.out";
         private const string userString = ""; //TODO create a way to create a testing framework unique us
+
 
         private const char SimulationNotStarted = 'n';
         private const char SimulationStarted = 's';
@@ -34,6 +39,8 @@ namespace StockGames.CommunicationModule
 
         private readonly NetworkCredential serverCredentials = new NetworkCredential("andrew", "andrew");
 
+        private Stream stream;
+
         private ServerCommunication()
         {
             using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
@@ -42,8 +49,18 @@ namespace StockGames.CommunicationModule
                 if (!storage.DirectoryExists("StockGamesModel"))
                 {
                     storage.CreateDirectory("StockGamesModel");
+
+                    using (var file = storage.CreateFile(@"StockGamesModel\simulation.txt"))
+                    {
+                        using (var writer = new StreamWriter(file))
+                        {
+                            writer.Write("some text;");
+                        }
+                    }
                 }
             }
+            ModelWriter modelconstructor = new ModelWriter();
+            modelconstructor.writeModeltoStorage("Sawtooth", "CD++Models/Sawtooth", @"StockGamesModel\ServerModels\Sawtooth");
         }
 
         public static ServerCommunication GetInstance
@@ -51,10 +68,40 @@ namespace StockGames.CommunicationModule
             get { return instance; }
         }
 
-        public void StartSimulation()
+        public void StartSimulation(StockEntity stock)
         {
+            //Create Model Zip File
+           ZipModule zipEngine = new ZipModule();
+           zipEngine.CreateZip("Sawtooth2.zip", null, @"StockGamesModel\ServerModels\Sawtooth");
+
             HttpWebRequest request = WebRequest.CreateHttp(serverURI + modelName);
-            request.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request);
+
+            stream = Application.GetResourceStream(new Uri("Sawtooth.zip", UriKind.Relative)).Stream;
+           
+            request.Method = "POST";
+            request.ContentType = "application/zip";
+            request.Credentials = new NetworkCredential("andrew", "andrew");
+            //Trigger POST command for the model
+            request.BeginGetRequestStream(new AsyncCallback(postModelBeginGetRequestStreamCallback), request);
+          
+           _Stock = stock;
+        }
+
+        private void postModelBeginGetRequestStreamCallback(IAsyncResult result)
+        {
+            HttpWebRequest request = result.AsyncState as HttpWebRequest;
+            Stream putStream = request.EndGetRequestStream(result);
+
+            stream.CopyTo(putStream);
+            putStream.Close();
+            stream.Close();
+
+            //Trigger PUT command for starting simulation
+            HttpWebRequest request2 = WebRequest.CreateHttp(serverURI + modelName + "/simulation");
+            request2.Method = "PUT";
+            request.ContentType = "text/xml";
+            request2.Credentials = serverCredentials;
+            request2.BeginGetResponse(new AsyncCallback(getStatusCodeCallback), request2);
         }
 
         public void SimulationStatusRequest()
@@ -103,19 +150,15 @@ namespace StockGames.CommunicationModule
                     {
                         IsolatedStorageFileStream ISStream = null;
                         using (ISStream = new IsolatedStorageFileStream(
-                                @"StockGamesModel\simulation.txt", FileMode.Open, storage))
+                                @"C\simulation.txt", FileMode.OpenOrCreate, storage))
                         {
-                            using (StreamReader reader = new StreamReader(ISStream))
-                            {
-                                using (StreamWriter writer = new StreamWriter(putStream, Encoding.UTF8))
-                                {
-                                    writer.Write(reader.ReadToEnd());
-                                }
-                            }
+                            ISStream.CopyTo(putStream);
                         }
                     }
                 }
                 CommunicationState = SimulationStarted;
+
+                request.BeginGetResponse(new AsyncCallback((blah) => { }), request);
                 SimulationStatusRequest();
             }
         }
@@ -238,7 +281,13 @@ namespace StockGames.CommunicationModule
                                 arrayIndex = 0;
                             }
                         }
-                    }
+                    }                    
+
+                    //TODO update time to reflect hours better
+                    var now = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day,
+                                           DateTime.UtcNow.Hour, 0, 0);
+                    StockService.Instance.AddStockSnapshot(_Stock.StockIndex, response.StockPrice, now.AddHours(response.Time));
+                    CommunicationState = SimulationNotStarted;
                 }
                 return response;
             }

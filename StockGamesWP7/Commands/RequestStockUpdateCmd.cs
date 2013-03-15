@@ -12,18 +12,17 @@ using StockGames.Persistence.V1.Services;
 using StockGames.Stubs;
 using StockGames.Controllers;
 using StockGames.Entities;
+using StockGames.CommunicationModule;
 
 namespace StockGames.Commands
 {
     public class RequestStockUpdateCmd : IStockCommand
     {
         //Private Variables
-        private MessageHandler _msgHandler;
         private string _cmdName = CommandInvoker.REQUEST_UPDATE_STOCK;
         
         public RequestStockUpdateCmd(MessageHandler msgHandler)
         {
-            _msgHandler = msgHandler;
         }
 
         //ICommand Interface implementation
@@ -35,20 +34,8 @@ namespace StockGames.Commands
                 throw new ArgumentException("Object is not a stock Entity");
             }
 
-            // TODO do some real updates :) instead of random numbers
-            var random = new Random();
-            //stockEntity.PreviousPrice = stockEntity.CurrentPrice;
-            //stockEntity.CurrentPrice += (decimal)(random.NextDouble() - .4) * stockEntity.CurrentPrice;
-            
-            
-            StockService.Instance.AddStockSnapshot(stockEntity.StockIndex, stockEntity.CurrentPrice + (decimal)random.NextDouble() * 10 - 4, DateTime.Now);
-            // END TODO
-        }
-
-        public void Execute(StockEntity stock)
-        {
-            MessageEvent msgEvent = new MessageEvent();
-            _msgHandler.AddEvent(msgEvent);            
+            ServerCommunication ServerComm = ServerCommunication.GetInstance;
+            ServerComm.StartSimulation(stockEntity);   // TODO refactor to use stockIndex?
         }
 
         public bool CanExecute(object parameter)
