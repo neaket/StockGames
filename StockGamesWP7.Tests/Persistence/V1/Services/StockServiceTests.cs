@@ -183,6 +183,57 @@ namespace StockGames.Tests.Persistence.V1.Services
         }
 
         [TestMethod]
+        public void StockWithListOf50Snapshots()
+        {
+            var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0);
+
+            string index = "TEN";
+            string companyName = "Some Name";
+
+            int total = 50;
+            decimal[] prices = new decimal[total];
+            DateTime[] tombstones = new DateTime[total];
+
+            for (int i = 0; i < total; i++)
+            {
+                prices[i] = i * 1.1m;
+                tombstones[i] = now.AddHours(-total - 2 + i);
+            }
+
+            StockService.Instance.AddStock(index, companyName);
+            StockService.Instance.AddStockSnapshots(index, prices, tombstones);
+
+            var persisted = StockService.Instance.GetStock(index);
+
+            Assert.AreEqual(index, persisted.StockIndex);
+            Assert.AreEqual(companyName, persisted.CompanyName);
+            Assert.AreEqual(prices[total - 1], persisted.CurrentPrice);
+            Assert.AreEqual(prices[total - 2], persisted.PreviousPrice);
+
+            Assert.AreEqual(total, persisted.Snapshots.Count);
+            for (int i = 0; i < total; i++)
+            {
+                Assert.AreEqual(prices[i], persisted.Snapshots[total - 1 - i].Price);
+                Assert.AreEqual(tombstones[i], persisted.Snapshots[total - 1 - i].Tombstone);
+            }
+
+            var persistedList = StockService.Instance.GetStocks();
+            Assert.AreEqual(1, persistedList.Length);
+
+            persisted = persistedList[0];
+            Assert.AreEqual(index, persisted.StockIndex);
+            Assert.AreEqual(companyName, persisted.CompanyName);
+            Assert.AreEqual(prices[total - 1], persisted.CurrentPrice);
+            Assert.AreEqual(prices[total - 2], persisted.PreviousPrice);
+
+            Assert.AreEqual(2, persisted.Snapshots.Count);
+            Assert.AreEqual(prices[total - 2], persisted.Snapshots[1].Price);
+            Assert.AreEqual(tombstones[total - 2], persisted.Snapshots[1].Tombstone);
+            Assert.AreEqual(prices[total - 1], persisted.Snapshots[0].Price);
+            Assert.AreEqual(tombstones[total - 1], persisted.Snapshots[0].Tombstone);
+        }
+
+        [TestMethod]
         [Asynchronous]
         [Timeout(10000)]
         public void StockUpdateMessageTest()
