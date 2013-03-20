@@ -209,7 +209,7 @@ namespace StockGames.CommunicationModule
                     }
                 }
                 CommunicationState = SimulationResultsStored;
-                ReadSimulationOutput();
+                //ReadSimulationOutput();
             }
         }
 
@@ -242,7 +242,7 @@ namespace StockGames.CommunicationModule
                 return "ERR";
             }
         }
-
+/**
         public ServerResponse ReadSimulationOutput()
         {
             using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
@@ -291,6 +291,7 @@ namespace StockGames.CommunicationModule
                 return response;
             }
         }
+ * */
     }
 }
 

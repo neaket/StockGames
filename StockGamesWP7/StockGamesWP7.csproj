@@ -82,14 +82,19 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommunicationModule\CheckStatusCommand.cs" />
     <Compile Include="CommunicationModule\CommunicationManager.cs" />
+    <Compile Include="CommunicationModule\GetResultsCommand.cs" />
     <Compile Include="CommunicationModule\ModelWriter.cs" />
+    <Compile Include="CommunicationModule\PostModelCommand.cs" />
     <Compile Include="CommunicationModule\ServerCommunication.cs" />
     <Compile Include="Commands\IStockCommand.cs" />
     <Compile Include="Commands\PushStockChangesCmd.cs" />
     <Compile Include="Commands\RequestStockUpdateCmd.cs" />
     <Compile Include="CommunicationModule\ServerEntity.cs" />
-    <Compile Include="CommunicationModule\ServerResponse.cs" />
+    <Compile Include="CommunicationModule\ServerStateMachine.cs" />
+    <Compile Include="CommunicationModule\SimCompleteCommand.cs" />
+    <Compile Include="CommunicationModule\StartSimCommand.cs" />
     <Compile Include="CommunicationModule\ZipModule.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandInvoker.cs" />
@@ -169,6 +174,7 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
+    <None Include="StockGamesWP7_2013_03_20_12_45_07.sap" />
     <Resource Include="CommunicationModule\SharpZipLib.WindowsPhone7.dll" />
     <None Include="CommunicationModule\SharpZipLib.WindowsPhone7.pdb" />
     <Content Include="Sawtooth.zip" />

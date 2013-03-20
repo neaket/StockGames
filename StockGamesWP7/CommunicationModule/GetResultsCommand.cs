@@ -56,33 +56,23 @@ namespace StockGames.CommunicationModule
                         }
                     }
                 }
-                using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream(
-                            "StockGamesModel/SimStatus.xml", FileMode.Open, myStorage))
-                    {
+
+                //parser
+                using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream("StockGamesModel/SimStatus.xml", FileMode.Open, myStorage))
+                {
                     UnZipper un = new UnZipper(ISStream);
                     foreach (String filename in un.GetFileNamesInZip())
                     {
-                        Stream stream = un.GetFileStream(serverOutFile);
+                        Stream stream = un.GetFileStream(ServerEntity.serverOutFile);
                         StreamReader reader = new StreamReader(stream);
                         string[] lines = reader.ReadToEnd().Split('\n');
                         foreach (string line in lines)
                         {
                             string[] words = line.Split(' ');
-                            int arrayIndex = 0;
                             foreach (string word in words)
                             {
-                                if (word.Equals("outtime"))
-                                {
-                                    response.Time = Int32.Parse(words[arrayIndex + 1]);
-                                }
-                                if (word.Equals("outstockprice"))
-                                {
-                                    response.StockPrice = Int32.Parse(words[arrayIndex + 1]);
-                                    //TODO: information for the update is here
-                                }
-                                arrayIndex += 1;
+                                continue;
                             }
-                            arrayIndex = 0;
                         }
                     }
                 }

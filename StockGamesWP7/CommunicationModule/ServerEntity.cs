@@ -18,6 +18,7 @@ namespace StockGames.CommunicationModule
     public class ServerEntity
     {
         public const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
+        public const string serverOutFile = "results/simOut_134_117_53_66_8080.out";
         public NetworkCredential serverCredentials { get; private set; }
         public string currentModel{ get; private set; }
         public const string domainName = "TestUnit";
@@ -47,11 +48,16 @@ namespace StockGames.CommunicationModule
             myServer = new ServerStateMachine(this);
         }
 
-        public void StartSimulation(StockEntity stock)
+        public void createCommThread()
         {
             //Lock or Wait on server Que mutex
             serverQueMutex.WaitOne();
+            Thread thread = new Thread(new ThreadStart(StartSimulation));
+            thread.Start();
+        }
 
+        public void StartSimulation()
+        {
             myServer.MoveNext(Command.PostModel, new PostModelCommand());
             myServer.MoveNext(Command.StartSim, new StartSimCommand());
             //Initial Status Check

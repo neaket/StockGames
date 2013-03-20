@@ -54,5 +54,10 @@ namespace StockGames.CommunicationModule
             get { return instance; }
         }
 
+        public void requestStockUpdate()
+        {
+            hostServer.createCommThread();
+        }
+
     }
 }

@@ -58,7 +58,7 @@ namespace StockGames.CommunicationModule
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
             Stream webStream = request.EndGetRequestStream(result);
 
-            string targetpath = System.IO.Path.Combine("StockGamesModel\SeverModels" , myServer.getModelName());
+            string targetpath = System.IO.Path.Combine("StockGamesModel/ServerModels" , myServer.getModelName());
             targetpath = System.IO.Path.Combine(targetpath, myServer.getModelName()+".zip");
 
             using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())

@@ -34,9 +34,9 @@ namespace StockGames.Commands
                 throw new ArgumentException("Object is not a stock Entity");
             }
 
-            ServerCommunication ServerComm = ServerCommunication.GetInstance;
+            CommunicationManager ServerComm = CommunicationManager.GetInstance;
             var clone = new StockEntity(stockEntity);
-            ServerComm.StartSimulation(clone);    
+            ServerComm.requestStockUpdate();    
         }
 
         public bool CanExecute(object parameter)

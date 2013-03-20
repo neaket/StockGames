@@ -18,7 +18,7 @@ namespace StockGames.Controllers
     {
         //Private variables
         private CommandInvoker _CmdInvoker;
-        private ServerCommunication _ServerComm;
+        private CommunicationManager _ServerComm;
 
 
         private static ClientController _Instance;
@@ -36,7 +36,7 @@ namespace StockGames.Controllers
 
         private ClientController()
         {
-            _ServerComm = ServerCommunication.GetInstance; // TODO
+            _ServerComm = CommunicationManager.GetInstance; // TODO
             _CmdInvoker = CommandInvoker.Instance;
         }
     }
