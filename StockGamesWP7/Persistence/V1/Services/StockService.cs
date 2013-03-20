@@ -70,7 +70,6 @@ namespace StockGames.Persistence.V1.Services
         /// <param name="companyName">      Name of the company. </param>
         public void AddStock(string stockIndex, string companyName) 
         {
-
             using (var context = StockGamesDataContext.GetReadWrite())
             {
                 // TODO ensure no duplicates
@@ -89,7 +88,6 @@ namespace StockGames.Persistence.V1.Services
         public void AddStockSnapshot(string stockIndex, decimal price, DateTime tombstone)
         {
             Debug.Assert(price > 0);
-            
 
             using (var context = StockGamesDataContext.GetReadWrite())
             { 
@@ -102,6 +100,35 @@ namespace StockGames.Persistence.V1.Services
                 };
                 
                 context.StockSnapshots.InsertOnSubmit(stockSnapshot);
+                context.SubmitChanges();
+            }
+
+            MessengerWrapper.Send(new StockUpdatedMessageType(stockIndex));
+        }
+
+        /// <summary>   Add multiple stock snapshots to a specific stock. </summary>
+        /// <param name="stockIndex">   Index of the stock. </param>
+        /// <param name="prices">       The prices, note must be 1-to-1 mapped with the tombstones. </param>
+        /// <param name="tombstones">   The tombstones, note must be 1-to-1 mapped with the prices. </param>
+        public void AddStockSnapshots(string stockIndex, IEnumerable<decimal> prices, IEnumerable<DateTime> tombstones)
+        {
+            int count = prices.Count();
+            Debug.Assert(count == tombstones.Count(), "Each price must be 1-to-1 mapped with a tombstone");
+
+            using (var context = StockGamesDataContext.GetReadWrite())
+            {
+                var stock = (from s in context.Stocks where s.StockIndex == stockIndex select s).Single();
+
+                for (int i = 0; i < count; i++)
+                {
+                    var stockSnapshot = new StockSnapshotDataModel
+                    {
+                        Stock = stock,
+                        Tombstone = tombstones.ElementAt(i),
+                        Price = prices.ElementAt(i)
+                    };
+                    context.StockSnapshots.InsertOnSubmit(stockSnapshot);
+                }
                 context.SubmitChanges();
             }
 
