@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockGamesWP7", "StockGames
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockGamesWP7.Tests", "StockGamesWP7.Tests\StockGamesWP7.Tests.csproj", "{716087DF-D773-414A-9300-F30FBE80B21E}"
 EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "StockGamesDocumentation", "StockGamesDocumentation\StockGamesDocumentation.shfbproj", "{08AAD9A8-FC33-4B5D-B548-2A8B59A76803}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{716087DF-D773-414A-9300-F30FBE80B21E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{716087DF-D773-414A-9300-F30FBE80B21E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{716087DF-D773-414A-9300-F30FBE80B21E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{08AAD9A8-FC33-4B5D-B548-2A8B59A76803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08AAD9A8-FC33-4B5D-B548-2A8B59A76803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08AAD9A8-FC33-4B5D-B548-2A8B59A76803}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08AAD9A8-FC33-4B5D-B548-2A8B59A76803}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
