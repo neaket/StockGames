@@ -38,6 +38,7 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>Bin\Debug\StockGames.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -97,6 +98,7 @@
     <Compile Include="Messaging\GameTimeUpdatedMessageType.cs" />
     <Compile Include="Messaging\MessengerWrapper.cs" />
     <Compile Include="Messaging\MissionUpdatedMessageType.cs" />
+    <Compile Include="Messaging\PortfolioTradeAddedMessageType.cs" />
     <Compile Include="Messaging\PortfolioUpdatedMessageType.cs" />
     <Compile Include="Messaging\StockUpdatedMessageType.cs" />
     <Compile Include="Missions\MakeMoneyMission.cs" />
