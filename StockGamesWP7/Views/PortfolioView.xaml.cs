@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
+﻿using System.Diagnostics;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using StockGames.ViewModels;
 
 namespace StockGames.Views
 {
+    /// <summary>   The portfolio view is used to display a portfolio on the GUI. </summary>
+    ///
+    /// <remarks>   Nick Eaket, 3/20/2013. </remarks>
     public partial class PortfolioView : PhoneApplicationPage
     {
+        /// <summary>   Initializes a new instance of the PortfolioView class. </summary>
         public PortfolioView()
         {
             InitializeComponent();
         }
 
+        /// <summary>   Called when a page becomes the active page in a frame. </summary>
+        ///
+        /// <param name="e">    An object that contains the event data. </param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -30,7 +26,7 @@ namespace StockGames.Views
             var vm = DataContext as PortfolioViewModel;
             Debug.Assert(vm != null, "View Model Must Be Set");
 
-            vm.ViewPortfolioCommand.Execute(null);
+            vm.LoadPortfolioCommand.Execute(null);
         }
     }
 }

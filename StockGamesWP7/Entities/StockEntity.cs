@@ -1,50 +1,34 @@
 ﻿ using System;
  using System.Collections.Generic;
- using System.ComponentModel;
-using System.Data.Linq.Mapping;
-using System.Collections.ObjectModel;
+ using System.Collections.ObjectModel;
 
 namespace StockGames.Entities
 {
-    public class StockEntity :INotifyPropertyChanged
+    /// <summary>
+    /// A StockEntity is used to compliment the GUI ViewModels to display a Stock.  Most
+    /// <see cref="T:StockGames.Persistence.V1.Services.StockService" /> methods relating to Stocks return a
+    /// StockEntity.
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery &amp; Nick Eaket, 3/20/2013. </remarks>
+    public class StockEntity
     {
-        #region Private Variables
-       
-        private string _stockIndex;
-        private string _companyName;
         /// <summary> The snapshots, sorted in reverse order by tombstone. </summary>
-        private IList<StockSnapshotEntity> _snapshots;
+        private readonly IList<StockSnapshotEntity> _snapshots;
 
-        #endregion
+        /// <summary>   The stock index is used to identify a particular stock in the stock market. </summary>
+        ///
+        /// <value> The stock index. </value>
+        public string StockIndex { get; private set; }
 
-        //List of string constants used for notifying subscribers
-        private const string CurrentPricePropertyName = "CurrentPrice";
-        private const string PreviousPricePropertyName = "PreviousPrice";
+        /// <summary>   The name of the company that a stock represents. </summary>
+        ///
+        /// <value> The name of the company. </value>
+        public string CompanyName { get; private set; }
 
-        #region Public Properties and Manipulators
-        public string StockIndex
-        {
-            get
-            {
-                return _stockIndex;
-            }
-            private set 
-            {
-                _stockIndex = value;
-            }
-
-        }
-        public string CompanyName
-        {
-            get
-            {
-                return _companyName;
-            }
-            private set
-            {
-                _companyName = value;
-            }
-        }
+        /// <summary>   Gets the current market price on a stock. </summary>
+        ///
+        /// <value> The current price. </value>
         public decimal CurrentPrice
         {
             get
@@ -55,6 +39,10 @@ namespace StockGames.Entities
             }
             
         }
+
+        /// <summary>   Gets the market's previous stock price. </summary>
+        ///
+        /// <value> The previous price. </value>
         public decimal PreviousPrice
         {
             get
@@ -64,6 +52,10 @@ namespace StockGames.Entities
                 return _snapshots[1].Price;
             }
         }
+
+        /// <summary>   The delta change of the current price and the previous price.</summary>
+        ///
+        /// <value> The daily change. </value>
  		public decimal DailyChange
         {
             get
@@ -72,6 +64,12 @@ namespace StockGames.Entities
             }
         }
 
+        /// <summary>
+        /// Calculates a ratio of the DailyChange / PreviousPrice.  Commonly refered on a stock market as
+        /// Profit &amp; Loss.
+        /// </summary>
+        ///
+        /// <value> The profit and loss. </value>
         public decimal ProfitAndLoss
         {
             get
@@ -90,7 +88,6 @@ namespace StockGames.Entities
         {
             get { return new ReadOnlyCollection<StockSnapshotEntity>(_snapshots); }
         }
-        #endregion
 
         /// <summary> Constructor for Class, creates a stock with a name and index. </summary>
         /// <param name="stockIndex">   Index or symbol that represents the stock. </param>
@@ -103,18 +100,20 @@ namespace StockGames.Entities
             _snapshots = snapshots;
         }
 
-        //INotifyPropertyChanged Interface Implmentation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged(String propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current
+        /// <see cref="T:System.Object" />.
+        /// </summary>
+        ///
+        /// <remarks>   Nick Eaket, 3/20/2013. </remarks>
+        ///
+        /// <param name="obj">  The <see cref="T:System.Object" /> to compare with the current
+        ///                     <see cref="T:System.Object" />. </param>
+        ///
+        /// <returns>
+        /// true if the specified <see cref="T:System.Object" /> is a StockEntity and its StockIndex is
+        /// equal to this StockEntity's StockIndex, otherwise, false.
+        /// </returns>
         public override bool Equals(object obj)
         {
             var other = obj as StockEntity;
@@ -123,17 +122,38 @@ namespace StockGames.Entities
             return other.StockIndex == StockIndex;
         }
 
+        /// <summary>   Serves as a hash function for a <see cref="T:StockGames.Entities.StockEntity" />. </summary>
+        ///
+        /// <returns>   A hash code for the current <see cref="T:StockGames.Entities.StockEntity" />. </returns>
         public override int GetHashCode()
         {
             return StockIndex.GetHashCode();  
         }
     }
 
+    /// <summary>
+    /// Stock snapshot entity.  Used to hold a stock snapshot containing the price and a tombstone.
+    /// </summary>
+    ///
+    /// <remarks>   Nick Eaket, 3/20/2013. </remarks>
     public class StockSnapshotEntity
     {
+        /// <summary>   The snapshot's Price </summary>
+        ///
+        /// <value> The price. </value>
         public decimal Price { get; private set; }
+
+        /// <summary>   The Date/Time of the snapshot's tombstone. </summary>
+        ///
+        /// <value> The tombstone. </value>
         public DateTime Tombstone { get; private set; }
 
+        /// <summary>   Constructor. </summary>
+        ///
+        /// <remarks>   Nick Eaket, 3/20/2013. </remarks>
+        ///
+        /// <param name="price">        The snapshot's price. </param>
+        /// <param name="tombstone">    The snapshot's tombstone. </param>
         public StockSnapshotEntity(decimal price, DateTime tombstone)
         {
             Price = price;

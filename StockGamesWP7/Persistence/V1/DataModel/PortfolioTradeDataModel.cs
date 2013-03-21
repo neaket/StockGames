@@ -4,14 +4,22 @@ using System.Diagnostics;
 
 namespace StockGames.Persistence.V1.DataModel
 {
-    public enum TradeType : int
+    /// <summary>   The type of Trade. </summary>
+    ///
+    /// <remarks>   Nick Eaket, 3/21/2013. </remarks>
+    public enum TradeType
     {
+        /// <summary>   Buy indicates when a trade represents buying stocks. </summary>
         Buy = 0,
+        /// <summary>   Sell indicates when a trade represents selling stocks. </summary>
         Sell = 1,
-        Short = 2,
-        Cover = 3,
+        //Short = 2,
+        //Cover = 3,
     }
 
+    /// <summary>   The PortfolioTradeDataModel is used to persist portfolio trades. </summary>
+    ///
+    /// <remarks>   Nick Eaket, 3/21/2013. </remarks>
     public class PortfolioTradeDataModel : PortfolioEntryDataModel
     {
         private EntityRef<StockSnapshotDataModel> _stockSnapshot;
@@ -21,7 +29,13 @@ namespace StockGames.Persistence.V1.DataModel
           CanBeNull = false,
           AutoSync = AutoSync.OnInsert)]
         private int StockSnapshotId { get; set; }
-        
+
+        /// <summary>
+        /// Gets or sets the stock snapshot that this trade applies to. This class assumes that a stock
+        /// snapshot is Immutable.
+        /// </summary>
+        ///
+        /// <value> The stock snapshot. </value>
         [Association(
             IsForeignKey = true,
             Storage = "_stockSnapshot",
@@ -46,6 +60,10 @@ namespace StockGames.Persistence.V1.DataModel
            CanBeNull = false,
            AutoSync = AutoSync.OnInsert)]
         private int? _tradeType;
+
+        /// <summary>   Gets or sets the type of the trade. </summary>
+        ///
+        /// <value> The type of the trade. </value>
         public TradeType TradeType
         {
             get
@@ -56,6 +74,9 @@ namespace StockGames.Persistence.V1.DataModel
             set { _tradeType = (int) value; }
         }
 
+        /// <summary>   Gets or sets the quantity. </summary>
+        ///
+        /// <value> The quantity. </value>
         [Column(
            DbType = "int",
            CanBeNull=false,

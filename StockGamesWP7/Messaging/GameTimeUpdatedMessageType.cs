@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 
 namespace StockGames.Messaging
 {
+    /// <summary>   The GameTimeUpdatedMessageType is intended to be sent through the messaging system, when the GameTime changes. </summary>
+    ///
+    /// <remarks>   Nick Eaket, 3/21/2013. </remarks>
     public class GameTimeUpdatedMessageType
     {
+        /// <summary>   Gets the GameTime. </summary>
+        ///
+        /// <value> The GameTime. </value>
         public DateTime GameTime { get; private set; }
 
+        /// <summary>   Initializes a new instance of the GameTimeUpdatedMessageType class. </summary>
+        /// 
+        /// <param name="gameTime"> The GameTime. </param>
         public GameTimeUpdatedMessageType(DateTime gameTime)
         {
             GameTime = gameTime;
