@@ -1,5 +1,4 @@
 ﻿using Microsoft.Phone.Controls;
-using StockGames.ViewModels;
 
 namespace StockGames.Views
 {

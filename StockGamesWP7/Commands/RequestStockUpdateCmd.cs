@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using StockGames.Persistence.V1.Services;
 using StockGames.Stubs;
-using StockGames.Models;
+using StockGames.Entities;
 using StockGames.Controllers;
 using StockGames.CommunicationModule;
 
@@ -35,7 +35,6 @@ namespace StockGames.Commands
             }
 
             CommunicationManager ServerComm = CommunicationManager.GetInstance;
-            var clone = new StockEntity(stockEntity);
             ServerComm.requestStockUpdate();    
         }
 

@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using StockGames.Persistence.V1;
 using StockGames.Persistence.V1.Migrations;
+using StockGames.Controllers;
 
 namespace StockGames.ViewModels
 {
@@ -65,6 +66,9 @@ namespace StockGames.ViewModels
             }
             ShowProgressBar = true;
 
+            //needs to run on UI thread
+            GameState.Instance.GameTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0);
+
             var newGameWorker = new BackgroundWorker();
 
             newGameWorker.DoWork += NewGameWorker_DoWork;
@@ -78,13 +82,15 @@ namespace StockGames.ViewModels
             MigrationManager.InitializeDataContext();
 
             GameState.Instance.ExistingGame = true;
-            GameState.Instance.Save();
         }
 
         void NewGameWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             ShowProgressBar = false;
             ContinueVisibility = Visibility.Visible;
+
+            MissionController mc = MissionController.Instance;
+
             ViewDashboard();
         }
     }

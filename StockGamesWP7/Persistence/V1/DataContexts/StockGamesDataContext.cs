@@ -29,30 +29,36 @@ namespace StockGames.Persistence.V1.DataContexts
             return new StockGamesDataContext(DbConnectionString);
         }
 
-        public Table<StockModel> Stocks
+        public Table<StockDataModel> Stocks
         {
             get
             {
-                return GetTable<StockModel>();
+                return GetTable<StockDataModel>();
             }
         }
 
-        public Table<StockSnapshotModel> StockSnapshots
+        public Table<StockSnapshotDataModel> StockSnapshots
         {
             get
             {
-                return GetTable<StockSnapshotModel>();
+                return GetTable<StockSnapshotDataModel>();
             }
         }
 
-        public Table<PortfolioModel> Portfolios
+        public Table<PortfolioDataModel> Portfolios
         {
             get
             {
-                return GetTable<PortfolioModel>();
+                return GetTable<PortfolioDataModel>();
             }
         }
 
-
+        public Table<PortfolioEntryDataModel> PortfolioEntries
+        {
+            get
+            {
+                return GetTable<PortfolioEntryDataModel>();
+            }
+        }
     }
 }

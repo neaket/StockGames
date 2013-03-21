@@ -32,5 +32,13 @@ namespace StockGames.Views
 
             vm.UpdateCommand.Execute(null);
         }
+
+        private void NewTrade_Click(object sender, EventArgs e)
+        {
+            var vm = DataContext as StockViewModel;
+            Debug.Assert(vm != null, "View Model Must Be Set");
+
+            vm.NewTradeCommand.Execute(null);
+        }
     }
 }

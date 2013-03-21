@@ -41,9 +41,22 @@ namespace StockGames.ViewModels
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
+            SimpleIoc.Default.Register<MainMenuViewModel>();
             SimpleIoc.Default.Register<DashboardViewModel>();
             SimpleIoc.Default.Register<StockViewModel>();
             SimpleIoc.Default.Register<ListStocksViewModel>();
+            SimpleIoc.Default.Register<PortfolioViewModel>();
+            //  SimpleIoc.Default.Register<PortfolioTradeViewModel>();
+            SimpleIoc.Default.Register<ListMissionsViewModel>();
+            SimpleIoc.Default.Register<MissionViewModel>();
+        }
+
+        public MainMenuViewModel MainMenu
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<MainMenuViewModel>();
+            }
         }
 
         public DashboardViewModel Dashboard
@@ -58,7 +71,10 @@ namespace StockGames.ViewModels
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<StockViewModel>();
+                // Temporary fix for RaisePropertyChanged("StockChartData"); not working for two separate views
+                // TODO revert back
+                //return ServiceLocator.Current.GetInstance<StockViewModel>();
+                return new StockViewModel();
             }
         }
 
@@ -69,7 +85,33 @@ namespace StockGames.ViewModels
                 return ServiceLocator.Current.GetInstance<ListStocksViewModel>();
             }
         }
-        
+
+        public PortfolioViewModel Portfolio
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<PortfolioViewModel>();
+            }
+        }
+
+        public PortfolioTradeViewModel PortfolioTrade
+        {
+            get 
+            { 
+                return new PortfolioTradeViewModel();
+            }
+        }
+
+        public ListMissionsViewModel ListMissions
+        {
+            get { return ServiceLocator.Current.GetInstance<ListMissionsViewModel>(); }
+        }
+
+        public MissionViewModel Mission
+        {
+            get { return ServiceLocator.Current.GetInstance<MissionViewModel>(); }
+        }
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

@@ -15,7 +15,8 @@
       <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
         <resources:Resources x:Key="Resources" />
         <resources:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        
+        <resources:PositiveToVisibilityConverter x:Key="PositiveToVisibilityConverter" />
+        <resources:NegativeToVisibilityConverter x:Key="NegativeToVisibilityConverter" />
     </Application.Resources>
   <Application.ApplicationLifetimeObjects>
     <!--Required object that handles lifetime events for the application-->

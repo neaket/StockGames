@@ -1,14 +1,19 @@
 ﻿using System;
-using StockGames.Models;
 using System.Linq;
 using System.Collections.Generic;
+using GalaSoft.MvvmLight.Messaging;
+using StockGames.Messaging;
 using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.DataModel;
+using StockGames.Entities;
+using System.Diagnostics;
 
 namespace StockGames.Persistence.V1.Services
 {
     public class StockService
     {
+        #region instance
+        
         private static readonly StockService instance = new StockService();
         public static StockService Instance {
             get 
@@ -19,90 +24,115 @@ namespace StockGames.Persistence.V1.Services
 
         private StockService() { }
 
+        #endregion
+
+        /// <summary> Gets a stock. </summary>
+        /// <param name="stockIndex">   Index of the stock. </param>
+        /// <returns> The stock. </returns>
         public StockEntity GetStock(string stockIndex)
         {
             using (var context = StockGamesDataContext.GetReadOnly())
             {
                 var stock = context.Stocks.Single(s => s.StockIndex == stockIndex);
-
-                var stockEntity = new StockEntity(stock.StockIndex, stock.CompanyName)
-                    {
-                        CurrentPrice = stock.CurrentPrice,
-                        PreviousPrice = stock.PreviousPrice
-                    };
+                var snapshots = (from snapshot in context.StockSnapshots
+                                        where snapshot.StockIndex == stockIndex &&
+                                        snapshot.Tombstone <= GameState.Instance.GameTime
+                                        orderby snapshot.Tombstone descending
+                                        select new StockSnapshotEntity(snapshot.Price, snapshot.Tombstone)).ToArray();  // TODO limit amount of snapshots loaded .Take(...)
+                
+                var stockEntity = new StockEntity(stock.StockIndex, stock.CompanyName, snapshots);
 
                 return stockEntity;
             }
         }
 
-        public IEnumerable<StockEntity> GetStocks()
+        /// <summary> ReturnsaAll stocks that are persisted. </summary>
+        /// <returns>
+        /// An Enumerator of all stocks.
+        /// </returns>
+        public StockEntity[] GetStocks()
         {
-            
-            // TODO This method needs to be optimized in the future
             using (var context = StockGamesDataContext.GetReadOnly())
             {
-                var stocks = (from s in context.Stocks select s).ToList();
-                IList<StockEntity> stockEntities = new List<StockEntity>(stocks.Count);
-
-                foreach (var stock in stocks)
-                {
-                    stockEntities.Add(new StockEntity(stock.StockIndex, stock.CompanyName)
-                    {
-                        CurrentPrice = stock.CurrentPrice,
-                        PreviousPrice = stock.PreviousPrice
-                    });
-                }
-
-                return stockEntities;
+                var stocks = (from stock in context.Stocks
+                             orderby stock.StockIndex ascending
+                              select new StockEntity(
+                                  stock.StockIndex, 
+                                  stock.CompanyName, 
+                                  (from ss in stock.Snapshots where ss.Tombstone <= GameState.Instance.GameTime orderby ss.Tombstone descending select new StockSnapshotEntity(ss.Price, ss.Tombstone)).Take(2).ToList())
+                             ).ToArray();
+                return stocks;
             }
         }
 
-        public void AddStock(StockEntity stockEntity) 
+        /// <summary> Adds a stock. </summary>
+        /// <param name="stockIndex">       Index of the stock. </param>
+        /// <param name="companyName">      Name of the company. </param>
+        public void AddStock(string stockIndex, string companyName) 
         {
             using (var context = StockGamesDataContext.GetReadWrite())
             {
                 // TODO ensure no duplicates
-                var stock = new StockModel {StockIndex = stockEntity.StockIndex, CompanyName = stockEntity.CompanyName, CurrentPrice = stockEntity.CurrentPrice, PreviousPrice = stockEntity.PreviousPrice};
-                var current = DateTime.Now; // TODO
-                var previous = new DateTime(current.Year, current.Month, current.Day); // TODO
-                var prevStockSnapshot = new StockSnapshotModel
-                    {
-                        Stock = stock,
-                        Tombstone = previous,
-                        Price = stockEntity.PreviousPrice
-                    };
-                context.StockSnapshots.InsertOnSubmit(prevStockSnapshot);
-
-                var currentStockSnapshot = new StockSnapshotModel
-                    {
-                        Stock = stock,
-                        Tombstone = current,
-                        Price = stockEntity.CurrentPrice
-                    };
-                context.StockSnapshots.InsertOnSubmit(currentStockSnapshot);
+                var stock = new StockDataModel {StockIndex = stockIndex, CompanyName = companyName};
+                context.Stocks.InsertOnSubmit(stock);
                 
                 context.SubmitChanges();
             }
         }
 
-
-        public void AddStockSnapshot(StockEntity stockEntity)
+        /// <summary> Adds a stock snapshot to a specific stock. </summary>
+        /// <param name="stockIndex">   Index of the stock. </param>
+        /// <param name="price">        The snapshot price. </param>
+        /// <param name="tombstone">    Date/Time tombstone of the snapshot. </param>
+        /// <remarks>Not to be used for adding multiple snapshots.</remarks>
+        public void AddStockSnapshot(string stockIndex, decimal price, DateTime tombstone)
         {
+            Debug.Assert(price > 0);
+
             using (var context = StockGamesDataContext.GetReadWrite())
-            {
-                var current = DateTime.Now; // TODO
-                var stock = (from s in context.Stocks where s.StockIndex == stockEntity.StockIndex select s).Single();
-                var stockSnapshot = new StockSnapshotModel
+            { 
+                var stock = (from s in context.Stocks where s.StockIndex == stockIndex select s).Single();
+                var stockSnapshot = new StockSnapshotDataModel
                 {
                     Stock = stock,
-                    Tombstone = current,
-                    Price = stockEntity.CurrentPrice
+                    Tombstone = tombstone,
+                    Price = price
                 };
-
-
+                
                 context.StockSnapshots.InsertOnSubmit(stockSnapshot);
                 context.SubmitChanges();
             }
+
+            MessengerWrapper.Send(new StockUpdatedMessageType(stockIndex));
+        }
+
+        /// <summary>   Add multiple stock snapshots to a specific stock. </summary>
+        /// <param name="stockIndex">   Index of the stock. </param>
+        /// <param name="prices">       The prices, note must be 1-to-1 mapped with the tombstones. </param>
+        /// <param name="tombstones">   The tombstones, note must be 1-to-1 mapped with the prices. </param>
+        public void AddStockSnapshots(string stockIndex, IEnumerable<decimal> prices, IEnumerable<DateTime> tombstones)
+        {
+            int count = prices.Count();
+            Debug.Assert(count == tombstones.Count(), "Each price must be 1-to-1 mapped with a tombstone");
+
+            using (var context = StockGamesDataContext.GetReadWrite())
+            {
+                var stock = (from s in context.Stocks where s.StockIndex == stockIndex select s).Single();
+
+                for (int i = 0; i < count; i++)
+                {
+                    var stockSnapshot = new StockSnapshotDataModel
+                    {
+                        Stock = stock,
+                        Tombstone = tombstones.ElementAt(i),
+                        Price = prices.ElementAt(i)
+                    };
+                    context.StockSnapshots.InsertOnSubmit(stockSnapshot);
+                }
+                context.SubmitChanges();
+            }
+
+            MessengerWrapper.Send(new StockUpdatedMessageType(stockIndex));
         }
     }
 }
