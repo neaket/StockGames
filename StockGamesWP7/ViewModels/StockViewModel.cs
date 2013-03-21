@@ -45,7 +45,7 @@ namespace StockGames.ViewModels
 
         private void Update()
         {
-            CommandInvoker.Instance.FetchCommand(CommandInvoker.REQUEST_UPDATE_STOCK, Stock);
+            CommandInvoker.Instance.FetchCommand(CommandInvoker.REQUEST_UPDATE_STOCK, Stock.StockIndex);
         }
 
         private void NewTrade()

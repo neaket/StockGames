@@ -28,14 +28,14 @@ namespace StockGames.Commands
         //ICommand Interface implementation
         public void Execute(Object o)
         {
-            var stockEntity = o as StockEntity;
-            if (stockEntity == null)
+            var stockIndex = o as string;
+            if (stockIndex == null)
             {
                 throw new ArgumentException("Object is not a stock Entity");
             }
 
             CommunicationManager ServerComm = CommunicationManager.GetInstance;
-            ServerComm.requestStockUpdate();    
+            ServerComm.requestStockUpdate(stockIndex);    
         }
 
         public bool CanExecute(object parameter)

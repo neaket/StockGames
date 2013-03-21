@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Threading;
+using StockGames.Persistence.V1.DataModel;
 
 namespace StockGames.CommunicationModule
 {
@@ -30,6 +31,7 @@ namespace StockGames.CommunicationModule
         private ServerStateMachine myServer;
         private static Mutex stateMachineMutex = new Mutex(false, "StateMachine");
         private static Mutex serverQueMutex = new Mutex(true, "ServerQue");
+        private static StockSnapshotDataModel StockSnapshot;
 
         public ServerEntity(string serverAddress, NetworkCredential hostCredentials)
         {
