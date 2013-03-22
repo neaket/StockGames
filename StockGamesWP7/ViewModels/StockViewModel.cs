@@ -18,12 +18,6 @@ namespace StockGames.ViewModels
     /// <remarks>   Nick Eaket, 3/20/2013. </remarks>
     public class StockViewModel : ViewModelBase
     {
-        /// <summary>   When the UpdateCommand is executed, the current stock's data is updated. </summary>
-        ///
-        /// <value> The update command. </value>
-        [Obsolete("See https://github.com/neaket/StockGames/issues/27")]
-        public ICommand UpdateCommand { get; private set; }
-
         /// <summary>   When the NewTradeCommand is executed, the <see cref="PortfolioTradeView"/> is displayed. </summary>
         ///
         /// <value> The new trade command. </value>
@@ -75,7 +69,6 @@ namespace StockGames.ViewModels
         public StockViewModel()
         {
             LoadStockCommand = new RelayCommand<string>(LoadStock);
-            UpdateCommand = new RelayCommand(Update);
             NewTradeCommand = new RelayCommand(NewTrade);
 
             Messenger.Default.Register<StockUpdatedMessageType>(this, StockUpdated);
@@ -108,7 +101,16 @@ namespace StockGames.ViewModels
             var figure = new PathFigure();
 
             // TODO display the tombstone on the horizontal axis
-            var startPrice = Stock.Snapshots[Stock.Snapshots.Count - 1].Price;
+            decimal startPrice;
+            if (Stock.Snapshots.Count > 0)
+            {
+                startPrice = Stock.Snapshots[Stock.Snapshots.Count - 1].Price;
+            }
+            else
+            {
+                startPrice = 0;
+            }
+            
             Point start = new Point(0, -(double)startPrice);
             figure.StartPoint = start;
             _stockChartMax = startPrice;

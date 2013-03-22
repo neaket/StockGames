@@ -34,18 +34,6 @@ namespace StockGames.Views
             vm.LoadStockCommand.Execute(stockIndex);
         }
 
-        /// <summary>   Event handler. Called by Update for click events. </summary>
-        ///
-        /// <param name="sender">   Source of the event. </param>
-        /// <param name="e">        An object that contains the event data. </param>
-        private void Update_Click(object sender, EventArgs e)
-        {
-            var vm = DataContext as StockViewModel;
-            Debug.Assert(vm != null, "View Model Must Be Set");
-
-            vm.UpdateCommand.Execute(null);
-        }
-
         private void NewTrade_Click(object sender, EventArgs e)
         {
             var vm = DataContext as StockViewModel;

@@ -106,7 +106,9 @@ namespace StockGames.ViewModels
             ShowProgressBar = true;
 
             //needs to run on UI thread
-            GameState.Instance.GameTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0);
+            var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0);
+            GameState.Instance.GameDataExpiryTime = now.AddHours(-1);
+            GameState.Instance.GameTime = now;
 
             var newGameWorker = new BackgroundWorker();
 
