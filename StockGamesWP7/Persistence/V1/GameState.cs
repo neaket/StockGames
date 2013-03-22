@@ -7,10 +7,13 @@ using StockGames.Messaging;
 
 namespace StockGames.Persistence.V1
 {
+    // TODO this class should not be singleton, and ViewModels should not be able to access it
+
     /// <summary>
-    /// This class is used to store common state information about the current game.
+    /// This class is used to persist common state information for the application.
     /// </summary>
-    // TODO this class should not be singleton, and viewmodels should not be able to access it
+    ///
+    /// <remarks>   Nick Eaket, 3/21/2013. </remarks>
     [DataContract]
     public class GameState
     {
@@ -22,6 +25,9 @@ namespace StockGames.Persistence.V1
 
         private static GameState _instance;
 
+        /// <summary>   Gets the singleton GameState instance. </summary>
+        ///
+        /// <value> The instance. </value>
         public static GameState Instance
         {
             get
@@ -42,6 +48,9 @@ namespace StockGames.Persistence.V1
         
         #region persistence
 
+        /// <summary>   Persists the GameState into the ApplicationStorage of the phone. </summary>
+        ///
+        /// <remarks>   Nick Eaket, 3/21/2013. </remarks>
         public void Save()
         {
             using (var isoFile = IsolatedStorageFile.GetUserStoreForApplication())
@@ -94,18 +103,18 @@ namespace StockGames.Persistence.V1
         public int MainPortfolioId { get; set; }
 
 
-        private DateTime _GameTime;
+        private DateTime _gameTime;
         /// <summary> Gets the current game time. </summary>
         [DataMember]
         public DateTime GameTime 
         { 
             get
             {
-                return _GameTime;
+                return _gameTime;
             } 
             set { 
-                _GameTime = value;
-                Messenger.Default.Send(new GameTimeUpdatedMessageType(_GameTime));
+                _gameTime = value;
+                Messenger.Default.Send(new GameTimeUpdatedMessageType(_gameTime));
             }
         }
     }

@@ -13,6 +13,7 @@ namespace SharpGIS
 	/// the file content is not supported by Silverlight, and therefore
 	/// also ignore by this class.
 	/// </remarks>
+    [Obsolete]
 	public class UnZipper
 	{
 		private Stream stream;

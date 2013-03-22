@@ -29,7 +29,7 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
-                <TextBlock Text="{Binding MissionDesciption}" />
+                <TextBlock Text="{Binding MissionDescription}" />
                 <StackPanel Orientation="Horizontal" Margin="0 20">
                     <TextBlock Text="Mission Status"/>
                     <TextBlock Margin="20 0 0 0" Text="{Binding MissionStatus}" />
