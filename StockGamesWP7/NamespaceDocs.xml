@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <assembly>
+    <name>StockGames</name>
+  </assembly>
+    <members>
+      <member name="N:StockGames">
+        <summary>
+          <h1 class="heading">StockGames</h1>
+          The root namespace for the StockGames application.
+        </summary>
+      </member>
+      <member name="N:StockGames.Commands">
+        <summary>
+          <h1 class="heading">StockGames.Commands</h1>
+          Contains implementations of commands.
+        </summary>
+      </member>
+      <member name="N:StockGames.CommunicationModule">
+        <summary>
+          <h1 class="heading">StockGames.CommunicationModule</h1>
+          Contains the communication module implementation.
+        </summary>
+      </member>
+      <member name="N:StockGames.Entities">
+        <summary>
+          <h1 class="heading">StockGames.Entities</h1>
+          Contains entities that are used for DataServices and some ViewModels.
+        </summary>
+      </member>
+      <member name="N:StockGames.Messaging">
+        <summary>
+          <h1 class="heading">StockGames.Messaging</h1>
+          Contains implementations of MessageTypes used for messaging in the application.
+        </summary>
+      </member>
+      <member name="N:StockGames.Missions">
+        <summary>
+          <h1 class="heading">StockGames.Missions</h1>
+          Contains the necessary classes for the core of the Missions Module.
+        </summary>
+      </member>
+      <member name="N:StockGames.Persistence.V1">
+        <summary>
+          <h1 class="heading">StockGames.Persistence.V1</h1>
+          Contains version 1 of the Persistence module.  Future code may require major data changes may require that version 1 becomes obsolete, to allow for application upgrades using existing data.
+        </summary>
+      </member>
+      <member name="N:StockGames.Persistence.V1.DataContexts">
+        <summary>
+          <h1 class="heading">StockGames.Persistence.V1.DataContexts</h1>
+          Contains the DataContext.
+        </summary>
+      </member>
+      <member name="N:StockGames.Persistence.V1.DataModel">
+        <summary>
+          <h1 class="heading">StockGames.Persistence.V1.DataModel</h1>
+          Contains DataModels and other code required for database persistence.
+        </summary>
+      </member>
+      <member name="N:StockGames.Persistence.V1.Migrations">
+        <summary>
+          <h1 class="heading">StockGames.Persistence.V1.Migrations</h1>
+          Contains data migration code.  This is used to control data migrations after an app is deployed on the app.
+        </summary>
+      </member>
+      <member name="N:StockGames.Persistence.V1.Services">
+        <summary>
+          <h1 class="heading">StockGames.Persistence.V1.Services</h1>
+          Contains the data services.  All database related code reading or modifing data in the database must use methods provided by the data services.
+        </summary>
+      </member>
+      <member name="N:StockGames.Resources">
+        <summary>
+          <h1 class="heading">StockGames.Resources</h1>
+          Contains localization resources for the application.
+        </summary>
+      </member>
+      <member name="N:StockGames.ViewModels">
+        <summary>
+          <h1 class="heading">StockGames.ViewModels</h1>
+          Contains all of the ViewModels needed for the Views.
+        </summary>
+      </member>
+      <member name="N:StockGames.Views">
+        <summary>
+          <h1 class="heading">StockGames.Views</h1>
+          Contains all of the Views used for the GUI.
+        </summary>
+      </member>
+    </members>
+</doc>

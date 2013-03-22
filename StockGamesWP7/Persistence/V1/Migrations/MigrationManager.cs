@@ -4,6 +4,9 @@ using GalaSoft.MvvmLight.Messaging;
 
 namespace StockGames.Persistence.V1.Migrations
 {
+    /// <summary>   The MigrationManager is used to initialize the DataContext. </summary>
+    ///
+    /// <remarks>   Nick Eaket, 3/21/2013. </remarks>
     public static class MigrationManager
     {
         private static readonly object Lock = new object();

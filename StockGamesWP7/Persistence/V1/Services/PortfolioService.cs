@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using StockGames.Messaging;
+﻿using StockGames.Messaging;
 using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.DataModel;
 using System.Linq;
@@ -9,11 +8,19 @@ using StockGames.Entities;
 
 namespace StockGames.Persistence.V1.Services
 {
+    /// The PortfolioService a singleton and is used to access or manipulate portfolio related persisted data for the
+    /// application.
+    ///
+    /// <remarks>   Nick Eaket, 3/21/2013. </remarks>
     public class PortfolioService
     {
         #region instance
         
         private static readonly PortfolioService instance = new PortfolioService();
+
+        /// <summary>   Gets the singleton instance of this class. </summary>
+        ///
+        /// <value> The singleton instance. </value>
         public static PortfolioService Instance {
             get 
             {
@@ -146,6 +153,16 @@ namespace StockGames.Persistence.V1.Services
             }
         }
 
+        /// <summary>
+        /// Trades are grouped by stock index.  The purchased price is averaged amongst all currently
+        /// owned trades.  And the Quantity is the total number of currently purchased trades.
+        /// </summary>
+        ///
+        /// <param name="portfolioId">  Identifier for the portfolio. </param>
+        ///
+        /// <returns>
+        /// A enumerator of grouped trades.
+        /// </returns>
         public IEnumerable<TradeEntity> GetGroupedTrades(int portfolioId)
         {
             using (var context = StockGamesDataContext.GetReadOnly())
@@ -169,10 +186,13 @@ namespace StockGames.Persistence.V1.Services
                                  };
                 foreach (var trade in trades.ToArray())
                 {
+                    // Avoid generating C# warning about unexpected behavior with different compilers using a
+                    // foreach variable inside of a LINQ closure. 
+                    var copyOfTradeForClosure = trade;
+
                     // Get latest snapshot
-                    // TODO optimize
-                    var latestSnapshotPriceQuery = from s in context.StockSnapshots 
-                                                   where s.StockIndex == trade.StockIndex
+                    var latestSnapshotPriceQuery = from s in context.StockSnapshots
+                                                   where s.StockIndex == copyOfTradeForClosure.StockIndex
                                                    && s.Tombstone <= GameState.Instance.GameTime
                                                    orderby s.Tombstone descending
                                                    select s.Price;
@@ -193,6 +213,16 @@ namespace StockGames.Persistence.V1.Services
             }
         }
 
+        /// <summary>   Gets the total number of sellable trades on the specified portfolioId and stockIndex.</summary>
+        ///
+        /// <remarks>   Nick Eaket, 3/21/2013. </remarks>
+        ///
+        /// <exception cref="Exception">    Thrown when an exception error condition occurs. </exception>
+        ///
+        /// <param name="portfolioId">  Identifier for the portfolio. </param>
+        /// <param name="stockIndex">   Index of the stock. </param>
+        ///
+        /// <returns>   The trade quantity. </returns>
         public int GetTradeQuantity(int portfolioId, string stockIndex)
         {
             using (var context = StockGamesDataContext.GetReadOnly())
@@ -212,12 +242,12 @@ namespace StockGames.Persistence.V1.Services
                 {
                     return 0;
                 }
-                else if (quantities.Length == 1)
+                if (quantities.Length == 1)
                 {
                     return quantities[0];
                 }
 
-                throw new Exception("The length of quanities should never exceed 1.");
+                throw new Exception("The length of quantities should never exceed 1.");
             }
         }
     }

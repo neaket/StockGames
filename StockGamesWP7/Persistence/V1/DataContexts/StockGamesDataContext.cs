@@ -3,6 +3,12 @@ using StockGames.Persistence.V1.DataModel;
 
 namespace StockGames.Persistence.V1.DataContexts
 {
+    /// <summary>
+    /// The stock games data context persists most data used by this application. A data context can
+    /// be thought of as a database for a more typical Database Management System.
+    /// </summary>
+    ///
+    /// <remarks>   Nick Eaket, 3/20/2013. </remarks>
     public class StockGamesDataContext : DataContext
     {
         private const string DbConnectionString = @"DataSource = 'isostore:StockGamesDB.sdf';";
@@ -29,6 +35,9 @@ namespace StockGames.Persistence.V1.DataContexts
             return new StockGamesDataContext(DbConnectionString);
         }
 
+        /// <summary>   The table storing the stocks. </summary>
+        ///
+        /// <value> The stocks. </value>
         public Table<StockDataModel> Stocks
         {
             get
@@ -37,6 +46,9 @@ namespace StockGames.Persistence.V1.DataContexts
             }
         }
 
+        /// <summary>   The table storing the stock snapshots. </summary>
+        ///
+        /// <value> The stock snapshots. </value>
         public Table<StockSnapshotDataModel> StockSnapshots
         {
             get
@@ -45,6 +57,9 @@ namespace StockGames.Persistence.V1.DataContexts
             }
         }
 
+        /// <summary>   The table storing the portfolios. </summary>
+        ///
+        /// <value> The portfolios. </value>
         public Table<PortfolioDataModel> Portfolios
         {
             get
@@ -53,6 +68,9 @@ namespace StockGames.Persistence.V1.DataContexts
             }
         }
 
+        /// <summary>   The table storing the portfolio entries. </summary>
+        ///
+        /// <value> The portfolio entries. </value>
         public Table<PortfolioEntryDataModel> PortfolioEntries
         {
             get

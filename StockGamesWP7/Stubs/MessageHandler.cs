@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 namespace StockGames.Stubs
 {
     //Empty Stub
+    [Obsolete]
     public class MessageHandler
     {
 

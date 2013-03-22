@@ -30,17 +30,6 @@ namespace StockGames.ViewModels
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            ////if (ViewModelBase.IsInDesignModeStatic)
-            ////{
-            ////    // Create design time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DesignDataService>();
-            ////}
-            ////else
-            ////{
-            ////    // Create run time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DataService>();
-            ////}
-
             SimpleIoc.Default.Register<MainMenuViewModel>();
             SimpleIoc.Default.Register<DashboardViewModel>();
             SimpleIoc.Default.Register<StockViewModel>();
@@ -51,6 +40,9 @@ namespace StockGames.ViewModels
             SimpleIoc.Default.Register<MissionViewModel>();
         }
 
+        /// <summary>   Gets an instance of the MainMenuViewModel. </summary>
+        ///
+        /// <value> The MainMenuViewModel. </value>
         public MainMenuViewModel MainMenu
         {
             get
@@ -59,6 +51,9 @@ namespace StockGames.ViewModels
             }
         }
 
+        /// <summary>   Gets an instance of the DashboardViewModel. </summary>
+        ///
+        /// <value> The DashboardViewModel. </value>
         public DashboardViewModel Dashboard
         {
             get
@@ -67,6 +62,9 @@ namespace StockGames.ViewModels
             }
         }
 
+        /// <summary>   Gets an instance of the StockViewModel. </summary>
+        ///
+        /// <value> The StockViewModel. </value>
         public StockViewModel Stock
         {
             get
@@ -78,6 +76,9 @@ namespace StockGames.ViewModels
             }
         }
 
+        /// <summary>   Gets an instance of the ListStocksViewModel. </summary>
+        ///
+        /// <value> The ListStocksViewModel. </value>
         public ListStocksViewModel ListStocks
         {
             get
@@ -86,6 +87,9 @@ namespace StockGames.ViewModels
             }
         }
 
+        /// <summary>   Gets an instance of the PortfolioViewModel. </summary>
+        ///
+        /// <value> The PortfolioViewModel. </value>
         public PortfolioViewModel Portfolio
         {
             get
@@ -94,6 +98,9 @@ namespace StockGames.ViewModels
             }
         }
 
+        /// <summary>    Gets an instance of the PortfolioTradeViewModel. </summary>
+        ///
+        /// <value> The PortfolioTradeViewModel. </value>
         public PortfolioTradeViewModel PortfolioTrade
         {
             get 
@@ -102,19 +109,20 @@ namespace StockGames.ViewModels
             }
         }
 
+        /// <summary>    Gets an instance of the ListMissionsViewModel. </summary>
+        ///
+        /// <value> The ListMissionsViewModel. </value>
         public ListMissionsViewModel ListMissions
         {
             get { return ServiceLocator.Current.GetInstance<ListMissionsViewModel>(); }
         }
 
+        /// <summary>   Gets an instance of the MissionViewModel. </summary>
+        ///
+        /// <value> The MissionViewModel. </value>
         public MissionViewModel Mission
         {
             get { return ServiceLocator.Current.GetInstance<MissionViewModel>(); }
-        }
-
-        public static void Cleanup()
-        {
-            // TODO Clear the ViewModels
         }
     }
 }
