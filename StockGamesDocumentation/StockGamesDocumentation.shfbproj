@@ -16,23 +16,26 @@
     <Name>StockGamesDocumentation</Name>
     <!-- SHFB properties -->
     <OutputPath>.\Help\</OutputPath>
-    <HtmlHelpName>StockGamesDocumentation</HtmlHelpName>
+    <HtmlHelpName>Stock Market Tycoon Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <ApiFilter />
     <ComponentConfigurations />
     <DocumentationSources>
       <DocumentationSource sourceFile="..\StockGamesWP7\Bin\Release\StockGames.dll" />
       <DocumentationSource sourceFile="..\StockGamesWP7\Bin\Release\StockGames.xml" />
+      <DocumentationSource sourceFile="..\StockGamesWP7\NamespaceDocs.xml" />
     </DocumentationSources>
     <HelpAttributes />
-    <NamespaceSummaries />
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="StockGames.Views" isDocumented="True" />
+    </NamespaceSummaries>
     <PlugInConfigurations />
     <BuildLogFile />
     <HtmlHelp1xCompilerPath />
     <HtmlHelp2xCompilerPath />
     <SandcastlePath />
     <WorkingPath />
-    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <FrameworkVersion>Silverlight 4</FrameworkVersion>
     <BuildAssemblerVerbosity>AllMessages</BuildAssemblerVerbosity>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
@@ -40,6 +43,14 @@
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CppCommentsFixup>False</CppCommentsFixup>
     <CleanIntermediates>True</CleanIntermediates>
+    <SyntaxFilters>CSharp</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <PresentationStyle>VS2010</PresentationStyle>
+    <Preliminary>False</Preliminary>
+    <NamingMethod>Guid</NamingMethod>
+    <HelpTitle>Stock Market Tycoon - Documented Class Library</HelpTitle>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
