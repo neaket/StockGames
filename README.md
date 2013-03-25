@@ -11,3 +11,6 @@ Jonathon Panke
 __Supervisor__ Professor Wainer
 
 2012/2013 4th Year Project at Carleton University
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/neaket/StockGames/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
