@@ -67,9 +67,9 @@ namespace StockGames.CommunicationModule
             CurrentState = ProcessState.Ready;
             transitions = new Dictionary<StateTransition, ProcessState>
             {
-                { new StateTransition(ProcessState.Setup, Command.PostModel), ProcessState.Ready },
-                { new StateTransition(ProcessState.Ready, Command.CheckStatus), ProcessState.Ready },
-                { new StateTransition(ProcessState.Ready, Command.StartSim), ProcessState.Running },
+                { new StateTransition(ProcessState.Ready, Command.PostModel), ProcessState.Setup },
+                { new StateTransition(ProcessState.Setup, Command.CheckStatus), ProcessState.Setup },
+                { new StateTransition(ProcessState.Setup, Command.StartSim), ProcessState.Running },
                 { new StateTransition(ProcessState.Running, Command.CheckStatus), ProcessState.Running },
                 { new StateTransition(ProcessState.Done, Command.GetResults), ProcessState.Ready },
                 { new StateTransition(ProcessState.Running, Command.SimComplete), ProcessState.Done }

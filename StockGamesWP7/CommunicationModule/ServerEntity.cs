@@ -36,6 +36,9 @@ namespace StockGames.CommunicationModule
         public ServerEntity(string serverAddress, NetworkCredential hostCredentials)
         {
             myServer = new ServerStateMachine(this);
+            currentModel = "Sawtooth";
+            ModelWriter modelconstructor = new ModelWriter();
+            modelconstructor.writeModeltoStorage("Sawtooth", "CD++Models/Sawtooth", @"StockGamesModel\ServerModels\Sawtooth");
         }
 
         public void createCommThread()
