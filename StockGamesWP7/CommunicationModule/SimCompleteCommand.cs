@@ -8,13 +8,20 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Threading;
 
 namespace StockGames.CommunicationModule
 {
     public class SimCompleteCommand :ICommand
     {
+        private Mutex myStateMutex;
         private ServerEntity myServer;
 
+        public SimCompleteCommand(Mutex stateMutex)
+        {
+            myStateMutex = stateMutex;
+        }
+        
         public bool CanExecute(object parameter)
         {
             throw new NotImplementedException();
@@ -24,14 +31,25 @@ namespace StockGames.CommunicationModule
 
         public void Execute(object parameter)
         {
-            if (parameter.GetType() == typeof(ServerEntity))
+            myStateMutex.WaitOne();
+            try
             {
-                myServer = (ServerEntity)parameter;
+                if (parameter.GetType() == typeof(ServerEntity))
+                {
+                    myServer = (ServerEntity)parameter;
+                }
+                else
+                {
+                    throw new ArgumentException();
+                }
             }
-            else
+            catch 
             {
-                throw new ArgumentException();
+               myStateMutex.ReleaseMutex();
+               throw;
             }
+
+            myStateMutex.ReleaseMutex();
         }
     }
 }

@@ -10,12 +10,19 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.IO.IsolatedStorage;
 using System.IO;
+using System.Threading;
 
 namespace StockGames.CommunicationModule
 {
     public class CheckStatusCommand : ICommand
     {
         private ServerEntity myServer;
+        private Mutex myStateMutex;
+
+        public CheckStatusCommand(Mutex stateMutex)
+        {
+            myStateMutex = stateMutex;
+        }
 
         public bool CanExecute(object parameter)
         {
@@ -26,36 +33,55 @@ namespace StockGames.CommunicationModule
 
         public void Execute(object parameter)
         {
-            if (parameter.GetType() == typeof(ServerEntity))
-            {
-                myServer = (ServerEntity)parameter;
-            }
-            else
-            {
-                throw new ArgumentException();
-            }
+            myStateMutex.WaitOne();
 
-            HttpWebRequest request = WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName + "?sim=status");
-            request.BeginGetResponse(new AsyncCallback(getResponseCallback), request);
+            try
+            {
+                if (parameter.GetType() == typeof(ServerEntity))
+                {
+                    myServer = (ServerEntity)parameter;
+                }
+                else
+                {
+                    throw new ArgumentException();
+                }
+
+                HttpWebRequest request = WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName + "?sim=status");
+                request.BeginGetResponse(new AsyncCallback(getResponseCallback), request);
+            }
+            catch
+            {
+                myStateMutex.ReleaseMutex();
+                throw;
+            }
         }
 
         private void getResponseCallback(IAsyncResult result)
         {
-            using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())
+            try
             {
-                HttpWebRequest request = result.AsyncState as HttpWebRequest;
-                if (request != null)
+                using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    WebResponse response = request.EndGetResponse(result);
-                    using (var fileStream = new IsolatedStorageFileStream("StockGamesModel/SimStatus.xml", FileMode.OpenOrCreate, myStorage))
+                    HttpWebRequest request = result.AsyncState as HttpWebRequest;
+                    if (request != null)
                     {
-                        response.GetResponseStream().CopyTo(fileStream);
+                        WebResponse response = request.EndGetResponse(result);
+                        using (var fileStream = new IsolatedStorageFileStream("StockGamesModel/SimStatus.xml", FileMode.OpenOrCreate, myStorage))
+                        {
+                            response.GetResponseStream().CopyTo(fileStream);
+                        }
                     }
+                    ServerEntity.SimStates simState = ParseXMLFile();
+                    myServer.updateSimState(simState);
                 }
-                ServerEntity.SimStates simState = ParseXMLFile();
-                myServer.updateSimState(simState);   
-                
             }
+            catch 
+            {
+                myStateMutex.ReleaseMutex();
+                throw;
+            }
+
+            myStateMutex.ReleaseMutex();
         }
 
         public ServerEntity.SimStates ParseXMLFile()

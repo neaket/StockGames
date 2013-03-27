@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Threading;
 using StockGames.Persistence.V1.DataModel;
+using System;
 
 namespace StockGames.CommunicationModule
 {
@@ -31,8 +32,7 @@ namespace StockGames.CommunicationModule
         private ServerStateMachine myServer;
         private static Mutex stateMachineMutex = new Mutex(false, "StateMachine");
         private static Mutex serverQueMutex = new Mutex(true, "ServerQue");
-        private static StockSnapshotDataModel StockSnapshot;
-
+       
         public ServerEntity(string serverAddress, NetworkCredential hostCredentials)
         {
             myServer = new ServerStateMachine(this);
@@ -41,29 +41,35 @@ namespace StockGames.CommunicationModule
             modelconstructor.writeModeltoStorage("Sawtooth", "CD++Models/Sawtooth", @"StockGamesModel\ServerModels\Sawtooth");
         }
 
-        public void createCommThread()
+        public void createCommThread(string stockIndex)
         {
             //Lock or Wait on server Que mutex
-            serverQueMutex.WaitOne();
-            Thread thread = new Thread(new ThreadStart(StartSimulation));
-            thread.Start();
+            Thread thread = new Thread(StartSimulation);
+            thread.Start(stockIndex);
         }
 
-        public void StartSimulation()
+        public void StartSimulation(object stockIndex)
         {
-            myServer.MoveNext(Command.PostModel, new PostModelCommand());
-            myServer.MoveNext(Command.StartSim, new StartSimCommand());
-            //Initial Status Check
-            myServer.MoveNext(Command.CheckStatus, new CheckStatusCommand());
-            while(simStatus.Equals(SimStates.RUNNING))
+            serverQueMutex.WaitOne();
+            try
             {
-                Thread.Sleep(500);
-                //Continous Status Check
-                myServer.MoveNext(Command.CheckStatus, new CheckStatusCommand());
+                myServer.MoveNext(Command.PostModel, new PostModelCommand(stateMachineMutex));
+                myServer.MoveNext(Command.StartSim, new StartSimCommand(stateMachineMutex));
+                //Initial Status Check
+                myServer.MoveNext(Command.CheckStatus, new CheckStatusCommand(stateMachineMutex));
+                while (simStatus.Equals(SimStates.RUNNING))
+                {
+                    Thread.Sleep(500);
+                    //Continous Status Check
+                    myServer.MoveNext(Command.CheckStatus, new CheckStatusCommand(stateMachineMutex));
+                }
+                myServer.MoveNext(Command.SimComplete, new SimCompleteCommand(stateMachineMutex));
+                myServer.MoveNext(Command.GetResults, new GetResultsCommand(stateMachineMutex, (string)stockIndex));
             }
-            myServer.MoveNext(Command.SimComplete, new SimCompleteCommand());
-            myServer.MoveNext(Command.GetResults, new GetResultsCommand());
-
+            catch (Exception e)
+            {
+                throw e;
+            }
             //Release mutex
             serverQueMutex.ReleaseMutex();
         }

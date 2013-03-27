@@ -61,7 +61,7 @@ namespace StockGames.CommunicationModule
         public void requestStockUpdate(string stockIndex)
         {
             this.writeToEVfile(stockIndex);
-            hostServer.createCommThread();
+            hostServer.createCommThread(stockIndex);
         }
 
         private void writeToEVfile(string stockIndex)

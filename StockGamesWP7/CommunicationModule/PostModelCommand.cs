@@ -10,12 +10,19 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.IO.IsolatedStorage;
 using System.IO;
+using System.Threading;
 
 namespace StockGames.CommunicationModule
 {
     public class PostModelCommand :ICommand
     {
         private ServerEntity myServer;
+        private Mutex myStateMutex;
+
+        public PostModelCommand(Mutex stateMutex)
+        {
+            myStateMutex = stateMutex;
+        }
 
         public bool CanExecute(object parameter)
         {
@@ -26,52 +33,71 @@ namespace StockGames.CommunicationModule
 
         public void Execute(object parameter)
         {
-            if (parameter.GetType() == typeof(ServerEntity))
+            myStateMutex.WaitOne();
+            try
             {
-                myServer = (ServerEntity)parameter;
-            }
-            else
-            {
-                throw new ArgumentException();
-            }
-            using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                ZipModule zipEngine = new ZipModule();
-                if(!myStorage.DirectoryExists(@"StockGamesModel\ServerModels\" + myServer.getModelName()) )
+                if (parameter.GetType() == typeof(ServerEntity))
                 {
-                    throw new IsolatedStorageException("Model Directory does not exist!");
+                    myServer = (ServerEntity)parameter;
                 }
-                zipEngine.CreateZip(System.IO.Path.Combine("StockGamesModel/ServerModels", myServer.getModelName() + ".zip"), null, @"StockGamesModel\ServerModels\" + myServer.getModelName());
-                
-                HttpWebRequest request =
-                    (HttpWebRequest)WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName);
-                request.Method = "POST";
-                request.Credentials = myServer.serverCredentials;
-                request.ContentType = "application/zip";
+                else
+                {
+                    throw new ArgumentException();
+                }
+                using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    ZipModule zipEngine = new ZipModule();
+                    if (!myStorage.DirectoryExists(@"StockGamesModel\ServerModels\" + myServer.getModelName()))
+                    {
+                        throw new IsolatedStorageException("Model Directory does not exist!");
+                    }
+                    zipEngine.CreateZip(System.IO.Path.Combine("StockGamesModel/ServerModels", myServer.getModelName() + ".zip"), null, @"StockGamesModel\ServerModels\" + myServer.getModelName());
 
-                request.BeginGetRequestStream(new AsyncCallback(requestStreamCallback), request);
+                    HttpWebRequest request =
+                        (HttpWebRequest)WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName);
+                    request.Method = "POST";
+                    request.Credentials = myServer.serverCredentials;
+                    request.ContentType = "application/zip";
+
+                    request.BeginGetRequestStream(new AsyncCallback(requestStreamCallback), request);
+                }
+            }
+            catch 
+            {
+                myStateMutex.ReleaseMutex();
+                throw;
             }
         }
 
         private void requestStreamCallback(IAsyncResult result)
         {
-            HttpWebRequest request = result.AsyncState as HttpWebRequest;
-            Stream webStream = request.EndGetRequestStream(result);
-
-           String targetpath = System.IO.Path.Combine("StockGamesModel/ServerModels", myServer.getModelName()+".zip");
-
-            using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())
+            try
             {
-                if (!myStorage.FileExists(targetpath))
-                    throw new IsolatedStorageException("Model Zip doesnot exist!");
+                HttpWebRequest request = result.AsyncState as HttpWebRequest;
+                Stream webStream = request.EndGetRequestStream(result);
 
-                Stream myStream = new IsolatedStorageFileStream( targetpath, FileMode.Open, myStorage);
-                myStream.CopyTo(webStream);
+                String targetpath = System.IO.Path.Combine("StockGamesModel/ServerModels", myServer.getModelName() + ".zip");
 
-                //Close streams after writing data
-                webStream.Close();
-                myStream.Close();
+                using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (!myStorage.FileExists(targetpath))
+                        throw new IsolatedStorageException("Model Zip doesnot exist!");
+
+                    Stream myStream = new IsolatedStorageFileStream(targetpath, FileMode.Open, myStorage);
+                    myStream.CopyTo(webStream);
+
+                    //Close streams after writing data
+                    webStream.Close();
+                    myStream.Close();
+                }
             }
+            catch 
+            {
+                myStateMutex.ReleaseMutex();
+                throw;
+            }
+
+            myStateMutex.ReleaseMutex();
          }
 
             
