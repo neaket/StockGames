@@ -43,13 +43,14 @@ namespace StockGames.CommunicationModule
                     throw new ArgumentException();
                 }
             }
-            catch 
+            catch
             {
-               myStateMutex.ReleaseMutex();
                throw;
             }
-
-            myStateMutex.ReleaseMutex();
+            finally
+            {
+                myStateMutex.ReleaseMutex();
+            }
         }
     }
 }

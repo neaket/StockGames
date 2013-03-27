@@ -47,22 +47,13 @@ namespace StockGames.CommunicationModule
                 }
 
                 HttpWebRequest request = WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName + "?sim=status");
-                request.BeginGetResponse(new AsyncCallback(getResponseCallback), request);
-            }
-            catch
-            {
-                myStateMutex.ReleaseMutex();
-                throw;
-            }
-        }
+                //Sets up wait reset, waits until the stream has be retrieved before continuing
+                var wait_handle = new ManualResetEvent(false);
+                var result = request.BeginGetResponse((ar) => wait_handle.Set(), null);
+                wait_handle.WaitOne();
 
-        private void getResponseCallback(IAsyncResult result)
-        {
-            try
-            {
                 using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    HttpWebRequest request = result.AsyncState as HttpWebRequest;
                     if (request != null)
                     {
                         WebResponse response = request.EndGetResponse(result);
@@ -74,14 +65,16 @@ namespace StockGames.CommunicationModule
                     ServerEntity.SimStates simState = ParseXMLFile();
                     myServer.updateSimState(simState);
                 }
+
             }
-            catch 
+            catch
             {
-                myStateMutex.ReleaseMutex();
                 throw;
             }
-
-            myStateMutex.ReleaseMutex();
+            finally
+            {
+                myStateMutex.ReleaseMutex();
+            }
         }
 
         public ServerEntity.SimStates ParseXMLFile()

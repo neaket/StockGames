@@ -48,30 +48,22 @@ namespace StockGames.CommunicationModule
                 request.Credentials = myServer.serverCredentials;
                 request.ContentType = "text/xml";
 
-                request.BeginGetResponse(new AsyncCallback(getResponseCallback), request);
-            }
-            catch 
-            {
-                myStateMutex.ReleaseMutex();
-                throw;
-            }
-        }
+                //Sets up wait reset, waits until the stream has be retrieved before continuing
+                var wait_handle = new ManualResetEvent(false);
+                var result = request.BeginGetRequestStream((ar) => wait_handle.Set(), null);
+                wait_handle.WaitOne();
 
-        private void getResponseCallback(IAsyncResult result)
-        {
-            //do stuff if need at sim startup on client side
-            try
-            {
-                HttpWebRequest request = result.AsyncState as HttpWebRequest;
                 WebResponse response = request.EndGetResponse(result);
+
             }
             catch
             {
-               myStateMutex.ReleaseMutex();
-               throw;
+                throw;
             }
-
-            myStateMutex.ReleaseMutex();
+            finally
+            {
+                myStateMutex.ReleaseMutex();
+            }
         }
     }
 }

@@ -52,22 +52,14 @@ namespace StockGames.CommunicationModule
                 }
 
                 HttpWebRequest request = WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName + "/results");
-                request.BeginGetResponse(new AsyncCallback(getResponseCallback), request);
-            }
-            catch
-            {
-                myStateMutex.ReleaseMutex();
-                throw;
-            }
-        }
 
-        private void getResponseCallback(IAsyncResult result)
-        {
-            try
-            {
+                //Sets up wait reset, waits until the stream has be retrieved before continuing
+                var wait_handle = new ManualResetEvent(false);
+                var result = request.BeginGetResponse((ar) => wait_handle.Set(), null);
+                wait_handle.WaitOne();
+
                 using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    HttpWebRequest request = result.AsyncState as HttpWebRequest;
                     if (request != null)
                     {
                         WebResponse response = request.EndGetResponse(result);
@@ -99,22 +91,23 @@ namespace StockGames.CommunicationModule
                                     {
                                         StockSnapshotDataModel previousSnapShot = StockService.Instance.GetLatestStockSnapshot(currentStock);
                                         DateTime tombstone = previousSnapShot.Tombstone.AddHours(1);
-                                        StockService.Instance.AddStockSnapshot(currentStock,Convert.ToDecimal(words[arrayIndex+1]), tombstone);
+                                        StockService.Instance.AddStockSnapshot(currentStock, Convert.ToDecimal(words[arrayIndex + 1]), tombstone);
                                     }
                                     arrayIndex += 1;
-                               }
+                                }
                             }
                         }
                     }
                 }
             }
-            catch 
+            catch
             {
-                myStateMutex.ReleaseMutex();
                 throw;
             }
-
-            myStateMutex.ReleaseMutex();
+            finally
+            {
+                myStateMutex.ReleaseMutex();
+            }
         }
     }
 }
