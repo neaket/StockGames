@@ -12,7 +12,7 @@ namespace StockGames.CommunicationModule
         public NetworkCredential serverCredentials { get; private set; }
         public string currentModel{ get; private set; }
         public const string domainName = "TestUnit";
-        private SimStates simStatus;
+        public SimStates simStatus { get; private set; }
         public enum SimStates
         {
             IDLE,
@@ -30,9 +30,9 @@ namespace StockGames.CommunicationModule
         private const string PUT = "PUT";
 
         private ServerStateMachine myServer;
-        private static Mutex stateMachineMutex = new Mutex(false, "StateMachine");
-        private static Mutex serverQueMutex = new Mutex(true, "ServerQue");
-       
+        
+        private static Mutex serverQueMutex = new Mutex(false, "ServerQue");
+        
         public ServerEntity(string serverAddress, NetworkCredential hostCredentials)
         {
             myServer = new ServerStateMachine(this);
@@ -44,55 +44,9 @@ namespace StockGames.CommunicationModule
         public void createCommThread(string stockIndex)
         {
             //Lock or Wait on server Que mutex
-            Thread thread = new Thread(StartSimulation);
-            thread.Start(stockIndex);
-        }
-
-        public void StartSimulation(object stockIndex)
-        {
-            serverQueMutex.WaitOne();
-            try
-            {
-                myServer.MoveNext(Command.PostModel, new PostModelCommand(stateMachineMutex));
-                myServer.MoveNext(Command.StartSim, new StartSimCommand(stateMachineMutex));
-                //Initial Status Check
-                myServer.MoveNext(Command.CheckStatus, new CheckStatusCommand(stateMachineMutex));
-                while (simStatus.Equals(SimStates.RUNNING))
-                {
-                    Thread.Sleep(500);
-                    //Continous Status Check
-                    myServer.MoveNext(Command.CheckStatus, new CheckStatusCommand(stateMachineMutex));
-                }
-                myServer.MoveNext(Command.SimComplete, new SimCompleteCommand(stateMachineMutex));
-                myServer.MoveNext(Command.GetResults, new GetResultsCommand(stateMachineMutex, (string)stockIndex));
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            //Release mutex
-            serverQueMutex.ReleaseMutex();
-        }
-
-        
-        private HttpWebRequest createPostRequest()
-        {
-            HttpWebRequest request =
-                (HttpWebRequest) WebRequest.CreateHttp(serverURI + domainName);
-            request.Method = POST;
-            request.Credentials = serverCredentials;
-            request.ContentType = "text/xml";
-            return request;
-        }
-
-        private HttpWebRequest createPutRequest()
-        {
-            HttpWebRequest request =
-                (HttpWebRequest) WebRequest.CreateHttp(serverURI + domainName);
-            request.Method = PUT;
-            request.Credentials = serverCredentials;
-            request.ContentType = "text/xml";
-            return request;
+            Work w = new Work(stockIndex, myServer, this, serverQueMutex);
+            Thread thread = new Thread(new ThreadStart(w.StartSimulation));
+            thread.Start();
         }
 
         public string getModelName()
@@ -104,6 +58,49 @@ namespace StockGames.CommunicationModule
         {
             simStatus = state;
         }
+    }
 
+    class Work
+    {
+        private string stockIndex;
+        private ServerStateMachine myServer;
+        private ServerEntity hostServer;
+        private static Mutex serverQueMutex;
+        private static Mutex stateMachineMutex = new Mutex(false, "StateMachine");
+
+        public Work(string sIndex, ServerStateMachine stateMachine, ServerEntity server, Mutex queMutex)
+        {
+            stockIndex = sIndex;
+            myServer = stateMachine;
+            hostServer = server;
+            serverQueMutex = queMutex;
+        }
+
+        public void StartSimulation()
+        {
+            serverQueMutex.WaitOne();
+            try
+            {
+                myServer.MoveNext(Command.PostModel, new PostModelCommand(stateMachineMutex));
+                myServer.MoveNext(Command.StartSim, new StartSimCommand(stateMachineMutex));
+                //Initial Status Check
+                myServer.MoveNext(Command.CheckStatus, new CheckStatusCommand(stateMachineMutex));
+                while ((hostServer.simStatus).Equals(ServerEntity.SimStates.RUNNING))
+                {
+                    Thread.Sleep(500);
+                    //Continous Status Check
+                    myServer.MoveNext(Command.CheckStatus, new CheckStatusCommand(stateMachineMutex));
+                }
+                myServer.MoveNext(Command.SimComplete, new SimCompleteCommand(stateMachineMutex));
+                myServer.MoveNext(Command.GetResults, new GetResultsCommand(stateMachineMutex, (string)stockIndex));
+            }
+            catch 
+            {
+                serverQueMutex.ReleaseMutex();
+                throw;
+            }
+            //Release mutex
+            serverQueMutex.ReleaseMutex();
+        }
     }
 }
