@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace StockGames.CommunicationModule
 {
-    public class PostModelCommand :ICommand
+    public class PostModelCommand : ICommand
     {
         private ServerEntity myServer;
         private Mutex myStateMutex;
@@ -59,27 +59,14 @@ namespace StockGames.CommunicationModule
                     request.Credentials = myServer.serverCredentials;
                     request.ContentType = "application/zip";
 
-                    request.BeginGetRequestStream(new AsyncCallback(requestStreamCallback), request);
-                }
-            }
-            catch 
-            {
-                myStateMutex.ReleaseMutex();
-                throw;
-            }
-        }
+                    //Sets up wait reset, waits until the stream has be retrieved before continuing
+                    var wait_handle = new ManualResetEvent(false); 
+                    var result = request.BeginGetRequestStream((ar) => wait_handle.Set(), null); 
+                    wait_handle.WaitOne(); 
+                   
+                    Stream webStream = request.EndGetRequestStream(result);
+                    String targetpath = System.IO.Path.Combine("StockGamesModel/ServerModels", myServer.getModelName() + ".zip");
 
-        private void requestStreamCallback(IAsyncResult result)
-        {
-            try
-            {
-                HttpWebRequest request = result.AsyncState as HttpWebRequest;
-                Stream webStream = request.EndGetRequestStream(result);
-
-                String targetpath = System.IO.Path.Combine("StockGamesModel/ServerModels", myServer.getModelName() + ".zip");
-
-                using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())
-                {
                     if (!myStorage.FileExists(targetpath))
                         throw new IsolatedStorageException("Model Zip doesnot exist!");
 
@@ -91,15 +78,14 @@ namespace StockGames.CommunicationModule
                     myStream.Close();
                 }
             }
-            catch 
+            catch
             {
-                myStateMutex.ReleaseMutex();
                 throw;
             }
-
-            myStateMutex.ReleaseMutex();
-         }
-
-            
+            finally
+            {
+                myStateMutex.ReleaseMutex();
+            }
+        }
     }
 }

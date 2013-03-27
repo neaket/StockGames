@@ -67,7 +67,7 @@ namespace StockGames.CommunicationModule
         private ServerEntity hostServer;
         private static Mutex serverQueMutex;
         private static Mutex stateMachineMutex = new Mutex(false, "StateMachine");
-
+        
         public Work(string sIndex, ServerStateMachine stateMachine, ServerEntity server, Mutex queMutex)
         {
             stockIndex = sIndex;
@@ -96,11 +96,14 @@ namespace StockGames.CommunicationModule
             }
             catch 
             {
-                serverQueMutex.ReleaseMutex();
                 throw;
             }
-            //Release mutex
-            serverQueMutex.ReleaseMutex();
+            finally
+            {
+                //Release mutex
+                serverQueMutex.ReleaseMutex();
+            }
         }
     }
+
 }
