@@ -60,11 +60,11 @@ namespace StockGames.CommunicationModule
                 }
                 zipStream.CloseEntry();
             }
-            string[] folders = isolatedStorage.GetDirectoryNames(System.IO.Path.Combine(path, "*.*"));
-            foreach (string folder in folders)
-            {
-                CompressFolder(System.IO.Path.Combine(path, folder), zipStream, folderOffset, isolatedStorage);
-            }
+            //string[] folders = isolatedStorage.GetDirectoryNames(System.IO.Path.Combine(path, "*.*"));
+            //foreach (string folder in folders)
+            //{
+            //    CompressFolder(System.IO.Path.Combine(path, folder), zipStream, folderOffset, isolatedStorage);
+            //}
         }
 
         // Compresses the files in the nominated folder, and creates a zip file on disk named as outPathname.
