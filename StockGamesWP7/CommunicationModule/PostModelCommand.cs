@@ -47,11 +47,11 @@ namespace StockGames.CommunicationModule
                 using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     ZipModule zipEngine = new ZipModule();
-                    if (!myStorage.DirectoryExists(@"StockGamesModel\ServerModels\" + myServer.getModelName()))
+                    if (!myStorage.DirectoryExists(myServer.getModelName()))
                     {
                         throw new IsolatedStorageException("Model Directory does not exist!");
                     }
-                    zipEngine.CreateZip(System.IO.Path.Combine("StockGamesModel/ServerModels", myServer.getModelName() + ".zip"), null, @"StockGamesModel\ServerModels\" + myServer.getModelName());
+                    zipEngine.CreateZip(System.IO.Path.Combine(myServer.getModelName(), myServer.getModelName() + ".zip"), null, myServer.getModelName());
 
                     HttpWebRequest request =
                         (HttpWebRequest)WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName);
@@ -65,7 +65,7 @@ namespace StockGames.CommunicationModule
                     wait_handle.WaitOne(); 
                    
                     Stream webStream = request.EndGetRequestStream(result);
-                    String targetpath = System.IO.Path.Combine("StockGamesModel/ServerModels", myServer.getModelName() + ".zip");
+                    String targetpath = System.IO.Path.Combine(myServer.getModelName(), myServer.getModelName() + ".zip");
 
                     if (!myStorage.FileExists(targetpath))
                         throw new IsolatedStorageException("Model Zip doesnot exist!");

@@ -38,7 +38,7 @@ namespace StockGames.CommunicationModule
             myServer = new ServerStateMachine(this);
             currentModel = "Sawtooth";
             ModelWriter modelconstructor = new ModelWriter();
-            modelconstructor.writeModeltoStorage("Sawtooth", "CD++Models/Sawtooth", @"StockGamesModel\ServerModels\Sawtooth");
+            modelconstructor.writeModeltoStorage("Sawtooth", "CD++Models/Sawtooth", @"Sawtooth");
         }
 
         public void createCommThread(string stockIndex)

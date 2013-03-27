@@ -70,13 +70,12 @@ namespace StockGames.CommunicationModule
 
             using (var myStorage = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                var filename = System.IO.Path.Combine(@"StockGamesModel\SeverModels\" + hostServer.getModelName(),
-                                                      "*.ev");
+                var filename = System.IO.Path.Combine(hostServer.getModelName(),"*.ev");
                 if (myStorage.FileExists(filename))
                 {
                     myStorage.DeleteFile(filename);
                 }
-                using (var myFile = myStorage.CreateFile("trial.ev"))
+                using (var myFile = myStorage.CreateFile(System.IO.Path.Combine(hostServer.getModelName(),"trial.ev")))
                 {
                     using (var myStream = new StreamWriter(myFile))
                     {

@@ -53,7 +53,7 @@ namespace StockGames.CommunicationModule
                 var result = request.BeginGetRequestStream((ar) => wait_handle.Set(), null);
                 wait_handle.WaitOne();
 
-                WebResponse response = request.EndGetResponse(result);
+                var myStream = request.EndGetRequestStream(result);
 
             }
             catch
