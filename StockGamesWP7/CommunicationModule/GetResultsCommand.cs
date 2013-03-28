@@ -73,7 +73,7 @@ namespace StockGames.CommunicationModule
                     }
 
                     //parser
-                    using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream("StockGamesModel/SimStatus.xml", FileMode.Open, myStorage))
+                    using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream("StockGamesModel/SimulationResults.zip", FileMode.Open, myStorage))
                     {
                         UnZipper un = new UnZipper(ISStream);
                         foreach (String filename in un.GetFileNamesInZip())

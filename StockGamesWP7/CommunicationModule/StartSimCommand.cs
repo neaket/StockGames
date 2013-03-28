@@ -70,7 +70,7 @@ namespace StockGames.CommunicationModule
                 HttpWebResponse response = request.EndGetResponse(responseResult) as HttpWebResponse;
                 if (!response.StatusCode.Equals(HttpStatusCode.OK))
                 {
-                    throw new WebException("Bad Http Status Code");
+                    //throw new WebException("Bad Http Status Code");
                 }
 
             }

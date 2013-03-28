@@ -70,8 +70,15 @@ namespace StockGames.CommunicationModule
 
             using (var myStorage = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                var filename = System.IO.Path.Combine(hostServer.getModelName(),"*.ev");
-                if (myStorage.FileExists(filename))
+                //delete extra ev files
+                var evfiles = myStorage.GetFileNames(System.IO.Path.Combine(hostServer.getModelName(), "*.ev"));
+                foreach (string filename in evfiles)
+                {
+                    myStorage.DeleteFile(filename);
+                }
+                //delete extra ev files
+                var zipfiles = myStorage.GetFileNames(System.IO.Path.Combine(hostServer.getModelName(), "*.zip"));
+                foreach (string filename in zipfiles)
                 {
                     myStorage.DeleteFile(filename);
                 }

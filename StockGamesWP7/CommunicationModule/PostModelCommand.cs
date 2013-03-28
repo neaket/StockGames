@@ -51,7 +51,7 @@ namespace StockGames.CommunicationModule
                     {
                         throw new IsolatedStorageException("Model Directory does not exist!");
                     }
-                    zipEngine.CreateZip(System.IO.Path.Combine(myServer.getModelName(), myServer.getModelName() + ".zip"), null, myServer.getModelName());
+                    zipEngine.CreateZip( myServer.getModelName() + ".zip", null, myServer.getModelName());
 
                     HttpWebRequest request =
                         (HttpWebRequest)WebRequest.CreateHttp(new Uri(ServerEntity.serverURI + ServerEntity.domainName+"?zdir=Sawtooth"));
@@ -65,7 +65,7 @@ namespace StockGames.CommunicationModule
                     requestWait.WaitOne(); 
                    
                     Stream webStream = request.EndGetRequestStream(requestResult);
-                    String targetpath = System.IO.Path.Combine(myServer.getModelName(), myServer.getModelName() + ".zip");
+                    String targetpath = myServer.getModelName() + ".zip";
 
                     if (!myStorage.FileExists(targetpath))
                         throw new IsolatedStorageException("Model Zip doesnot exist!");
@@ -84,7 +84,7 @@ namespace StockGames.CommunicationModule
                     HttpWebResponse response = request.EndGetResponse(responseResult) as HttpWebResponse;
                     if (!response.StatusCode.Equals(HttpStatusCode.OK))
                     {
-                        throw new WebException("Bad Http Status Code");
+                        //throw new WebException("Bad Http Status Code");
                     }
                 }
             }

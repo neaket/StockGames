@@ -37,6 +37,7 @@ namespace StockGames.CommunicationModule
         {
             myServer = new ServerStateMachine(this);
             currentModel = "Sawtooth";
+            serverCredentials = hostCredentials;
             ModelWriter modelconstructor = new ModelWriter();
             modelconstructor.writeModeltoStorage("Sawtooth", "CD++Models/Sawtooth", @"Sawtooth");
         }
@@ -85,7 +86,7 @@ namespace StockGames.CommunicationModule
                 myServer.MoveNext(Command.StartSim, new StartSimCommand(stateMachineMutex));
                 //Initial Status Check
                 myServer.MoveNext(Command.CheckStatus, new CheckStatusCommand(stateMachineMutex));
-                while ((hostServer.simStatus).Equals(ServerEntity.SimStates.RUNNING))
+                while (!(hostServer.simStatus).Equals(ServerEntity.SimStates.DONE))
                 {
                     Thread.Sleep(500);
                     //Continous Status Check
