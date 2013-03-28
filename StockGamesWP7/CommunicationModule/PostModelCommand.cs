@@ -54,17 +54,17 @@ namespace StockGames.CommunicationModule
                     zipEngine.CreateZip(System.IO.Path.Combine(myServer.getModelName(), myServer.getModelName() + ".zip"), null, myServer.getModelName());
 
                     HttpWebRequest request =
-                        (HttpWebRequest)WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName);
+                        (HttpWebRequest)WebRequest.CreateHttp(new Uri(ServerEntity.serverURI + ServerEntity.domainName+"?zdir=Sawtooth"));
                     request.Method = "POST";
                     request.Credentials = myServer.serverCredentials;
                     request.ContentType = "application/zip";
 
                     //Sets up wait reset, waits until the stream has be retrieved before continuing
-                    var wait_handle = new ManualResetEvent(false); 
-                    var result = request.BeginGetRequestStream((ar) => wait_handle.Set(), null); 
-                    wait_handle.WaitOne(); 
+                    var requestWait = new ManualResetEvent(false); 
+                    var requestResult = request.BeginGetRequestStream((ar) => requestWait.Set(), null); 
+                    requestWait.WaitOne(); 
                    
-                    Stream webStream = request.EndGetRequestStream(result);
+                    Stream webStream = request.EndGetRequestStream(requestResult);
                     String targetpath = System.IO.Path.Combine(myServer.getModelName(), myServer.getModelName() + ".zip");
 
                     if (!myStorage.FileExists(targetpath))
@@ -76,6 +76,16 @@ namespace StockGames.CommunicationModule
                     //Close streams after writing data
                     webStream.Close();
                     myStream.Close();
+
+                    var responseWait = new ManualResetEvent(false);
+                    var responseResult = request.BeginGetResponse((ar) => responseWait.Set(), null);
+                    responseWait.WaitOne();
+
+                    HttpWebResponse response = request.EndGetResponse(responseResult) as HttpWebResponse;
+                    if (!response.StatusCode.Equals(HttpStatusCode.OK))
+                    {
+                        throw new WebException("Bad Http Status Code");
+                    }
                 }
             }
             catch

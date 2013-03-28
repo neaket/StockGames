@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Threading;
+using System.IO;
 
 namespace StockGames.CommunicationModule
 {
@@ -42,6 +43,7 @@ namespace StockGames.CommunicationModule
                 {
                     throw new ArgumentException();
                 }
+                var textStream = Application.GetResourceStream(new Uri("simulation.txt", UriKind.Relative)).Stream;
                 HttpWebRequest request =
                         (HttpWebRequest)WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName + "/simulation");
                 request.Method = "PUT";
@@ -53,7 +55,23 @@ namespace StockGames.CommunicationModule
                 var result = request.BeginGetRequestStream((ar) => wait_handle.Set(), null);
                 wait_handle.WaitOne();
 
-                var myStream = request.EndGetRequestStream(result);
+                var webStream = request.EndGetRequestStream(result);
+
+                textStream.CopyTo(webStream);
+
+                //Close streams after writing data
+                webStream.Close();
+                textStream.Close();
+
+                var responseWait = new ManualResetEvent(false);
+                var responseResult = request.BeginGetResponse((ar) => responseWait.Set(), null);
+                responseWait.WaitOne();
+
+                HttpWebResponse response = request.EndGetResponse(responseResult) as HttpWebResponse;
+                if (!response.StatusCode.Equals(HttpStatusCode.OK))
+                {
+                    throw new WebException("Bad Http Status Code");
+                }
 
             }
             catch

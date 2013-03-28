@@ -47,7 +47,7 @@ namespace StockGames.CommunicationModule
                 }
 
                 HttpWebRequest request = WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName + "?sim=status");
-                //Sets up wait reset, waits until the stream has be retrieved before continuing
+                //Sets up wait reset, waits until the response has be retrieved before continuing
                 var wait_handle = new ManualResetEvent(false);
                 var result = request.BeginGetResponse((ar) => wait_handle.Set(), null);
                 wait_handle.WaitOne();
