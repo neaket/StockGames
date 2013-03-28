@@ -92,7 +92,6 @@
     <Compile Include="CommunicationModule\GetResultsCommand.cs" />
     <Compile Include="CommunicationModule\ModelWriter.cs" />
     <Compile Include="CommunicationModule\PostModelCommand.cs" />
-    <Compile Include="CommunicationModule\ServerCommunication.cs" />
     <Compile Include="Commands\IStockCommand.cs" />
     <Compile Include="Commands\PushStockChangesCmd.cs" />
     <Compile Include="Commands\RequestStockUpdateCmd.cs" />
@@ -233,7 +232,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="StockGamesWP7_2013_03_20_12_45_07.sap" />
-    <Content Include="Sawtooth.zip" />
     <Content Include="CD++Models\Sawtooth\Sawtooth.ma" />
     <Content Include="CD++Models\Sawtooth\SawtoothType.cpp" />
     <Content Include="CD++Models\Sawtooth\SawtoothType.h" />
