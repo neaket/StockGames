@@ -43,8 +43,8 @@ namespace StockGames.CommunicationModule
         {
             writeFiletoStorage(modelName + ".ev", sourcePath, targetPath);
             writeFiletoStorage(modelName + ".ma", sourcePath, targetPath);
-            writeFiletoStorage(modelName + "Type.cpp", sourcePath, targetPath);
-            writeFiletoStorage(modelName + "Type.h", sourcePath, targetPath);
+            //writeFiletoStorage(modelName + "Type.cpp", sourcePath, targetPath);
+            //writeFiletoStorage(modelName + "Type.h", sourcePath, targetPath);
         }
 
     }
