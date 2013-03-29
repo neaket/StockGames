@@ -12,6 +12,9 @@ using System.IO.IsolatedStorage;
 using System.IO;
 using StockGames.Persistence.V1.DataModel;
 using StockGames.Persistence.V1.Services;
+using System.Collections.Generic;
+using StockGames.CommunicationModule.EVWriters;
+using StockGames.CommunicationModule.Parsers;
 
 namespace StockGames.CommunicationModule
 {
@@ -19,12 +22,14 @@ namespace StockGames.CommunicationModule
     {
         private const string SERVER_URI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
         private const string MODEL_NAME = "TestUnit";
-        private const string SERVER_OUT_FILE = "results/simOut_134_117_53_66_8080.out";
-
+        
         private static readonly CommunicationManager instance =
             new CommunicationManager(new ServerEntity(SERVER_URI, new NetworkCredential("andrew", "andrew")));
 
         private ServerEntity hostServer;
+        private string currentModel = "Sawtooth";   //default value for active model
+
+        private Dictionary<string, ModelManger> models; 
 
         public CommunicationManager(ServerEntity myServer)
         {
@@ -47,10 +52,10 @@ namespace StockGames.CommunicationModule
                     }
                 }
             }
-            //Write Models
-            ModelWriter modelconstructor = new ModelWriter();
-            modelconstructor.writeModeltoStorage("Sawtooth", "CD++Models/Sawtooth",
-                                                 @"StockGamesModel\ServerModels\Sawtooth");
+
+            //Setup Models
+            models.Add("Sawtooth", new ModelManger("Sawtooth", "CD++Models/Sawtooth", null, "TestUnit", new SawtoothEVWriter(), new SawtoothParser()));
+            
         }
 
         public static CommunicationManager GetInstance
@@ -60,37 +65,9 @@ namespace StockGames.CommunicationModule
 
         public void requestStockUpdate(string stockIndex)
         {
-            this.writeToEVfile(stockIndex);
-            hostServer.createCommThread(stockIndex);
+            hostServer.createCommThread(stockIndex, models[currentModel]);
         }
 
-        private void writeToEVfile(string stockIndex)
-        {
-            var snapshot = StockService.Instance.GetLatestStockSnapshot(stockIndex);
-
-            using (var myStorage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                //delete extra ev files
-                var evfiles = myStorage.GetFileNames(System.IO.Path.Combine(hostServer.getModelName(), "*.ev"));
-                foreach (string filename in evfiles)
-                {
-                    myStorage.DeleteFile(filename);
-                }
-                //delete extra ev files
-                var zipfiles = myStorage.GetFileNames(System.IO.Path.Combine(hostServer.getModelName(), "*.zip"));
-                foreach (string filename in zipfiles)
-                {
-                    myStorage.DeleteFile(filename);
-                }
-                using (var myFile = myStorage.CreateFile(System.IO.Path.Combine(hostServer.getModelName(),"trial.ev")))
-                {
-                    using (var myStream = new StreamWriter(myFile))
-                    {
-                        myStream.WriteLine(string.Format("00:01:00:00 InStockPrice {0}", snapshot.Price));
-                        myStream.WriteLine("00:01:00:00 InTime 1");
-                    }
-                }
-            }
-        }
+        
     }
 }

@@ -73,31 +73,7 @@ namespace StockGames.CommunicationModule
                     }
 
                     //parser
-                    using (IsolatedStorageFileStream ISStream = new IsolatedStorageFileStream("StockGamesModel/SimulationResults.zip", FileMode.Open, myStorage))
-                    {
-                        UnZipper un = new UnZipper(ISStream);
-                        foreach (String filename in un.GetFileNamesInZip())
-                        {
-                            Stream stream = un.GetFileStream(ServerEntity.serverOutFile);
-                            StreamReader reader = new StreamReader(stream);
-                            string[] lines = reader.ReadToEnd().Split('\n');
-                            foreach (string line in lines)
-                            {
-                                string[] words = line.Split(' ');
-                                int arrayIndex = 0;
-                                foreach (string word in words)
-                                {
-                                    if (word.Equals("outstockprice"))
-                                    {
-                                        StockSnapshotDataModel previousSnapShot = StockService.Instance.GetLatestStockSnapshot(currentStock);
-                                        DateTime tombstone = previousSnapShot.Tombstone.AddHours(1);
-                                        StockService.Instance.AddStockSnapshot(currentStock, Convert.ToDecimal(words[arrayIndex + 1]), tombstone);
-                                    }
-                                    arrayIndex += 1;
-                                }
-                            }
-                        }
-                    }
+                    myServer.currentModel.parseZipFile("StockGamesModel/SimulationResults.zip", currentStock);
                 }
             }
             catch

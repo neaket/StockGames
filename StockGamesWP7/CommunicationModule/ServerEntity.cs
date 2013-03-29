@@ -8,9 +8,8 @@ namespace StockGames.CommunicationModule
     public class ServerEntity
     {
         public const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
-        public const string serverOutFile = "results/simOut_134_117_53_66_8080.out";
         public NetworkCredential serverCredentials { get; private set; }
-        public string currentModel{ get; private set; }
+        public ModelManger currentModel{ get; private set; }
         public const string domainName = "TestUnit";
         public SimStates simStatus { get; private set; }
         public enum SimStates
@@ -24,8 +23,6 @@ namespace StockGames.CommunicationModule
             ERROR
         }
 
-
-        
         private const string POST = "POST";
         private const string PUT = "PUT";
 
@@ -36,15 +33,12 @@ namespace StockGames.CommunicationModule
         public ServerEntity(string serverAddress, NetworkCredential hostCredentials)
         {
             myServer = new ServerStateMachine(this);
-            currentModel = "Sawtooth";
             serverCredentials = hostCredentials;
-            ModelWriter modelconstructor = new ModelWriter();
-            modelconstructor.writeModeltoStorage("Sawtooth", "CD++Models/Sawtooth", @"Sawtooth");
         }
 
-        public void createCommThread(string stockIndex)
+        public void createCommThread(string stockIndex, ModelManger model)
         {
-            //Lock or Wait on server Que mutex
+            currentModel = model;
             Work w = new Work(stockIndex, myServer, this, serverQueMutex);
             Thread thread = new Thread(new ThreadStart(w.StartSimulation));
             thread.Start();
@@ -52,7 +46,7 @@ namespace StockGames.CommunicationModule
 
         public string getModelName()
         {
-            return this.currentModel;
+            return this.currentModel.modelName;
         }
 
         public void updateSimState(SimStates state)

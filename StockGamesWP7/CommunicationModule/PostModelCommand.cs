@@ -46,6 +46,13 @@ namespace StockGames.CommunicationModule
                 }
                 using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
+                    //delete extra zip files
+                    var zipfiles = myStorage.GetFileNames(System.IO.Path.Combine(myServer.getModelName(), "*.zip"));
+                    foreach (string filename in zipfiles)
+                    {
+                        myStorage.DeleteFile(filename);
+                    }
+                    //write new zipfile
                     ZipModule zipEngine = new ZipModule();
                     if (!myStorage.DirectoryExists(myServer.getModelName()))
                     {
