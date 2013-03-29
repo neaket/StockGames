@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using GalaSoft.MvvmLight.Messaging;
 using StockGames.Messaging;
 using StockGames.Persistence.V1.DataContexts;
 using StockGames.Persistence.V1.DataModel;
@@ -10,11 +9,21 @@ using System.Diagnostics;
 
 namespace StockGames.Persistence.V1.Services
 {
+    /// <summary>
+    /// The StockService a singleton and is used to access or manipulate stock related persisted data for the
+    /// application.
+    /// </summary>
+    ///
+    /// <remarks>   Nick Eaket, 3/21/2013. </remarks>
     public class StockService
     {
         #region instance
         
         private static readonly StockService instance = new StockService();
+
+        /// <summary>   Gets the singleton instance of this class. </summary>
+        ///
+        /// <value> The singleton instance. </value>
         public static StockService Instance {
             get 
             {
@@ -120,10 +129,11 @@ namespace StockGames.Persistence.V1.Services
         }
 
         /// <summary>   Add multiple stock snapshots to a specific stock. </summary>
+        ///
         /// <param name="stockIndex">   Index of the stock. </param>
         /// <param name="prices">       The prices, note must be 1-to-1 mapped with the tombstones. </param>
         /// <param name="tombstones">   The tombstones, note must be 1-to-1 mapped with the prices. </param>
-        public void AddStockSnapshots(string stockIndex, IEnumerable<decimal> prices, IEnumerable<DateTime> tombstones)
+        public void AddStockSnapshots(string stockIndex, IList<decimal> prices, IList<DateTime> tombstones)
         {
             int count = prices.Count();
             Debug.Assert(count == tombstones.Count(), "Each price must be 1-to-1 mapped with a tombstone");
