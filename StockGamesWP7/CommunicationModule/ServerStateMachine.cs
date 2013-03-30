@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
+using StockGames.Messaging;
 
 namespace StockGames.CommunicationModule
 {
@@ -91,6 +92,9 @@ namespace StockGames.CommunicationModule
         {
             CurrentState = GetNext(command);
             operation.Execute(myServer);
+
+            Messaging.MessengerWrapper.Send(new CommunicationStateChangedMessageType(CurrentState));
+
             return CurrentState;
         }
     }

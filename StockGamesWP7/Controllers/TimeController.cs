@@ -3,6 +3,9 @@ using System.Diagnostics;
 using StockGames.Persistence.V1;
 using StockGames.Persistence.V1.Services;
 using StockGames.CommunicationModule;
+using GalaSoft.MvvmLight.Messaging;
+using StockGames.Messaging;
+using StockGames.Entities;
 
 namespace StockGames.Controllers
 {
@@ -44,12 +47,35 @@ namespace StockGames.Controllers
 
         private void UpdateGameData(DateTime until)
         {
-            // TODO
-            // make a communication module call
             CommunicationManager comMgr = CommunicationManager.GetInstance;
             int timeAdvance = comMgr.getModel(comMgr.currentModel).modelHourAdvance;
-            //Add for loop here
-            GameState.Instance.GameDataExpiryTime.AddHours(timeAdvance);
+
+            var stocks = StockService.Instance.GetStocks();
+            int index = 0;
+
+            Messenger.Default.Register<CommunicationStateChangedMessageType>(this, (message) =>
+            {
+                // check if this is the last stock
+                if (index == stocks.Length) {
+                    GameState.Instance.GameDataExpiryTime.AddHours(timeAdvance);
+                    return; // exit this message handler
+                }
+
+                if (message.CurrentState == ProcessState.Ready)
+                {
+                    SimulateNextStock(stocks[index++]);
+                }
+            });
+
+            // simulate the first stock
+            SimulateNextStock(stocks[index++]);
+
+            
+        }
+
+        private void SimulateNextStock(StockEntity stock)
+        {
+            // TODO run the simulation for this stock
         }
 
         // TODO remove me
