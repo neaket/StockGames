@@ -19,7 +19,7 @@ namespace StockGames.CommunicationModule
 
         public string modelName { get; private set; }
         private ModelWriter modelWriter;
-        private string modelXml { get; private set; }
+        public string modelXml { get; private set; }
         public string sourcePath { get; private set; }
         public string domainName { get; private set; }
         private IEVWriter evWriter;

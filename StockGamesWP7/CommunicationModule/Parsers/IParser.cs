@@ -5,8 +5,8 @@ using System.Text;
 
 namespace StockGames.CommunicationModule.Parsers
 {
-    interface IParser
+    public interface IParser
     {
-        public void parseZipFile(string zipFile, string stockIndex);
+        void parseZipFile(string zipFile, string stockIndex);
     }
 }

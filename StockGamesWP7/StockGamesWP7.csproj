@@ -91,8 +91,17 @@
     </Compile>
     <Compile Include="CommunicationModule\CheckStatusCommand.cs" />
     <Compile Include="CommunicationModule\CommunicationManager.cs" />
+    <Compile Include="CommunicationModule\EVWriters\BrownianEVWriter.cs" />
+    <Compile Include="CommunicationModule\EVWriters\IEVWriter.cs" />
+    <Compile Include="CommunicationModule\EVWriters\RandomEVWriter.cs" />
+    <Compile Include="CommunicationModule\EVWriters\SawtoothEVWriter.cs" />
     <Compile Include="CommunicationModule\GetResultsCommand.cs" />
+    <Compile Include="CommunicationModule\ModelManger.cs" />
     <Compile Include="CommunicationModule\ModelWriter.cs" />
+    <Compile Include="CommunicationModule\Parsers\BrownianParser.cs" />
+    <Compile Include="CommunicationModule\Parsers\IParser.cs" />
+    <Compile Include="CommunicationModule\Parsers\RandomParser.cs" />
+    <Compile Include="CommunicationModule\Parsers\SawtoothParser.cs" />
     <Compile Include="CommunicationModule\PostModelCommand.cs" />
     <Compile Include="Commands\IStockCommand.cs" />
     <Compile Include="Commands\PushStockChangesCmd.cs" />
@@ -229,6 +238,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="CD++Models\Brownian\BrownianMotion.ma" />
+    <Content Include="CD++Models\Brownian\BrownianMotionType.cpp" />
+    <Content Include="CD++Models\Brownian\BrownianMotionType.h" />
+    <Content Include="CD++Models\Brownian\Brownian.xml" />
+    <Content Include="CD++Models\Brownian\trial.ev" />
+    <Content Include="CD++Models\Random\Random.ma" />
+    <Content Include="CD++Models\Random\RandomType.cpp" />
+    <Content Include="CD++Models\Random\RandomType.h" />
+    <Content Include="CD++Models\Random\Random.xml" />
+    <Content Include="CD++Models\Random\trial.ev" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
@@ -236,9 +255,10 @@
     </None>
     <None Include="StockGamesWP7_2013_03_20_12_45_07.sap" />
     <Content Include="CD++Models\Sawtooth\Sawtooth.ma" />
+    <Content Include="CD++Models\Sawtooth\Sawtooth.xml" />
     <Content Include="CD++Models\Sawtooth\SawtoothType.cpp" />
     <Content Include="CD++Models\Sawtooth\SawtoothType.h" />
-    <Content Include="CD++Models\Sawtooth\Sawtooth.ev" />
+    <Content Include="CD++Models\Sawtooth\trial.ev" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">

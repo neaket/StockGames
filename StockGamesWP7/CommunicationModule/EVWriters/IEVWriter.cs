@@ -5,8 +5,8 @@ using System.Text;
 
 namespace StockGames.CommunicationModule.EVWriters
 {
-    interface IEVWriter
+    public interface IEVWriter
     {
-        public void writeEVFile(string outpath, string stockIndex);
+        void writeEVFile(string outpath, string stockIndex);
     }
 }
