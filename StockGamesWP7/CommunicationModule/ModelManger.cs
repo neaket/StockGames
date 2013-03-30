@@ -24,8 +24,9 @@ namespace StockGames.CommunicationModule
         public string domainName { get; private set; }
         private IEVWriter evWriter;
         private IParser outParser;
+        public int modelHourAdvance { get; private set; }
 
-        public ModelManger(string name, string path, string xmlPath, string frameworkName, IEVWriter writer, IParser parser)
+        public ModelManger(string name, string path, string xmlPath, string frameworkName, int hours, IEVWriter writer, IParser parser)
         {
             modelName = name;
             sourcePath = path;
@@ -33,6 +34,7 @@ namespace StockGames.CommunicationModule
             domainName = frameworkName;
             evWriter = writer;
             outParser = parser;
+            modelHourAdvance = hours;
 
             writeModel();
         }

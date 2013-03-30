@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using StockGames.Persistence.V1;
 using StockGames.Persistence.V1.Services;
+using StockGames.CommunicationModule;
 
 namespace StockGames.Controllers
 {
@@ -45,8 +46,10 @@ namespace StockGames.Controllers
         {
             // TODO
             // make a communication module call
-            AddRandomStockSnapshots(until);
-            GameState.Instance.GameDataExpiryTime = until;
+            CommunicationManager comMgr = CommunicationManager.GetInstance;
+            int timeAdvance = comMgr.getModel(comMgr.currentModel).modelHourAdvance;
+            //Add for loop here
+            GameState.Instance.GameDataExpiryTime.AddHours(timeAdvance);
         }
 
         // TODO remove me

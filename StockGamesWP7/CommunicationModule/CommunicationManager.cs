@@ -27,7 +27,7 @@ namespace StockGames.CommunicationModule
             new CommunicationManager(new ServerEntity(SERVER_URI, new NetworkCredential("andrew", "andrew")));
 
         private ServerEntity hostServer;
-        private string currentModel = "Sawtooth";   //default value for active model
+        public string currentModel { get; private set; }
 
         private Dictionary<string, ModelManger> models; 
 
@@ -35,6 +35,8 @@ namespace StockGames.CommunicationModule
         {
             //Setup Server instance
             hostServer = myServer;
+
+            currentModel = "Sawtooth";   //default value for active model
 
             //Create File and Directory Structure for in/out files for Server
             using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
@@ -54,7 +56,7 @@ namespace StockGames.CommunicationModule
             }
 
             //Setup Models
-            models.Add("Sawtooth", new ModelManger("Sawtooth", "CD++Models/Sawtooth", null, "TestUnit", new SawtoothEVWriter(), new SawtoothParser()));
+            models.Add("Sawtooth", new ModelManger("Sawtooth", "CD++Models/Sawtooth", null, "TestUnit", 1, new SawtoothEVWriter(), new SawtoothParser()));
             
         }
 
@@ -68,6 +70,9 @@ namespace StockGames.CommunicationModule
             hostServer.createCommThread(stockIndex, models[currentModel]);
         }
 
-        
+        public ModelManger getModel(string modelName)
+        {
+            return models[modelName];
+        }
     }
 }
