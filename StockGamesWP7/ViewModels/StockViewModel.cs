@@ -74,11 +74,6 @@ namespace StockGames.ViewModels
             Messenger.Default.Register<StockUpdatedMessageType>(this, StockUpdated);
         }
 
-        private void Update()
-        {
-            CommandInvoker.Instance.FetchCommand(CommandInvoker.REQUEST_UPDATE_STOCK, Stock);
-        }
-
         private void NewTrade()
         {
             var uri = new Uri("/Views/PortfolioTradeView.xaml?StockIndex=" + Stock.StockIndex, UriKind.Relative);
