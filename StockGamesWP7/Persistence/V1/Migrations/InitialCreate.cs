@@ -59,7 +59,7 @@ namespace StockGames.Persistence.V1.Migrations
 
         private static void CreateFirstPortfolio()
         {
-            var portfolioId = PortfolioService.Instance.AddPortfolio("Practice");
+            var portfolioId = PortfolioService.Instance.AddPortfolio("Portfolio");
 
             PortfolioService.Instance.AddTransaction(portfolioId, 10000, DateTime.Today);
 
