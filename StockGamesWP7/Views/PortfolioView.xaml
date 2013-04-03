@@ -76,7 +76,7 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBlock Text="{Binding Path=PortfolioBalance, Mode=OneWay, StringFormat=\{0:+$#\,##0.00;-$#\,##0.00;$0.00\}}" FontSize="48" />
+            <TextBlock Text="{Binding Path=PortfolioBalance, Mode=OneWay, StringFormat=\{0:$#\,##0.00;\}}" FontSize="48" />
             <TextBlock Text="Price" Margin="200 60 0 0" />
             <TextBlock Text="Total Gain" Margin="350 60 0 0"/>
             <ListBox ItemsSource="{Binding Trades}" SelectedItem="{Binding Path=SelectedTrade, Mode=TwoWay}" SelectionMode="Single" ItemContainerStyle="{StaticResource SelectedItemContainer}" Margin="0 100 0 0" />
