@@ -2,6 +2,7 @@
 using System.Threading;
 using StockGames.Persistence.V1.DataModel;
 using System;
+using StockGames.Messaging;
 
 namespace StockGames.CommunicationModule
 {
@@ -88,6 +89,7 @@ namespace StockGames.CommunicationModule
                 }
                 myServer.MoveNext(Command.SimComplete, new SimCompleteCommand(stateMachineMutex));
                 myServer.MoveNext(Command.GetResults, new GetResultsCommand(stateMachineMutex, (string)stockIndex));
+                Messaging.MessengerWrapper.Send(new CommunicationCompletedType());
             }
             catch 
             {

@@ -40,6 +40,23 @@ namespace StockGames.Entities
 
         }
 
+        /// <summary>   Gets the integer index of the stock index for a stock. </summary>
+        ///
+        /// <value> The current price. </value>
+        public int StockIntegerIndex
+        {
+            get
+            {
+                var letters= StockIndex.ToCharArray();
+                int index=0;
+                foreach (char letter in letters)
+                {
+                    index *= 100;
+                    index += Convert.ToInt32(letter);
+                }
+                return index;
+            }
+        }
         /// <summary>   Gets the market's previous stock price. </summary>
         ///
         /// <value> The previous price. </value>

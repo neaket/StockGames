@@ -14,7 +14,7 @@ using System.IO;
 
 namespace StockGames.CommunicationModule.EVWriters
 {
-    public class RandomEVWriter
+    public class RandomEVWriter :IEVWriter
     {
         public void writeEVFile(string outpath, string stockIndex)
         {

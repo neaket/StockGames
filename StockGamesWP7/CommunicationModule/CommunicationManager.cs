@@ -36,7 +36,7 @@ namespace StockGames.CommunicationModule
             //Setup Server instance
             hostServer = myServer;
 
-            currentModel = "Sawtooth";   //default value for active model
+            currentModel = "Brownian";   //default value for active model
 
             //Create File and Directory Structure for in/out files for Server
             using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
@@ -57,6 +57,8 @@ namespace StockGames.CommunicationModule
 
             //Setup Models
             models.Add("Sawtooth", new ModelManger("Sawtooth", "CD++Models/Sawtooth", null, "TestUnit", 1, new SawtoothEVWriter(), new SawtoothParser()));
+            models.Add("Random", new ModelManger("Random", "CD++Models/Random", null, "TestUnit", 1, new RandomEVWriter(), new RandomParser()));
+            models.Add("Brownian", new ModelManger("Brownian", "CD++Models/Brownian", null, "TestUnit", 1, new BrownianEVWriter(), new BrownianParser()));
             
         }
 
