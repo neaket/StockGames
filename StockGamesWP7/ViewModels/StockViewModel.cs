@@ -74,6 +74,7 @@ namespace StockGames.ViewModels
             Messenger.Default.Register<StockUpdatedMessageType>(this, StockUpdated);
         }
 
+
         private void Update()
         {
             CommandInvoker.Instance.FetchCommand(CommandInvoker.REQUEST_UPDATE_STOCK, Stock.StockIndex);

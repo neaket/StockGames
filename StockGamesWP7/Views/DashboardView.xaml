@@ -23,13 +23,14 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="{Binding Path=Common.AppName, Source={StaticResource Resources}}" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="dashboard" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="PageTitle" Text="Dashboard" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock HorizontalAlignment="Center" FontSize="30" Text="{Binding GameTime, StringFormat=\{0:MM\/dd\/yy hh tt\}}" />
+                <TextBlock HorizontalAlignment="Center" FontSize="30" Text="{Binding GameTime, StringFormat=\{0:MM\/dd\/yy\}}" />
+                <TextBlock HorizontalAlignment="Center" FontSize="50" Text="{Binding GameTime, StringFormat=\{0:h:00 tt\}}" />
                 <Button Content="+1 Hour" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=AdvanceTimeByHourCommand}" />
                 <Button Content="View Market" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=ViewMarketCommand}" />
                 <Button Content="View Portfolio" Padding="15" Width="250" HorizontalAlignment="Center" Command="{Binding Path=ViewPortfolioCommand}" />
