@@ -20,6 +20,7 @@ namespace StockGames.CommunicationModule.EVWriters
         public void writeSingleStockEVFile(string outpath, string stockIndex)
         {
             var snapshot = StockService.Instance.GetLatestStockSnapshot(stockIndex);
+            var stock = StockService.Instance.GetStock(stockIndex);
 
             using (var myStorage = IsolatedStorageFile.GetUserStoreForApplication())
             {
@@ -27,8 +28,9 @@ namespace StockGames.CommunicationModule.EVWriters
                 {
                     using (var myStream = new StreamWriter(myFile))
                     {
-                        myStream.WriteLine(string.Format("00:01:00:00 InStockPrice {0}", snapshot.Price));
-                        myStream.WriteLine("00:01:00:00 InTime 1");
+                        myStream.WriteLine(string.Format("00:01:00:00 InStockIndex {0}", stock.StockIntegerIndex));
+                        //myStream.WriteLine(string.Format("00:01:00:00 InStockPrice {0}", snapshot.Price));
+                        //myStream.WriteLine("00:01:00:00 InTime 1");
                     }
                 }
             }
@@ -50,8 +52,8 @@ namespace StockGames.CommunicationModule.EVWriters
                             {
                                 var snapshot = StockService.Instance.GetLatestStockSnapshot(stock.StockIndex);
                                 myStream.WriteLine(string.Format("00:01:00:00 InStockIndex {0}", stock.StockIntegerIndex));
-                                myStream.WriteLine(string.Format("00:01:00:00 InStockPrice {0}", snapshot.Price));
-                                myStream.WriteLine("00:01:00:00 InTime 1");
+                                //myStream.WriteLine(string.Format("00:01:00:00 InStockPrice {0}", snapshot.Price));
+                                //myStream.WriteLine("00:01:00:00 InTime 1");
                             }
                         }
                     }

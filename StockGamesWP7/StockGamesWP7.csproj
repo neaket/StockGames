@@ -115,6 +115,7 @@
     <Compile Include="Controllers\CommandInvoker.cs" />
     <Compile Include="Controllers\TimeController.cs" />
     <Compile Include="Entities\TradeEntity.cs" />
+    <Compile Include="Messaging\CommunicationCompletedType.cs" />
     <Compile Include="Messaging\GameTimeUpdatedMessageType.cs" />
     <Compile Include="Messaging\MessengerWrapper.cs" />
     <Compile Include="Messaging\MissionUpdatedMessageType.cs" />
