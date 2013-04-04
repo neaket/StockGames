@@ -239,11 +239,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Content Include="CD++Models\Brownian\BrownianMotion.ma" />
-    <Content Include="CD++Models\Brownian\BrownianMotionType.cpp" />
-    <Content Include="CD++Models\Brownian\BrownianMotionType.h" />
-    <Content Include="CD++Models\Brownian\Brownian.xml" />
-    <Content Include="CD++Models\Brownian\trial.ev" />
+    <Content Include="CD++Models\BrownianMotion\BrownianMotion.ma" />
+    <Content Include="CD++Models\BrownianMotion\BrownianMotionType.cpp" />
+    <Content Include="CD++Models\BrownianMotion\BrownianMotionType.h" />
+    <Content Include="CD++Models\BrownianMotion\BrownianMotion.xml" />
+    <Content Include="CD++Models\BrownianMotion\trial.ev" />
     <Content Include="CD++Models\Random\Random.ma" />
     <Content Include="CD++Models\Random\RandomType.cpp" />
     <Content Include="CD++Models\Random\RandomType.h" />

@@ -15,6 +15,9 @@ namespace StockGames.CommunicationModule
 {
     public class ModelWriter
     {
+        public ModelWriter()
+        {
+        }
 
         public void writeFiletoStorage(string filename, string sourcePath, string targetPath)
         {
@@ -26,7 +29,7 @@ namespace StockGames.CommunicationModule
                     if (resourceStream != null)
                     {
                         //Check for Null path or Directory exists already, if not create it
-                        if (!string.IsNullOrEmpty(targetPath) && !isolatedStorage.DirectoryExists(targetPath))
+                        if (!string.IsNullOrEmpty(targetPath) || !isolatedStorage.DirectoryExists(targetPath))
                             isolatedStorage.CreateDirectory(targetPath);
 
                         Stream stream = resourceStream.Stream;
@@ -41,7 +44,7 @@ namespace StockGames.CommunicationModule
 
         public void writeModeltoStorage(string modelName, string sourcePath, string targetPath)
         {
-            writeFiletoStorage(modelName + ".ev", sourcePath, targetPath);
+            writeFiletoStorage("trial.ev", sourcePath, targetPath);
             writeFiletoStorage(modelName + ".ma", sourcePath, targetPath);
             //writeFiletoStorage(modelName + "Type.cpp", sourcePath, targetPath);
             //writeFiletoStorage(modelName + "Type.h", sourcePath, targetPath);

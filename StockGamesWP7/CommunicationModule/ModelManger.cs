@@ -18,7 +18,6 @@ namespace StockGames.CommunicationModule
     {
 
         public string modelName { get; private set; }
-        private ModelWriter modelWriter;
         public string modelXml { get; private set; }
         public string sourcePath { get; private set; }
         public string domainName { get; private set; }
@@ -36,16 +35,11 @@ namespace StockGames.CommunicationModule
             outParser = parser;
             modelHourAdvance = hours;
 
-            writeModel();
-        }
-
-        private void writeModel()
-        {
-            modelWriter = new ModelWriter();
+            ModelWriter modelWriter = new ModelWriter();
             modelWriter.writeModeltoStorage(modelName, sourcePath, modelName);
         }
 
-        public void writeEV(string path, string stockIndex)
+       public void writeEV(string path, string stockIndex)
         {
             using (var myStorage = IsolatedStorageFile.GetUserStoreForApplication())
             {

@@ -45,7 +45,7 @@ namespace StockGames.CommunicationModule
                 }
                 var textStream = Application.GetResourceStream(new Uri("simulation.txt", UriKind.Relative)).Stream;
                 HttpWebRequest request =
-                        (HttpWebRequest)WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName + "/simulation");
+                        (HttpWebRequest)WebRequest.CreateHttp(ServerEntity.serverURI + myServer.currentModel.domainName + "/simulation");
                 request.Method = "PUT";
                 request.Credentials = myServer.serverCredentials;
                 request.ContentType = "text/xml";

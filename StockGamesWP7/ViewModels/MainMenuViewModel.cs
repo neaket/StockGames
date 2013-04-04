@@ -9,6 +9,7 @@ using StockGames.Persistence.V1;
 using StockGames.Persistence.V1.Migrations;
 using StockGames.Controllers;
 using StockGames.Views;
+using StockGames.CommunicationModule;
 
 namespace StockGames.ViewModels
 {
@@ -82,6 +83,7 @@ namespace StockGames.ViewModels
             ContinueGameCommand = new RelayCommand(ViewDashboard);
             NewGameCommand = new RelayCommand(NewGame);
             AboutCommand = new RelayCommand(ViewAbout);
+            CommunicationManager initComm = CommunicationManager.GetInstance;
         }
 
         private void ViewDashboard()

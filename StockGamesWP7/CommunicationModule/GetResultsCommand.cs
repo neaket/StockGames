@@ -51,7 +51,7 @@ namespace StockGames.CommunicationModule
                     throw new ArgumentException();
                 }
 
-                HttpWebRequest request = WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName + "/results");
+                HttpWebRequest request = WebRequest.CreateHttp(ServerEntity.serverURI + myServer.currentModel.domainName + "/results");
 
                 //Sets up wait reset, waits until the stream has be retrieved before continuing
                 var wait_handle = new ManualResetEvent(false);

@@ -46,7 +46,7 @@ namespace StockGames.CommunicationModule
                     throw new ArgumentException();
                 }
 
-                HttpWebRequest request = WebRequest.CreateHttp(ServerEntity.serverURI + ServerEntity.domainName + "?sim=status");
+                HttpWebRequest request = WebRequest.CreateHttp(ServerEntity.serverURI + myServer.currentModel.domainName + "?sim=status");
                 //Sets up wait reset, waits until the response has be retrieved before continuing
                 var wait_handle = new ManualResetEvent(false);
                 var result = request.BeginGetResponse((ar) => wait_handle.Set(), null);

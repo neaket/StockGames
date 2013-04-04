@@ -39,11 +39,11 @@ namespace StockGames.CommunicationModule.Parsers
                                 int arrayIndex = 0;
                                 foreach (string word in words)
                                 {
-                                    if (word.Equals("outIndex"))
+                                    if (word.Equals("outstockIndex"))
                                     {
                                         currentStock = convertIntIndextoString(Convert.ToInt32(word));
                                     }
-                                    if (word.Equals("outprice") && currentStock!=null)
+                                    if (word.Equals("outstockprice") && currentStock!=null)
                                     {
                                         StockSnapshotDataModel previousSnapShot = StockService.Instance.GetLatestStockSnapshot(currentStock);
                                         DateTime tombstone = previousSnapShot.Tombstone.AddHours(1);

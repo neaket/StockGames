@@ -11,7 +11,6 @@ namespace StockGames.CommunicationModule
         public const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
         public NetworkCredential serverCredentials { get; private set; }
         public ModelManger currentModel{ get; private set; }
-        public const string domainName = "TestUnit";
         public SimStates simStatus { get; private set; }
         public enum SimStates
         {

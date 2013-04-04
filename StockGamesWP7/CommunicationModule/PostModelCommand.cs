@@ -46,6 +46,14 @@ namespace StockGames.CommunicationModule
                 }
                 using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
+                    //delete extra ev files
+                    var evfiles = myStorage.GetFileNames(System.IO.Path.Combine(myServer.getModelName(), "*.ev"));
+                    foreach (string filename in evfiles)
+                    {
+                        myStorage.DeleteFile(filename);
+                    }
+                    //write new zipfile
+                    myServer.currentModel.writeEV(myServer.getModelName(), null);
                     //delete extra zip files
                     var zipfiles = myStorage.GetFileNames(System.IO.Path.Combine(myServer.getModelName(), "*.zip"));
                     foreach (string filename in zipfiles)
@@ -61,7 +69,7 @@ namespace StockGames.CommunicationModule
                     zipEngine.CreateZip( myServer.getModelName() + ".zip", null, myServer.getModelName());
 
                     HttpWebRequest request =
-                        (HttpWebRequest)WebRequest.CreateHttp(new Uri(ServerEntity.serverURI + ServerEntity.domainName+"?zdir=Sawtooth"));
+                        (HttpWebRequest)WebRequest.CreateHttp(new Uri(ServerEntity.serverURI + myServer.currentModel.domainName + "?zdir=" + myServer.getModelName()));
                     request.Method = "POST";
                     request.Credentials = myServer.serverCredentials;
                     request.ContentType = "application/zip";

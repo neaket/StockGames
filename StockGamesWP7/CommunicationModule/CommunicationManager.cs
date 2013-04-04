@@ -29,7 +29,7 @@ namespace StockGames.CommunicationModule
         private ServerEntity hostServer;
         public string currentModel { get; private set; }
 
-        private Dictionary<string, ModelManger> models; 
+        private Dictionary<string, ModelManger> models = new Dictionary<string,ModelManger>(); 
 
         public CommunicationManager(ServerEntity myServer)
         {
@@ -56,9 +56,10 @@ namespace StockGames.CommunicationModule
             }
 
             //Setup Models
-            models.Add("Sawtooth", new ModelManger("Sawtooth", "CD++Models/Sawtooth", null, "TestUnit", 1, new SawtoothEVWriter(), new SawtoothParser()));
-            models.Add("Random", new ModelManger("Random", "CD++Models/Random", null, "TestUnit", 1, new RandomEVWriter(), new RandomParser()));
-            models.Add("Brownian", new ModelManger("Brownian", "CD++Models/Brownian", null, "TestUnit", 1, new BrownianEVWriter(), new BrownianParser()));
+            ModelManger tempModel = new ModelManger("BrownianMotion", "CD++Models/BrownianMotion", "CD++Models/BrownianMotion/BrownianMotion.xml", "BrownianNew", 24, new BrownianEVWriter(), new BrownianParser());
+            //models.Add("Sawtooth", tempModel);
+            //models.Add("Random", new ModelManger("Random", @"CD++Models/Random", @"CD++Models/Random/Random.xml", "TestUnit", 24, new RandomEVWriter(), new RandomParser()));
+            models.Add("Brownian", tempModel);
             
         }
 
