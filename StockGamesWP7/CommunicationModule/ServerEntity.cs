@@ -89,14 +89,13 @@ namespace StockGames.CommunicationModule
                 }
                 myServer.MoveNext(Command.SimComplete, new SimCompleteCommand(stateMachineMutex));
                 myServer.MoveNext(Command.GetResults, new GetResultsCommand(stateMachineMutex, (string)stockIndex));
-                hostServer.currentModel.parseZipFile("StockGamesModel/SimulationResults.zip", null);
                 Messaging.MessengerWrapper.Send(new CommunicationCompletedType());
             }
             catch(Exception e) 
             {
                 if (e is WebException)
                 {
-                    Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show("Connection to Server Failed! Try again later."));
+                    Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show("Connection to Server Failed! \nTry again later."));
                     myServer.MoveNext(Command.Abort, new SimCompleteCommand(stateMachineMutex));
                 }
                 else

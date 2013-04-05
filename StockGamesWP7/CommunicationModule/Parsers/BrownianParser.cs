@@ -69,6 +69,7 @@ namespace StockGames.CommunicationModule.Parsers
                                     arrayIndex += 1;
                                 }
                             }
+                            StockService.Instance.AddStockSnapshots(currentStock, prices, tomestones);
                         }
                     }
                 }
