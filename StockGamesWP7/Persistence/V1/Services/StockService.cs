@@ -74,6 +74,19 @@ namespace StockGames.Persistence.V1.Services
             }
         }
 
+        public StockSnapshotDataModel GetLatestStockSnapshot(string stockIndex)
+        {
+            using (var context = StockGamesDataContext.GetReadOnly())
+            {
+                var latestSnapshot =
+                    (from ss in context.StockSnapshots
+                     where ss.StockIndex == stockIndex
+                     orderby ss.Tombstone descending
+                     select ss).First();
+                return latestSnapshot;
+            }
+        }
+
         /// <summary> Adds a stock. </summary>
         /// <param name="stockIndex">       Index of the stock. </param>
         /// <param name="companyName">      Name of the company. </param>

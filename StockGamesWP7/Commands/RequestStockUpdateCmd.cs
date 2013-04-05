@@ -10,45 +10,32 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using StockGames.Persistence.V1.Services;
 using StockGames.Stubs;
-using StockGames.Controllers;
 using StockGames.Entities;
+using StockGames.Controllers;
+using StockGames.CommunicationModule;
 
 namespace StockGames.Commands
 {
     public class RequestStockUpdateCmd : IStockCommand
     {
         //Private Variables
-        private MessageHandler _msgHandler;
         private string _cmdName = CommandInvoker.REQUEST_UPDATE_STOCK;
         
         public RequestStockUpdateCmd(MessageHandler msgHandler)
         {
-            _msgHandler = msgHandler;
         }
 
         //ICommand Interface implementation
         public void Execute(Object o)
         {
-            var stockEntity = o as StockEntity;
-            if (stockEntity == null)
+            var stockIndex = o as string;
+            if (stockIndex == null)
             {
                 throw new ArgumentException("Object is not a stock Entity");
             }
 
-            // TODO do some real updates :) instead of random numbers
-            var random = new Random();
-            //stockEntity.PreviousPrice = stockEntity.CurrentPrice;
-            //stockEntity.CurrentPrice += (decimal)(random.NextDouble() - .4) * stockEntity.CurrentPrice;
-            
-            
-            StockService.Instance.AddStockSnapshot(stockEntity.StockIndex, stockEntity.CurrentPrice + (decimal)random.NextDouble() * 10 - 4, DateTime.Now);
-            // END TODO
-        }
-
-        public void Execute(StockEntity stock)
-        {
-            MessageEvent msgEvent = new MessageEvent();
-            _msgHandler.AddEvent(msgEvent);            
+            CommunicationManager ServerComm = CommunicationManager.GetInstance;
+            ServerComm.requestStockUpdate(stockIndex);    
         }
 
         public bool CanExecute(object parameter)

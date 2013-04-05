@@ -2,6 +2,9 @@
 using System.Diagnostics;
 using StockGames.Persistence.V1;
 using StockGames.Persistence.V1.Services;
+using StockGames.CommunicationModule;
+using GalaSoft.MvvmLight.Messaging;
+using StockGames.Messaging;
 
 namespace StockGames.Controllers
 {
@@ -43,10 +46,15 @@ namespace StockGames.Controllers
 
         private void UpdateGameData(DateTime until)
         {
-            // TODO
             // make a communication module call
-            AddRandomStockSnapshots(until);
-            GameState.Instance.GameDataExpiryTime = until;
+            CommunicationManager comMgr = CommunicationManager.GetInstance;
+            int timeAdvance = comMgr.getModel(comMgr.currentModel).modelHourAdvance;
+            comMgr.requestStockUpdate(null);
+            Messenger.Default.Register<CommunicationCompletedType>(this, (message) =>
+            {
+                GameState.Instance.GameDataExpiryTime = GameState.Instance.GameDataExpiryTime.AddHours(timeAdvance);
+                return; // exit this message handler
+           });
         }
 
         // TODO remove me
