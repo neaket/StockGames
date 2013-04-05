@@ -52,7 +52,7 @@ namespace StockGames.Controllers
             comMgr.requestStockUpdate(null);
             Messenger.Default.Register<CommunicationCompletedType>(this, (message) =>
             {
-                GameState.Instance.GameDataExpiryTime.AddHours(timeAdvance);
+                GameState.Instance.GameDataExpiryTime = GameState.Instance.GameDataExpiryTime.AddHours(timeAdvance);
                 return; // exit this message handler
            });
         }

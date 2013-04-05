@@ -56,7 +56,7 @@ namespace StockGames.CommunicationModule
             }
 
             //Setup Models
-            ModelManger tempModel = new ModelManger("BrownianMotion", "CD++Models/BrownianMotion", "CD++Models/BrownianMotion/BrownianMotion.xml", "BrownianNew", 24, new BrownianEVWriter(), new BrownianParser());
+            ModelManger tempModel = new ModelManger("BrownianMotion", "CD++Models/BrownianMotion", "CD++Models/BrownianMotion/BrownianMotion.xml", "BrownianNew", 168, new BrownianEVWriter(), new BrownianParser());
             //models.Add("Sawtooth", tempModel);
             //models.Add("Random", new ModelManger("Random", @"CD++Models/Random", @"CD++Models/Random/Random.xml", "TestUnit", 24, new RandomEVWriter(), new RandomParser()));
             models.Add("Brownian", tempModel);

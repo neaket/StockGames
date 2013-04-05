@@ -68,10 +68,14 @@ namespace StockGames.CommunicationModule
             transitions = new Dictionary<StateTransition, ProcessState>
             {
                 { new StateTransition(ProcessState.Ready, Command.PostModel), ProcessState.Setup },
+                { new StateTransition(ProcessState.Ready, Command.Abort), ProcessState.Ready },
                 { new StateTransition(ProcessState.Setup, Command.CheckStatus), ProcessState.Setup },
                 { new StateTransition(ProcessState.Setup, Command.StartSim), ProcessState.Running },
+                { new StateTransition(ProcessState.Setup, Command.Abort), ProcessState.Ready },
                 { new StateTransition(ProcessState.Running, Command.CheckStatus), ProcessState.Running },
+                { new StateTransition(ProcessState.Running, Command.Abort), ProcessState.Ready },
                 { new StateTransition(ProcessState.Done, Command.GetResults), ProcessState.Ready },
+                { new StateTransition(ProcessState.Done, Command.Abort), ProcessState.Ready },
                 { new StateTransition(ProcessState.Running, Command.SimComplete), ProcessState.Done }
             };
 

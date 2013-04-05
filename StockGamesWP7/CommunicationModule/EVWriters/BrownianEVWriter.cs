@@ -48,10 +48,12 @@ namespace StockGames.CommunicationModule.EVWriters
                         using (var myStream = new StreamWriter(myFile))
                         {
                             var stocks = StockService.Instance.GetStocks();
+                            int count = 0;
                             foreach (StockEntity stock in stocks)
                             {
+                                count++;
                                 var snapshot = StockService.Instance.GetLatestStockSnapshot(stock.StockIndex);
-                                myStream.WriteLine(string.Format("00:01:00:00 InStockIndex {0}", stock.StockIntegerIndex));
+                                myStream.WriteLine(string.Format("00:0{0}:00:00 InStockIndex {1}", count, stock.StockIntegerIndex));
                                 //myStream.WriteLine(string.Format("00:01:00:00 InStockPrice {0}", snapshot.Price));
                                 //myStream.WriteLine("00:01:00:00 InTime 1");
                             }

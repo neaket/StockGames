@@ -33,21 +33,38 @@ namespace StockGames.CommunicationModule.Parsers
                             StreamReader reader = new StreamReader(stream);
                             string[] lines = reader.ReadToEnd().Split('\n');
                             string currentStock = null;
+                            DateTime lastTombstone = new DateTime();
+                            int stockCount=0;
+                            var stocks = StockService.Instance.GetStocks();
+                            int hours = 0;
+                            DateTime[] tomestones = new DateTime[168];
+                            Decimal[] prices = new Decimal[168];
                             foreach (string line in lines)
                             {
                                 string[] words = line.Split(' ');
                                 int arrayIndex = 0;
                                 foreach (string word in words)
                                 {
-                                    if (word.Equals("outstockIndex"))
+                                    if (word.Equals("outstockindex"))
                                     {
-                                        currentStock = convertIntIndextoString(Convert.ToInt32(word));
+                                        stockCount++;
+                                        
+                                        if(hours > 0)
+                                            StockService.Instance.AddStockSnapshots(currentStock, prices, tomestones);
+                                        if (stockCount <= stocks.Length)
+                                        {
+                                            currentStock = stocks[stockCount - 1].StockIndex;
+                                            StockSnapshotDataModel previousSnapShot = StockService.Instance.GetLatestStockSnapshot(currentStock);
+                                            lastTombstone = new DateTime(previousSnapShot.Tombstone.Ticks);
+                                        }
+                                        hours = 0;
                                     }
                                     if (word.Equals("outstockprice") && currentStock!=null)
                                     {
-                                        StockSnapshotDataModel previousSnapShot = StockService.Instance.GetLatestStockSnapshot(currentStock);
-                                        DateTime tombstone = previousSnapShot.Tombstone.AddHours(1);
-                                        StockService.Instance.AddStockSnapshot(currentStock, Convert.ToDecimal(words[arrayIndex + 1]), tombstone);
+                                        hours++;
+                                        DateTime tombstone = lastTombstone.AddHours(hours);
+                                        tomestones[hours-1] = tombstone;
+                                        prices[hours -1] = Convert.ToDecimal(words[arrayIndex + 1]);
                                     }
                                     arrayIndex += 1;
                                 }
@@ -67,15 +84,14 @@ namespace StockGames.CommunicationModule.Parsers
             while (intIndex > 0)
             {
                 int intLetter = intIndex % 100;
-                letters[count] = Convert.ToChar(intIndex);
+                letters[count] = Convert.ToChar(intLetter);
                 count++;
                 intIndex = intIndex / 100;
             }
-            char[] reverseArray = new char[10];
-            foreach (char letter in letters)
+            char[] reverseArray = new char[letters.Length];
+            for(int i = count; i>0; i--)
             {
-                reverseArray[count - 1] = letter;
-                count--;
+                reverseArray[i - 1] = letters[count - i];
             }
             string stockIndex = reverseArray.ToString();
             return stockIndex;
