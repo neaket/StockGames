@@ -72,8 +72,8 @@ namespace StockGames.Entities
 
         /// <summary>   The delta change of the current price and the previous price.</summary>
         ///
-        /// <value> The daily change. </value>
-        public decimal DailyChange
+        /// <value> The delta change. </value>
+        public decimal DeltaChange
         {
             get
             {
@@ -95,7 +95,7 @@ namespace StockGames.Entities
                 {
                     return 0;
                 }
-                return DailyChange / PreviousPrice;
+                return DeltaChange / PreviousPrice;
             }
         }
 
