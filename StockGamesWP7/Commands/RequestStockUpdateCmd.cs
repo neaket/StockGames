@@ -9,7 +9,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using StockGames.Persistence.V1.Services;
-using StockGames.Stubs;
 using StockGames.Entities;
 using StockGames.Controllers;
 using StockGames.CommunicationModule;
@@ -21,7 +20,7 @@ namespace StockGames.Commands
         //Private Variables
         private string _cmdName = CommandInvoker.REQUEST_UPDATE_STOCK;
         
-        public RequestStockUpdateCmd(MessageHandler msgHandler)
+        public RequestStockUpdateCmd()
         {
         }
 

@@ -159,8 +159,6 @@
     </Compile>
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="SharpGIS.UnZipper.cs" />
-    <Compile Include="Stubs\MessageEvent.cs" />
-    <Compile Include="Stubs\MessageHandler.cs" />
     <Compile Include="ViewModels\DashboardViewModel.cs" />
     <Compile Include="ViewModels\ListStocksViewModel.cs" />
     <Compile Include="ViewModels\MainMenuViewModel.cs" />

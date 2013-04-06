@@ -10,7 +10,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 using StockGames.Commands;
-using StockGames.Stubs;
 
 namespace StockGames.Controllers
 {
@@ -30,18 +29,18 @@ namespace StockGames.Controllers
                 if (_Instance == null)
                 {
                     // TODO add MessageHandler
-                    _Instance = new CommandInvoker(new MessageHandler());
+                    _Instance = new CommandInvoker();
                 }
                 return _Instance;
             }
         }
 
-        private CommandInvoker(MessageHandler msgHandler)
+        private CommandInvoker()
         {
             _commands = new List<IStockCommand>();
 
             //Populate List with Commands
-            _commands.Add( new RequestStockUpdateCmd(msgHandler) );
+            _commands.Add( new RequestStockUpdateCmd() );
             _commands.Add( new PushStockChangesCmd());
         }
 
