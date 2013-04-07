@@ -74,6 +74,11 @@ namespace StockGames.Persistence.V1.Services
             }
         }
 
+        /// <summary>
+        /// Returns the last stock snapshot for the given stock index inside of the database.  This method does not depend on GameTime.
+        /// </summary>
+        /// <param name="stockIndex">The identifier of the stock</param>
+        /// <returns>The last stock snapshot in the database.</returns>
         public StockSnapshotDataModel GetLatestStockSnapshot(string stockIndex)
         {
             using (var context = StockGamesDataContext.GetReadOnly())
