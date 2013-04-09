@@ -12,6 +12,12 @@ using System.Threading;
 
 namespace StockGames.CommunicationModule
 {
+    /// <summary>
+    /// Command that is used to implement the simulation complete transition funtionality
+    /// Should be called when a simulation complete transtion occurs
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class SimCompleteCommand :ICommand
     {
         private Mutex myStateMutex;

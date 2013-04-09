@@ -17,6 +17,13 @@ using StockGames.Persistence.V1.DataModel;
 
 namespace StockGames.CommunicationModule
 {
+    /// <summary>
+    /// Command that is used to implement the transition funtionality for the 
+    /// get simulation results transition
+    /// Should be called when a get simulation results transition occurs
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class GetResultsCommand : ICommand
     {
         private ServerEntity myServer;

@@ -15,6 +15,11 @@ using StockGames.Persistence.V1.DataModel;
 
 namespace StockGames.Missions
 {
+    /// <summary>
+    /// Class represent a mission that follows the user's progress as they sell stocks back to the market
+    /// </summary>
+    ///
+    /// <remarks>   Jon Panke, 3/1/2013. </remarks>
     public class SellStockMission : Mission
     {
         private readonly List<string> _newTradeStockIndexes = new List<string>();

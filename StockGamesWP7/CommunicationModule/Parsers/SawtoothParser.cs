@@ -16,6 +16,12 @@ using StockGames.Persistence.V1.Services;
 
 namespace StockGames.CommunicationModule.Parsers
 {
+    /// <summary>
+    /// Specific parser for the Sawtooth simulation model, writes stock price to
+    /// the database in isolated storage as new stock snap shot
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class SawtoothParser : IParser
     {
 

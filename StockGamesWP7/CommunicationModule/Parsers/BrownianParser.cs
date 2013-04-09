@@ -16,6 +16,12 @@ using System.IO;
 
 namespace StockGames.CommunicationModule.Parsers
 {
+    /// <summary>
+    /// Specific parser for the Brownian motion simulation model, writes stock prices to
+    /// the database in isolated storage as new stock snap shots for each stock present
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class BrownianParser :IParser
     {
         public void parseZipFile(string zipFile, string stockIndex)

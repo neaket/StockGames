@@ -9,6 +9,12 @@ using StockGames.Controllers;
 
 namespace StockGames.Missions
 {
+    /// <summary>
+    /// Abstract class used to ensure that missions can be interchangable by forcing the implementation of
+    /// required methods and uniform attributes
+    /// </summary>
+    ///
+    /// <remarks>   Jon Panke, 3/1/2013. </remarks>
     public abstract class Mission
     {
         public MissionStatus MissionStatus { get; protected set; }

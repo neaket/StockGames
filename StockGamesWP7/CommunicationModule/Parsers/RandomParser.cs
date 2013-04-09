@@ -16,6 +16,12 @@ using StockGames.Persistence.V1.Services;
 
 namespace StockGames.CommunicationModule.Parsers
 {
+    /// <summary>
+    /// Specific parser for the Random simulation model, writes stock prices to
+    /// the database in isolated storage as new stock snap shots
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class RandomParser :IParser
     {
         public void parseZipFile(string zipFile, string stockIndex)

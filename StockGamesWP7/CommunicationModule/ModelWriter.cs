@@ -13,6 +13,11 @@ using System.IO;
 
 namespace StockGames.CommunicationModule
 {
+    /// <summary>
+    /// Used to write a given model into isolated storage so that it can be compressed or manipulated
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class ModelWriter
     {
         public ModelWriter()

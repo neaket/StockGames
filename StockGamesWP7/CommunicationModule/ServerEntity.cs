@@ -7,8 +7,16 @@ using System.Windows;
 
 namespace StockGames.CommunicationModule
 {
+    /// <summary>
+    /// Class representation of the RISE server that the mobile client connects too
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class ServerEntity
     {
+        /// <summary>
+        /// URI of the RISE server simulation space
+        /// </summary>
         public const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
         public NetworkCredential serverCredentials { get; private set; }
         public ModelManger currentModel{ get; private set; }

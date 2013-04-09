@@ -15,9 +15,14 @@ using System.Text;
 
 namespace StockGames.CommunicationModule
 {
+    /// <summary>
+    /// Class used for the compression of files or folders located in Isolated storage, compression
+    /// creates a zip file
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class ZipModule
     {
-
         private static int COMPRESSIONLEVEL = 0;       //0-9, 9 being the highest level of compression
         private static int BYTE_BUFFER_SIZE = 4096;
 

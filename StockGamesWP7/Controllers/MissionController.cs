@@ -3,11 +3,20 @@ using StockGames.Missions;
 
 namespace StockGames.Controllers
 {
+    /// <summary>
+    /// Prvoides the core services for missions, and allows the mission to be added to the game.
+    /// </summary>
+    ///
+    /// <remarks>   Jon Panke, 3/1/2013. </remarks>
     public class MissionController
     {
         #region instance
 
         private static readonly MissionController instance = new MissionController();
+
+        /// <summary>
+        /// Locally stored instance of this class used to implement singleton design
+        /// </summary>
         public static MissionController Instance
         {
             get { return instance; }

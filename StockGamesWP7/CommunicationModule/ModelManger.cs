@@ -14,6 +14,11 @@ using StockGames.CommunicationModule.Parsers;
 
 namespace StockGames.CommunicationModule
 {
+    /// <summary>
+    /// Tracks all model specifc funtions and attributes for one given model
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class ModelManger
     {
 

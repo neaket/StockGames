@@ -14,6 +14,12 @@ using System.IO;
 
 namespace StockGames.CommunicationModule.EVWriters
 {
+    /// <summary>
+    /// Specific ev writer for the Random simulation model, writes ev to
+    /// isolated storage
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class RandomEVWriter :IEVWriter
     {
         public void writeEVFile(string outpath, string stockIndex)

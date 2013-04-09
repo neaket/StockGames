@@ -13,6 +13,12 @@ using System.IO;
 
 namespace StockGames.CommunicationModule
 {
+    /// <summary>
+    /// Command that is used to implement the simulation started transition funtionality
+    /// Should be called when a simulation started transition occurs
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class StartSimCommand : ICommand
     {
         private ServerEntity myServer;

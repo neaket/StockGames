@@ -15,6 +15,12 @@ using StockGames.Entities;
 
 namespace StockGames.CommunicationModule.EVWriters
 {
+    /// <summary>
+    /// Specific ev writer for the Brownian motion simulation model, writes ev to
+    /// isolated storage
+    /// </summary>
+    ///
+    /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class BrownianEVWriter : IEVWriter
     {
         public void writeSingleStockEVFile(string outpath, string stockIndex)

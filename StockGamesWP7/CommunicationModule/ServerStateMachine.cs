@@ -12,6 +12,9 @@ using System.Collections.Generic;
 
 namespace StockGames.CommunicationModule
 {
+    /// <summary>
+    /// Enum that is representative of state the server is currently in
+    /// </summary>
     
    public enum ProcessState
     {
