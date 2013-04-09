@@ -18,7 +18,10 @@ namespace StockGames.Messaging
     /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class CommunicationCompletedType
     {
-
+        /// <summary>
+        /// Place holder constructor to allow for the updating of the game expiry between threads
+        /// </summary>
+        ///
         public CommunicationCompletedType()
         {
         }

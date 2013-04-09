@@ -24,6 +24,10 @@ namespace StockGames.CommunicationModule.Parsers
     /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class BrownianParser :IParser
     {
+        /// <summary>
+        /// Specific parser for the Brownian motion simulation model, writes stock prices to
+        /// the database in isolated storage as new stock snap shots for each stock present
+        /// </summary>
         public void parseZipFile(string zipFile, string stockIndex)
         {
             using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())

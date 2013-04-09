@@ -22,6 +22,9 @@ namespace StockGames.CommunicationModule.EVWriters
     /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class RandomEVWriter :IEVWriter
     {
+        /// <summary>
+        /// Used to write the ev file of a given model into isolated storage so that it can be compressed or manipulated
+        /// </summary>
         public void writeEVFile(string outpath, string stockIndex)
         {
             var snapshot = StockService.Instance.GetLatestStockSnapshot(stockIndex);

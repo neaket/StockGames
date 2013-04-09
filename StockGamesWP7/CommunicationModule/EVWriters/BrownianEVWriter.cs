@@ -23,6 +23,10 @@ namespace StockGames.CommunicationModule.EVWriters
     /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class BrownianEVWriter : IEVWriter
     {
+        /// <summary>
+        /// Used to write the ev file using only a single stock index of a given model into 
+        /// isolated storage so that it can be compressed or manipulated
+        /// </summary>
         public void writeSingleStockEVFile(string outpath, string stockIndex)
         {
             var snapshot = StockService.Instance.GetLatestStockSnapshot(stockIndex);
@@ -42,6 +46,10 @@ namespace StockGames.CommunicationModule.EVWriters
             }
         }
 
+        /// <summary>
+        /// Used to write the ev file of a given model into isolated storage so that 
+        /// it can be compressed or manipulated
+        /// </summary>
         public void writeEVFile(string outpath, string stockIndex)
         {
             //check to see if writing all stocks

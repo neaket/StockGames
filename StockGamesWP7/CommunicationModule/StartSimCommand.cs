@@ -24,16 +24,26 @@ namespace StockGames.CommunicationModule
         private ServerEntity myServer;
         private Mutex myStateMutex;
 
+        /// <summary>
+        /// Command that is used to implement the simulation started transition funtionality
+        /// Should be called when a simulation started transition occurs
+        /// </summary>
         public StartSimCommand(Mutex stateMutex)
         {
             myStateMutex = stateMutex;
         }
 
+        /// <summary>
+        /// required by interface, not implemented due to time constraints
+        /// </summary>
         public bool CanExecute(object parameter)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// eventhandler for signaling if the executability has changed
+        /// </summary>
         public event EventHandler CanExecuteChanged;
 
         public void Execute(object parameter)

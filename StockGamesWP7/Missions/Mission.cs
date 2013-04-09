@@ -17,17 +17,38 @@ namespace StockGames.Missions
     /// <remarks>   Jon Panke, 3/1/2013. </remarks>
     public abstract class Mission
     {
+        /// <summary>
+        /// Current status of the mission instance
+        /// </summary>
         public MissionStatus MissionStatus { get; protected set; }
 
+        /// <summary>
+        /// Attribute for the identifing missionId
+        /// </summary>
         public abstract long MissionId { get; }
+
+        /// <summary>
+        /// Attribute for the mission title
+        /// </summary>
         public abstract string MissionTitle { get; }
+
+        /// <summary>
+        /// Attribute for the mission text description
+        /// </summary>
         public abstract string MissionDescription { get; }
 
+        /// <summary>
+        /// Abstract class used to ensure that missions can be interchangable by forcing the implementation of
+        /// required methods and uniform attributess
+        /// </summary>
         protected Mission()
         {
             MissionStatus = MissionStatus.NotStarted;
         }
 
+        /// <summary>
+        /// Default behavior for strating up a new mission
+        /// </summary>
         public virtual void StartMission()
         {
             Debug.Assert(MissionStatus == MissionStatus.NotStarted, "This method should only be called once");
@@ -36,6 +57,9 @@ namespace StockGames.Missions
             Messenger.Default.Send(new MissionUpdatedMessageType(MissionId, MissionStatus));
         }
 
+        /// <summary>
+        /// Default behavior for when a mission need to be flag as completed
+        /// </summary>
         protected virtual void MissionCompleted()
         {
             Debug.Assert(MissionStatus != MissionStatus.Completed, "This method should only be called once");

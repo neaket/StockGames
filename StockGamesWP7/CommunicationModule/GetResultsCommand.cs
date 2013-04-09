@@ -30,17 +30,28 @@ namespace StockGames.CommunicationModule
         private Mutex myStateMutex;
         private string currentStock;
 
+        /// <summary>
+        /// Command that is used to implement the transition funtionality for the 
+        /// get simulation results transition
+        /// Should be called when a get simulation results transition occurs
+        /// </summary>
         public GetResultsCommand(Mutex stateMutex, string stockIndex)
         {
             myStateMutex = stateMutex;
             currentStock = stockIndex;
         }
 
+        /// <summary>
+        /// required by interface, not implemented due to time constraints
+        /// </summary>
         public bool CanExecute(object parameter)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// eventhandler for signaling if the executability has changed
+        /// </summary>
         public event EventHandler CanExecuteChanged;
 
         public void Execute(object parameter)

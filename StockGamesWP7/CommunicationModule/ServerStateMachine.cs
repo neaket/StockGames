@@ -15,23 +15,35 @@ namespace StockGames.CommunicationModule
     /// <summary>
     /// Enum that is representative of state the server is currently in
     /// </summary>
-    
-   public enum ProcessState
+    public enum ProcessState
     {
-        Ready,
-        Setup,
-        Running,
-        Done
+        /// <summary> Ready state for the server /// </summary>
+        Ready,      
+        /// <summary> Setup state for the server/// </summary>
+        Setup,      
+        /// <summary> Running state for the server/// </summary>
+        Running,    
+        /// <summary> Done state for the server/// </summary>
+        Done        
     }
 
+    /// <summary>
+    /// Enum that is representative of transitions bewteen the states of the server 
+    /// </summary>
     public enum Command
     {
-        PostModel,
-        StartSim,
-        CheckStatus,
-        GetResults,
-        SimComplete,
-        Abort
+        /// <summary> transition representing posting a model to the server/// </summary>
+        PostModel,      
+        /// <summary> transition representing a request to start the simulation on the server/// </summary>
+        StartSim,       
+        /// <summary> transition representing checking the RISE server's current status/// </summary>
+        CheckStatus,    
+        /// <summary> transition representing getting the result of a completed simulation/// </summary>
+        GetResults,     
+        /// <summary> transition representing the simulation completing/// </summary>
+        SimComplete,    
+        /// <summary> transition representing aborting the simulation/// </summary>
+        Abort           
     }
 
    public class ServerStateMachine

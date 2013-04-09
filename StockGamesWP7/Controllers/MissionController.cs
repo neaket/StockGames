@@ -41,6 +41,10 @@ namespace StockGames.Controllers
             }         
         }
 
+        /// <summary>
+        /// Changes/unlocks missions based on the missions completed currently
+        /// </summary>
+        /// <param name="id"></param>
         public void UpdateGameEngine(long id)
         {
             Mission mission;

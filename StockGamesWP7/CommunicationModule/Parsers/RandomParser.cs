@@ -24,6 +24,10 @@ namespace StockGames.CommunicationModule.Parsers
     /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class RandomParser :IParser
     {
+        /// <summary>
+        /// Specific parser for the Random simulation model, writes stock prices to
+        /// the database in isolated storage as new stock snap shots
+        /// </summary>
         public void parseZipFile(string zipFile, string stockIndex)
         {
             using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication())

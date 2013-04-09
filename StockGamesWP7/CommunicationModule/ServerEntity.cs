@@ -18,17 +18,40 @@ namespace StockGames.CommunicationModule
         /// URI of the RISE server simulation space
         /// </summary>
         public const string serverURI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
+
+        /// <summary>
+        /// the login credentials for the RISE server framework
+        /// </summary>
         public NetworkCredential serverCredentials { get; private set; }
+
+        /// <summary>
+        /// Collection of attributes and functions for the current model
+        /// </summary>
         public ModelManger currentModel{ get; private set; }
+
+        /// <summary>
+        /// state of the current simulation on the RISE server
+        /// </summary>
         public SimStates simStatus { get; private set; }
+
+        /// <summary>
+        /// flags represting the states of the RISE server simulation
+        /// </summary>
         public enum SimStates
         {
+            /// <summary> the state of the server when no simulation is ongoing /// </summary>
             IDLE,
+            /// <summary> the state of the server when a simulation is setuping and compiling /// </summary>
             INIT,
+            /// <summary> the state of the server when a simulation is currently running /// </summary>
             RUNNING,
+            /// <summary> the state of the server when a simulation has been stopped /// </summary>
             STOPPING,
+            /// <summary> the state of the server when a simulation has completed/// </summary>
             DONE,
+            /// <summary> the state of the server when a simulation has been aborted /// </summary>
             ABORTED,
+            /// <summary> the state of the server when setup or simulation error has occurred /// </summary>
             ERROR
         }
 

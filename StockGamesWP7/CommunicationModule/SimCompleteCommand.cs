@@ -23,16 +23,27 @@ namespace StockGames.CommunicationModule
         private Mutex myStateMutex;
         private ServerEntity myServer;
 
+        /// <summary>
+        /// Command that is used to implement the transition funtionality for the 
+        /// simulation complete transition
+        /// Should be called when a simulation complete transition occurs
+        /// </summary>
         public SimCompleteCommand(Mutex stateMutex)
         {
             myStateMutex = stateMutex;
         }
-        
+
+        /// <summary>
+        /// required by interface, not implemented due to time constraints
+        /// </summary>
         public bool CanExecute(object parameter)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// eventhandler for signaling if the executability has changed
+        /// </summary>
         public event EventHandler CanExecuteChanged;
 
         public void Execute(object parameter)

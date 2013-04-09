@@ -22,16 +22,25 @@ namespace StockGames.Missions
             get { return 0x0001; }
         }
 
+        /// <summary>
+        /// Attribute for the mission title
+        /// </summary>
         public override string MissionTitle
         {
             get { return "Buy two stocks"; }
         }
 
+        /// <summary>
+        /// Attribute for the mission text description
+        /// </summary>
         public override string MissionDescription
         {
             get { return "Buy two stocks on your portfolio"; }
         }
 
+        /// <summary>
+        /// Mission specific behavior for strating up a new mission
+        /// </summary>
         public override void StartMission()
         {
             base.StartMission();
@@ -39,6 +48,9 @@ namespace StockGames.Missions
             Messenger.Default.Register<PortfolioTradeAddedMessageType>(this, PortfolioTradeAdded);
         }
 
+        /// <summary>
+        /// Mission specific behavior for when a mission need to be flag as completed
+        /// </summary>
         protected override void MissionCompleted()
         {
             base.MissionCompleted();

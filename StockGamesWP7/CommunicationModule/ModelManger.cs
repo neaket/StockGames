@@ -21,15 +21,36 @@ namespace StockGames.CommunicationModule
     /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class ModelManger
     {
-
+        /// <summary>
+        /// Attribute used to store the model name
+        /// </summary>
         public string modelName { get; private set; }
+
+        /// <summary>
+        /// path to the xml file used for framework setup on the rise server in the application space
+        /// </summary>
         public string modelXml { get; private set; }
+
+        /// <summary>
+        /// path to the model folder in the application space
+        /// </summary>
         public string sourcePath { get; private set; }
+
+        /// <summary>
+        /// name of the framework space on the RISE server
+        /// </summary>
         public string domainName { get; private set; }
         private IEVWriter evWriter;
         private IParser outParser;
+
+        /// <summary>
+        /// Amount of hours that the simulation provides
+        /// </summary>
         public int modelHourAdvance { get; private set; }
 
+        /// <summary>
+        /// ModelManger acts as a collection point for any model specific values of functions
+        /// </summary>
         public ModelManger(string name, string path, string xmlPath, string frameworkName, int hours, IEVWriter writer, IParser parser)
         {
             modelName = name;

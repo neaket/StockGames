@@ -24,7 +24,10 @@ namespace StockGames.CommunicationModule.Parsers
     /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class SawtoothParser : IParser
     {
-
+        /// <summary>
+        /// Specific parser for the Sawtooth simulation model, writes stock price to
+        /// the database in isolated storage as new stock snap shot
+        /// </summary>
         public void parseZipFile(string zipFile, string stockIndex)
         {
             using (IsolatedStorageFile myStorage = IsolatedStorageFile.GetUserStoreForApplication() )

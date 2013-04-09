@@ -18,6 +18,11 @@ using StockGames.CommunicationModule.Parsers;
 
 namespace StockGames.CommunicationModule
 {
+    /// <summary>
+    /// Top level class for all comunication functionality, works as a controller between communication and game play client
+    /// </summary>
+    /// 
+    /// <remarks> Andrew Jeffery, 2/27/2013</remarks>
     public class CommunicationManager
     {
         private const string SERVER_URI = "http://134.117.53.66:8080/cdpp/sim/workspaces/andrew/dcdpp/";
@@ -27,10 +32,17 @@ namespace StockGames.CommunicationModule
             new CommunicationManager(new ServerEntity(SERVER_URI, new NetworkCredential("andrew", "andrew")));
 
         private ServerEntity hostServer;
+
+        /// <summary>
+        /// string representation of the current model
+        /// </summary>
         public string currentModel { get; private set; }
 
-        private Dictionary<string, ModelManger> models = new Dictionary<string,ModelManger>(); 
+        private Dictionary<string, ModelManger> models = new Dictionary<string,ModelManger>();
 
+        /// <summary>
+        /// Constructor for all comunication functionality, works as a controller between communication and game play client
+        /// </summary>
         public CommunicationManager(ServerEntity myServer)
         {
             //Setup Server instance

@@ -20,10 +20,16 @@ namespace StockGames.CommunicationModule
     /// <remarks>   Andrew Jeffery, 3/1/2013. </remarks>
     public class ModelWriter
     {
+        /// <summary>
+        /// Used to write a given model into isolated storage so that it can be compressed or manipulated
+        /// </summary>
         public ModelWriter()
         {
         }
 
+        /// <summary>
+        /// Used to write a given model into isolated storage from the application space so that it can be compressed or manipulated
+        /// </summary>
         public void writeFiletoStorage(string filename, string sourcePath, string targetPath)
         {
             using (IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())

@@ -19,25 +19,43 @@ using StockGames.Entities;
 
 namespace StockGames.Missions
 {
+    /// <summary>
+    /// Class represent a mission that follows the user's progress as they attempt to
+    /// have a profitable stock in their portfolio
+    /// </summary>
+    ///
+    /// <remarks>   Jon Panke, 3/1/2013. </remarks>
     public class MakeMoneyMission : Mission
     {
         private List<decimal> StockValueList;
 
+        /// <summary>
+        /// mission specific id to differiate between other missions
+        /// </summary>
         public override long MissionId
         {
             get { return 0x0002; }
         }
 
+        /// <summary>
+        /// Attribute for the mission title
+        /// </summary>
         public override string MissionTitle
         {
             get { return "Gain profit on a stock"; } 
-        } 
+        }
 
+        /// <summary>
+        /// Attribute for the mission text description
+        /// </summary>
         public override string MissionDescription
         {
             get { return "Make profit on at least one stock in your portfilio";  }
         }
 
+        /// <summary>
+        /// Mission specific behavior for strating up a new mission
+        /// </summary>
         public override void StartMission()
         {
             base.StartMission();
@@ -53,7 +71,10 @@ namespace StockGames.Missions
             }
             Messenger.Default.Register<GameTimeUpdatedMessageType>(this, CheckStockValues);
         }
-        
+
+        /// <summary>
+        /// Mission specific behavior for when a mission need to be flag as completed
+        /// </summary>
         protected override void MissionCompleted()
         {
             base.MissionCompleted();
