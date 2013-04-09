@@ -65,6 +65,10 @@ namespace StockGames.CommunicationModule
             modelWriter.writeModeltoStorage(modelName, sourcePath, modelName);
         }
 
+        /// <summary>
+        /// Used to write the ev file of a given model into isolated storage so that 
+        /// it can be compressed or manipulated
+        /// </summary>
        public void writeEV(string path, string stockIndex)
         {
             using (var myStorage = IsolatedStorageFile.GetUserStoreForApplication())
@@ -81,6 +85,10 @@ namespace StockGames.CommunicationModule
             
         }
 
+       /// <summary>
+       /// general parser call for the current simulation model, writes stock prices to
+       /// the database in isolated storage as new stock snap shots for the stock given
+       /// </summary>
         public void parseZipFile(string filePath, string stockIndex)
         {
             outParser.parseZipFile(filePath, stockIndex);

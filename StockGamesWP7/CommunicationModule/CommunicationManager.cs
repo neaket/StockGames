@@ -74,17 +74,28 @@ namespace StockGames.CommunicationModule
             models.Add("Brownian", tempModel);
             
         }
-
+        /// <summary>
+        /// Used to get the only active instance of this class, used to enforce singleton pattern
+        /// </summary>
         public static CommunicationManager GetInstance
         {
             get { return instance; }
         }
 
+        /// <summary>
+        /// starts the communication protocol to obtain news simulation data from the server
+        /// </summary>
+        /// <param name="stockIndex"></param>
         public void requestStockUpdate(string stockIndex)
         {
             hostServer.createCommThread(stockIndex, models[currentModel]);
         }
 
+        /// <summary>
+        /// gets the current model based on its string index
+        /// </summary>
+        /// <param name="modelName"></param>
+        /// <returns></returns>
         public ModelManger getModel(string modelName)
         {
             return models[modelName];

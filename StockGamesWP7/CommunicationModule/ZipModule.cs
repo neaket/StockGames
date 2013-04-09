@@ -72,8 +72,13 @@ namespace StockGames.CommunicationModule
             //}
         }
 
-        // Compresses the files in the nominated folder, and creates a zip file on disk named as outPathname.
-        // Make take a Password, Null disables the option 
+        /// <summary>
+        ///  Compresses the files in the nominated folder, and creates a zip file on disk named as outPathname.
+        /// Make take a Password, Null disables the option 
+        /// </summary>
+        /// <param name="outPathname"></param>
+        /// <param name="password"></param>
+        /// <param name="folderName"></param>
         public void CreateZip(string outPathname, string password, string folderName)
         {
 

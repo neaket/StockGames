@@ -46,6 +46,11 @@ namespace StockGames.CommunicationModule
         Abort           
     }
 
+    /// <summary>
+    /// State machine that represents the client server communication states
+    /// </summary>
+    /// 
+    ///<remarks> Andrew Jeffery, 3/1/2013</remarks>
    public class ServerStateMachine
     {
 
@@ -75,8 +80,15 @@ namespace StockGames.CommunicationModule
         }
 
         Dictionary<StateTransition, ProcessState> transitions;
+       /// <summary>
+       /// Attribute for the current state of the server state machine
+       /// </summary>
         public ProcessState CurrentState { get; private set; }
 
+       /// <summary>
+       /// Creates a new state machine and registers all the valid transitions that can occur in each of its states
+       /// </summary>
+       /// <param name="hostServer"></param>
         public ServerStateMachine(ServerEntity hostServer)
         {
             CurrentState = ProcessState.Ready;
@@ -97,6 +109,11 @@ namespace StockGames.CommunicationModule
             myServer = hostServer;
         }
 
+       /// <summary>
+       /// gets the next transition of type specified that exists in the current state
+       /// </summary>
+       /// <param name="command"></param>
+       /// <returns></returns>
         public ProcessState GetNext(Command command)
         {
             StateTransition transition = new StateTransition(CurrentState, command);
@@ -106,6 +123,12 @@ namespace StockGames.CommunicationModule
             return nextState;
         }
 
+       /// <summary>
+       /// moves to the next transition
+       /// </summary>
+       /// <param name="command"></param>
+       /// <param name="operation"></param>
+       /// <returns></returns>
         public ProcessState MoveNext(Command command, ICommand operation)
         {
             CurrentState = GetNext(command);

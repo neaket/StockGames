@@ -49,6 +49,10 @@ namespace StockGames.CommunicationModule
         /// </summary>
         public event EventHandler CanExecuteChanged;
 
+        /// <summary>
+        /// zips the model files for the current model and sends them to the RISE server
+        /// </summary>
+        /// <param name="parameter"></param>
         public void Execute(object parameter)
         {
             myStateMutex.WaitOne();

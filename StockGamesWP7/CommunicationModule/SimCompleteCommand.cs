@@ -46,6 +46,10 @@ namespace StockGames.CommunicationModule
         /// </summary>
         public event EventHandler CanExecuteChanged;
 
+        /// <summary>
+        /// Changes the state to the next one in the state transition
+        /// </summary>
+        /// <param name="parameter"></param>
         public void Execute(object parameter)
         {
             myStateMutex.WaitOne();

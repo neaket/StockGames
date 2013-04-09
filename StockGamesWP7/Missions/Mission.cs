@@ -71,7 +71,10 @@ namespace StockGames.Missions
             ShowMissionToast("100% Complete");
         }
 
-
+        /// <summary>
+        /// Use to push a Toast notification when a mission objective is completed
+        /// </summary>
+        /// <param name="message"></param>
         protected void ShowMissionToast(string message)
         {
             // Note: unfortunately a toast can only be added to the current view.
@@ -95,10 +98,24 @@ namespace StockGames.Missions
         }
     }
 
+    /// <summary>
+    /// The states that a mission can be in
+    /// </summary>
     public enum MissionStatus
     {
+        /// <summary>
+        /// mission not started state
+        /// </summary>
         NotStarted,
+
+        /// <summary>
+        /// mission in progress state
+        /// </summary>
         InProgress,
+
+        /// <summary>
+        /// mission completed state
+        /// </summary>
         Completed
     }
 }

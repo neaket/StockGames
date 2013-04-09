@@ -68,11 +68,20 @@ namespace StockGames.Controllers
             }
         }
 
+        /// <summary>
+        /// Use to get a list of the current missions that are in the game
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Mission> GetMissions()
         {
             return _missions.Values;
         }
 
+        /// <summary>
+        /// Get a mission with the type id specified
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Mission GetMission(long id)
         {
             return _missions[id];

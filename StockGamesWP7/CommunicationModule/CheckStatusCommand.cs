@@ -49,6 +49,10 @@ namespace StockGames.CommunicationModule
         /// </summary>
         public event EventHandler CanExecuteChanged;
 
+        /// <summary>
+        /// sends a request for the RISE server status and parse the response XML for the status
+        /// </summary>
+        /// <param name="parameter"></param>
         public void Execute(object parameter)
         {
             myStateMutex.WaitOne();
@@ -95,6 +99,10 @@ namespace StockGames.CommunicationModule
             }
         }
 
+        /// <summary>
+        /// Parses the given XML file for the server state and returns the found value
+        /// </summary>
+        /// <returns>SimState</returns>
         public ServerEntity.SimStates ParseXMLFile()
         {
             using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())

@@ -46,6 +46,10 @@ namespace StockGames.CommunicationModule
         /// </summary>
         public event EventHandler CanExecuteChanged;
 
+        /// <summary>
+        /// sends a request to the RISE server to start the simulation
+        /// </summary>
+        /// <param name="parameter"></param>
         public void Execute(object parameter)
         {
             myStateMutex.WaitOne();

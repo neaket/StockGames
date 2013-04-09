@@ -28,7 +28,7 @@ namespace StockGames.CommunicationModule
         }
 
         /// <summary>
-        /// Used to write a given model into isolated storage from the application space so that it can be compressed or manipulated
+        /// Used to write a given file into isolated storage from the application space
         /// </summary>
         public void writeFiletoStorage(string filename, string sourcePath, string targetPath)
         {
@@ -53,6 +53,9 @@ namespace StockGames.CommunicationModule
             }
         }
 
+        /// <summary>
+        /// Used to write a given model into isolated storage from the application space so that it can be compressed or manipulated
+        /// </summary>
         public void writeModeltoStorage(string modelName, string sourcePath, string targetPath)
         {
             writeFiletoStorage("trial.ev", sourcePath, targetPath);

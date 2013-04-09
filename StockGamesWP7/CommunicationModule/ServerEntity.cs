@@ -62,12 +62,22 @@ namespace StockGames.CommunicationModule
         
         private static Mutex serverQueMutex = new Mutex(false, "ServerQue");
         
+        /// <summary>
+        /// Constructor used to link a serverEntity to its state machine, and stores the networ credentials
+        /// </summary>
+        /// <param name="serverAddress"></param>
+        /// <param name="hostCredentials"></param>
         public ServerEntity(string serverAddress, NetworkCredential hostCredentials)
         {
             myServer = new ServerStateMachine(this);
             serverCredentials = hostCredentials;
         }
 
+        /// <summary>
+        /// Creates a Work thread to handle the client server communication
+        /// </summary>
+        /// <param name="stockIndex"></param>
+        /// <param name="model"></param>
         public void createCommThread(string stockIndex, ModelManger model)
         {
             currentModel = model;
@@ -76,11 +86,19 @@ namespace StockGames.CommunicationModule
             thread.Start();
         }
 
+        /// <summary>
+        /// getter for the string representation of the current active simulation model
+        /// </summary>
+        /// <returns></returns>
         public string getModelName()
         {
             return this.currentModel.modelName;
         }
-
+        
+        /// <summary>
+        /// updates the server simulation state to the requested value
+        /// </summary>
+        /// <param name="state"></param>
         public void updateSimState(SimStates state)
         {
             simStatus = state;
