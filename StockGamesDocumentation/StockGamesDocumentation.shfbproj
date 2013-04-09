@@ -28,7 +28,7 @@
     <HelpAttributes />
     <NamespaceSummaries>
       <NamespaceSummaryItem name="StockGames.Views" isDocumented="True" />
-    </NamespaceSummaries>
+<NamespaceSummaryItem name="SharpGIS" isDocumented="False" /></NamespaceSummaries>
     <PlugInConfigurations />
     <BuildLogFile />
     <HtmlHelp1xCompilerPath />
