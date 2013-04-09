@@ -72,6 +72,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Communication\CommunicationTest.cs" />
+    <Compile Include="Communication\CommunicationUnitTests.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -89,6 +91,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CD++Models\BrownianMotion\BrownianMotion.xml" />
+    <Content Include="CD++Models\Random\Random.xml" />
+    <Content Include="CD++Models\Sawtooth\Sawtooth.xml" />
     <Content Include="Toolkit.Content\ApplicationBar.Email.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Play.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Save.png" />
@@ -96,6 +101,18 @@
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
+    <Content Include="CD++Models\BrownianMotion\BrownianMotion.ma" />
+    <Content Include="CD++Models\BrownianMotion\BrownianMotionType.cpp" />
+    <Content Include="CD++Models\BrownianMotion\BrownianMotionType.h" />
+    <Content Include="CD++Models\BrownianMotion\trial.ev" />
+    <Content Include="CD++Models\Random\Random.ma" />
+    <Content Include="CD++Models\Random\RandomType.cpp" />
+    <Content Include="CD++Models\Random\RandomType.h" />
+    <Content Include="CD++Models\Random\trial.ev" />
+    <Content Include="CD++Models\Sawtooth\Sawtooth.ma" />
+    <Content Include="CD++Models\Sawtooth\SawtoothType.cpp" />
+    <Content Include="CD++Models\Sawtooth\SawtoothType.h" />
+    <Content Include="CD++Models\Sawtooth\trial.ev" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
