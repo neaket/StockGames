@@ -103,16 +103,11 @@
     <Compile Include="CommunicationModule\Parsers\RandomParser.cs" />
     <Compile Include="CommunicationModule\Parsers\SawtoothParser.cs" />
     <Compile Include="CommunicationModule\PostModelCommand.cs" />
-    <Compile Include="Commands\IStockCommand.cs" />
-    <Compile Include="Commands\PushStockChangesCmd.cs" />
-    <Compile Include="Commands\RequestStockUpdateCmd.cs" />
     <Compile Include="CommunicationModule\ServerEntity.cs" />
     <Compile Include="CommunicationModule\ServerStateMachine.cs" />
     <Compile Include="CommunicationModule\SimCompleteCommand.cs" />
     <Compile Include="CommunicationModule\StartSimCommand.cs" />
     <Compile Include="CommunicationModule\ZipModule.cs" />
-    <Compile Include="Controllers\ClientController.cs" />
-    <Compile Include="Controllers\CommandInvoker.cs" />
     <Compile Include="Controllers\TimeController.cs" />
     <Compile Include="Entities\TradeEntity.cs" />
     <Compile Include="Messaging\CommunicationCompletedType.cs" />
