@@ -22,6 +22,25 @@
           Contains the communication module implementation.
         </summary>
       </member>
+      <member name="N:StockGames.CommunicationModule.EVWriters">
+        <summary>
+          <h1 class="heading">StockGames.CommunicationModule.EVWriters</h1>
+          Contains the specific EV file writers for simulation models.
+        </summary>
+      </member>
+      <member name="N:StockGames.CommunicationModule.Parsers">
+        <summary>
+          <h1 class="heading">StockGames.CommunicationModule.Parsers</h1>
+          Contains the specific parsers for simulation models.
+        </summary>
+      </member>
+      <member name="N:StockGames.Controllers">
+        <summary>
+          <h1 class="heading">StockGames.Controllers</h1>
+          Contains application controllers for the project.
+        </summary>
+      </member>
+      
       <member name="N:StockGames.Entities">
         <summary>
           <h1 class="heading">StockGames.Entities</h1>

@@ -12,6 +12,8 @@ namespace SharpGIS
 	/// Note that some ZIP files which doesn't report file size before
 	/// the file content is not supported by Silverlight, and therefore
 	/// also ignore by this class.
+    /// 
+    /// Source: http://www.sharpgis.net/post/2010/08/25/REALLY-small-unzip-utility-for-Silverlight-e28093-Part-2.aspx
 	/// </remarks>
 	public class UnZipper
 	{
