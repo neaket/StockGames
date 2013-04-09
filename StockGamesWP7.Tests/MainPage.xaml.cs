@@ -14,7 +14,10 @@ namespace StockGames.Tests
         {
             InitializeComponent();
 
-            GameState.Instance.GameTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0);
+            var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0);
+            GameState.Instance.GameDataExpiryTime = now.AddHours(-1);
+            GameState.Instance.GameTime = now;
+            
 
             // Add or comment out tags below as necessary.
             var tags = new TagList

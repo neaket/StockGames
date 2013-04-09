@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ConfigFramework>
+	<Doc> This simulates our Brownian stock model. </Doc>
+	<Files>
+		<File ftype="ev">trial.ev</File>
+    <File ftype="ma">Brownian.ma</File>
+		<File ftype="src">BrownianType.cpp</File>
+		<File ftype="hdr" class="BrownianType">BrownianType.h</File>
+	</Files>
+  <Options>
+    <TimeOp>00:06:00:00</TimeOp>
+    <ParsingOp>false</ParsingOp>
+  </Options>
+	<DCDpp>
+		<Servers>
+			<Server PORT="8080" IP="LocalHost">
+				<MODEL>sawtooth</MODEL>
+			</Server>
+		</Servers>
+	</DCDpp>
+</ConfigFramework>

@@ -1,6 +1,6 @@
-﻿ using System;
- using System.Collections.Generic;
- using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace StockGames.Entities
 {
@@ -37,9 +37,26 @@ namespace StockGames.Entities
                     return 0;
                 return _snapshots[0].Price;
             }
-            
+
         }
 
+        /// <summary>   Gets the integer index of the stock index for a stock. </summary>
+        ///
+        /// <value> The current price. </value>
+        public int StockIntegerIndex
+        {
+            get
+            {
+                var letters= StockIndex.ToCharArray();
+                int index=0;
+                foreach (char letter in letters)
+                {
+                    index *= 100;
+                    index += Convert.ToInt32(letter);
+                }
+                return index;
+            }
+        }
         /// <summary>   Gets the market's previous stock price. </summary>
         ///
         /// <value> The previous price. </value>
@@ -55,8 +72,8 @@ namespace StockGames.Entities
 
         /// <summary>   The delta change of the current price and the previous price.</summary>
         ///
-        /// <value> The daily change. </value>
- 		public decimal DailyChange
+        /// <value> The delta change. </value>
+        public decimal DeltaChange
         {
             get
             {
@@ -78,7 +95,7 @@ namespace StockGames.Entities
                 {
                     return 0;
                 }
-                return DailyChange / PreviousPrice; 
+                return DeltaChange / PreviousPrice;
             }
         }
 
@@ -127,7 +144,7 @@ namespace StockGames.Entities
         /// <returns>   A hash code for the current <see cref="T:StockGames.Entities.StockEntity" />. </returns>
         public override int GetHashCode()
         {
-            return StockIndex.GetHashCode();  
+            return StockIndex.GetHashCode();
         }
     }
 

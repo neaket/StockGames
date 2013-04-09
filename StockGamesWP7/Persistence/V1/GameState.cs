@@ -104,7 +104,10 @@ namespace StockGames.Persistence.V1
 
 
         private DateTime _gameTime;
-        /// <summary> Gets the current game time. </summary>
+
+        /// <summary>   Gets or sets the current game time. </summary>
+        ///
+        /// <value> The current game time. </value>
         [DataMember]
         public DateTime GameTime 
         { 
@@ -116,6 +119,18 @@ namespace StockGames.Persistence.V1
                 _gameTime = value;
                 Messenger.Default.Send(new GameTimeUpdatedMessageType(_gameTime));
             }
+        }
+
+        private DateTime _gameDataExpiryTime;
+
+        /// <summary>   Gets or sets the Date/Time that the game data expires. </summary>
+        ///
+        /// <value> The Date/Time that the game data expires. </value>
+        [DataMember]
+        public DateTime GameDataExpiryTime
+        {
+            get { return _gameDataExpiryTime; }
+            set { _gameDataExpiryTime = value; }
         }
     }
 }

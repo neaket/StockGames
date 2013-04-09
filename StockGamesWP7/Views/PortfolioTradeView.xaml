@@ -24,7 +24,7 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="{Binding Path=Common.AppName, Source={StaticResource Resources}}" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="make a trade" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="PageTitle" Text="Make a Trade" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
         
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
@@ -34,19 +34,19 @@
                 <toolkit:ListPicker ItemsSource="{Binding TradeTypes}" Margin="0" SelectedItem="{Binding SelectedTradeType, Mode=TwoWay}"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Current Market Price"  />
-                    <TextBlock Text="{Binding CurrentPrice}" Margin="15 0 0 0" />
+                    <TextBlock Text="{Binding CurrentPrice, StringFormat=\{0:+$#\,##0.00;-$#\,##0.00;$0.00\}}" Margin="20 0 0 0" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Quantity"  />
-                    <TextBlock Text="{Binding Quantity, Mode=OneWay}" Margin="15 0 0 0" />
+                    <TextBlock Text="{Binding Quantity, Mode=OneWay}" Margin="20 0 0 0" />
                 </StackPanel>
                 <Slider Value="{Binding Quantity, Mode=TwoWay}" Maximum="{Binding Path=MaximumQuantity}" />
                 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Amount" />
-                    <TextBlock Text="{Binding Amount, Mode=OneWay}" Margin="15 0 0 0" />
+                    <TextBlock Text="{Binding Amount, Mode=OneWay, StringFormat=\{0:$#\,##0.00\}}" Margin="20 0 0 0" />
                 </StackPanel>
-                <Button Content="Confirm" Command="{Binding MakeTradeCommand}" />
+                <Button Content="Confirm" Command="{Binding MakeTradeCommand}" Margin="0 15" />
             	
             </StackPanel>
         </Grid>

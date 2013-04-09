@@ -13,7 +13,6 @@ namespace SharpGIS
 	/// the file content is not supported by Silverlight, and therefore
 	/// also ignore by this class.
 	/// </remarks>
-    [Obsolete]
 	public class UnZipper
 	{
 		private Stream stream;
@@ -47,7 +46,6 @@ namespace SharpGIS
 		/// <summary>
 		/// Gets a list of file names embedded in a Zip file.
 		/// </summary>
-		/// <param name="stream">The stream for a zip file.</param>
 		/// <returns>List of file names</returns>
 		public IEnumerable<string> GetFileNamesInZip()
 		{

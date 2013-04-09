@@ -9,19 +9,46 @@ using StockGames.Controllers;
 
 namespace StockGames.Missions
 {
+    /// <summary>
+    /// Abstract class used to ensure that missions can be interchangable by forcing the implementation of
+    /// required methods and uniform attributes
+    /// </summary>
+    ///
+    /// <remarks>   Jon Panke, 3/1/2013. </remarks>
     public abstract class Mission
     {
+        /// <summary>
+        /// Current status of the mission instance
+        /// </summary>
         public MissionStatus MissionStatus { get; protected set; }
 
+        /// <summary>
+        /// Attribute for the identifing missionId
+        /// </summary>
         public abstract long MissionId { get; }
+
+        /// <summary>
+        /// Attribute for the mission title
+        /// </summary>
         public abstract string MissionTitle { get; }
+
+        /// <summary>
+        /// Attribute for the mission text description
+        /// </summary>
         public abstract string MissionDescription { get; }
 
+        /// <summary>
+        /// Abstract class used to ensure that missions can be interchangable by forcing the implementation of
+        /// required methods and uniform attributess
+        /// </summary>
         protected Mission()
         {
             MissionStatus = MissionStatus.NotStarted;
         }
 
+        /// <summary>
+        /// Default behavior for strating up a new mission
+        /// </summary>
         public virtual void StartMission()
         {
             Debug.Assert(MissionStatus == MissionStatus.NotStarted, "This method should only be called once");
@@ -30,6 +57,9 @@ namespace StockGames.Missions
             Messenger.Default.Send(new MissionUpdatedMessageType(MissionId, MissionStatus));
         }
 
+        /// <summary>
+        /// Default behavior for when a mission need to be flag as completed
+        /// </summary>
         protected virtual void MissionCompleted()
         {
             Debug.Assert(MissionStatus != MissionStatus.Completed, "This method should only be called once");
@@ -41,7 +71,10 @@ namespace StockGames.Missions
             ShowMissionToast("100% Complete");
         }
 
-
+        /// <summary>
+        /// Use to push a Toast notification when a mission objective is completed
+        /// </summary>
+        /// <param name="message"></param>
         protected void ShowMissionToast(string message)
         {
             // Note: unfortunately a toast can only be added to the current view.
@@ -65,10 +98,24 @@ namespace StockGames.Missions
         }
     }
 
+    /// <summary>
+    /// The states that a mission can be in
+    /// </summary>
     public enum MissionStatus
     {
+        /// <summary>
+        /// mission not started state
+        /// </summary>
         NotStarted,
+
+        /// <summary>
+        /// mission in progress state
+        /// </summary>
         InProgress,
+
+        /// <summary>
+        /// mission completed state
+        /// </summary>
         Completed
     }
 }
