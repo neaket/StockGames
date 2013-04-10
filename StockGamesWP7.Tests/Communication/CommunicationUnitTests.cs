@@ -65,14 +65,16 @@ namespace StockGames.Tests.Communication
             try
             {
                 sm.GetNext(Command.GetResults);
-            }catch(Exception e){
+            }catch
+            {
                 Assert.IsTrue(true);
             }
             try
             {
                 sm.GetNext(Command.CheckStatus);
             }
-            catch(Exception e){
+            catch
+            {
                 Assert.IsTrue(true);
             } 
             Assert.IsTrue(sm.GetNext(Command.PostModel).Equals(ProcessState.Setup));
@@ -80,7 +82,7 @@ namespace StockGames.Tests.Communication
             {
                 sm.GetNext(Command.StartSim);
             }
-            catch (Exception e)
+            catch
             {
                 Assert.IsTrue(true);
             }
@@ -98,6 +100,30 @@ namespace StockGames.Tests.Communication
             Assert.Equals(mm.modelXml, "test");
             Assert.Equals(mm.domainName, "REST");
             Assert.Equals(mm.modelHourAdvance, 9000);
+        }
+
+        [TestMethod]
+        public void createModelEV()
+        {
+            RandomEVWriter rev = new RandomEVWriter();
+            RandomParser rp = new RandomParser();
+            ModelManger mm = new ModelManger("BrownianMotion", "CD++Models/BrownianMotion", "CD++Models/BrownianMotion/BrownianMotion.xml", "BrownianNew", 168, new TestEVWriter(), new BrownianParser());
+
+            mm.writeEV(null, null);
+            using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                Assert.IsTrue(storage.FileExists("test\\trial.ev"));
+            }
+        }
+
+    }
+
+    class TestEVWriter : IEVWriter
+    {
+        public void writeEVFile(string outpath, string stockIndex)
+        {
+            ModelWriter mw = new ModelWriter();
+            mw.writeModeltoStorage("test", "CD++Models\\BrownianMotion", "test");    
         }
     }
 };
