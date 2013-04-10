@@ -109,9 +109,10 @@ namespace StockGames.Tests.Communication
             RandomParser rp = new RandomParser();
             ModelManger mm = new ModelManger("BrownianMotion", "CD++Models/BrownianMotion", "CD++Models/BrownianMotion/BrownianMotion.xml", "BrownianNew", 168, new TestEVWriter(), new BrownianParser());
 
-            mm.writeEV(null, null);
             using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
             {
+                storage.CreateDirectory("test");
+                mm.writeEV("test", "ABC");
                 Assert.IsTrue(storage.FileExists("test\\trial.ev"));
             }
         }
