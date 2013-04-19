@@ -13,4 +13,12 @@ __Supervisor__ Professor Wainer
 2012/2013 4th Year Project at Carleton University
 
 
+
+![Main Menu](https://raw.github.com/neaket/StockGames/development/Documentation/images/MainMenuWithContinue.png)
+![Dashboard](https://raw.github.com/neaket/StockGames/development/Documentation/images/Dashboard.png)
+![All Stocks](https://raw.github.com/neaket/StockGames/development/Documentation/images/AllStocks.png)
+![Make a Trade](https://raw.github.com/neaket/StockGames/development/Documentation/images/MakeATrade-Buy.png)
+![View Stock](https://raw.github.com/neaket/StockGames/development/Documentation/images/ViewStock.png)
+![View Stock Graph](https://raw.github.com/neaket/StockGames/development/Documentation/images/ViewStockGraph.png)
+
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/neaket/StockGames/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
